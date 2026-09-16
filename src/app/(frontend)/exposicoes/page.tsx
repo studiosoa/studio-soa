@@ -23,8 +23,10 @@ export default function Exposicoes() {
             <h1 className="expo__titulo">EXPOSIÇÕES</h1>
 
             {/* Cada nome é um botão: o mouse troca por cima, o toque troca no
-                clique e o teclado troca no foco. */}
-            <ul className="expo__nomes">
+                clique e o teclado troca no foco.
+                No celular esta lista vira uma tira que corre de lado, um nome
+                por tela, e arrastar troca a mostra. Ver `.expo__nomes` no CSS. */}
+            <ul className="expo__nomes" data-expo-tira>
               {exposicoes.map((expo) => (
                 <li key={expo.chave}>
                   <button
@@ -45,6 +47,18 @@ export default function Exposicoes() {
                 </li>
               ))}
             </ul>
+
+            {/* Pontos só de celular: numa tira que corre de lado, sem eles não
+                há como saber que existem mais três mostras atrás da borda. */}
+            <div className="expo__pontos" data-expo-pontos aria-hidden="true">
+              {exposicoes.map((expo) => (
+                <span
+                  className={`expo__ponto${expo.chave === primeira ? " is-ativo" : ""}`}
+                  data-ponto={expo.chave}
+                  key={expo.chave}
+                />
+              ))}
+            </div>
           </div>
 
           <div className="expo__painel">

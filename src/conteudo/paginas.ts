@@ -5,9 +5,15 @@ import type { Foto } from "@/tipos/conteudo";
 // únicas com campos próprios, não itens de uma lista.
 
 export const home = {
+  // No celular entra o arquivo ORIGINAL, sem os 400px de parede que foram
+  // colados no topo do `hero.jpg`. Aquela parede existe só para afastar a
+  // cabeça dela do menu sobreposto, e em tela estreita o menu deixa de
+  // sobrepor: ali a parede vira espaço morto e ainda encolhe a Luiza, porque
+  // o `cover` passa a caber pela altura inteira do arquivo.
   capa: {
     src: "/assets/img/home/hero.jpg",
     alt: "Luiza Pessôa sentada ao lado da Mesa Onda",
+    celular: { src: "/assets/img/home/hero-original-1499.jpg" },
   } as Foto,
 
   // A faixa de peças logo abaixo do topo. É seleção editorial, não o catálogo
@@ -87,11 +93,8 @@ export const home = {
 };
 
 export const sobre = {
-  capa: {
-    src: "/assets/img/home/hero.jpg",
-    alt: "Luiza Pessôa sentada ao lado da Mesa Onda",
-  } as Foto,
-
+  // Sem foto de topo desde 16/09: era o mesmo arquivo da home, então a Sobre
+  // abria repetindo a primeira tela do site. A página começa no verde.
   perfil: {
     foto: {
       src: "/assets/img/sobre/luiza-perfil.jpg",
@@ -140,9 +143,14 @@ export const sobre = {
 };
 
 export const contato = {
+  // O arquivo grande tem a Luiza à direita e o Banquinho no canto de baixo, uma
+  // composição feita para quadro em pé. No celular o quadro é deitado, o `cover`
+  // mostra a largura inteira e sobra parede vazia à esquerda dela. O recorte de
+  // celular é a mesma foto centrada nela.
   foto: {
     src: "/assets/img/home/designer.jpg",
     alt: "Luiza Pessôa, do Studio Sôa",
+    celular: { src: "/assets/img/contato/luiza-mobile.jpg", ate: 900 },
   } as Foto,
   rotulo: "Fale com o estúdio",
   titulo: "Ficou com alguma dúvida?",

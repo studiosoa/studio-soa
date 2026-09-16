@@ -13,11 +13,12 @@ export const metadata: Metadata = {
 
 export default function Sobre() {
   return (
-    <Pagina modificador="page--sobre" cabecalhoSobreposto>
-      <section className="sobre-hero">
-        <Imagem className="sobre-hero__img" foto={sobre.capa} />
-      </section>
-
+    /* Sem cabeçalho sobreposto: ele só faz sentido com foto atrás. A Sobre agora
+       abre direto no verde, e um cabeçalho transparente ali ficaria com o texto
+       escuro boiando em cima do fundo escuro. */
+    <Pagina modificador="page--sobre">
+      {/* A foto de topo saiu a pedido do Pedro. Era o mesmo arquivo da home,
+          então a Sobre abria repetindo a primeira tela do site inteiro. */}
       <section className="perfil" data-reveal>
         <div className="perfil__inner">
           <div className="perfil__foto">

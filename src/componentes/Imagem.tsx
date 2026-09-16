@@ -26,7 +26,7 @@ interface Props {
 }
 
 export default function Imagem({ foto, className, parallax, ariaHidden }: Props) {
-  return (
+  const img = (
     /* eslint-disable-next-line @next/next/no-img-element */
     <img
       className={className}
@@ -37,5 +37,22 @@ export default function Imagem({ foto, className, parallax, ariaHidden }: Props)
       {...(foto.zoom ? { "data-zoom": foto.zoom } : {})}
       {...(ariaHidden ? { "aria-hidden": true } : {})}
     />
+  );
+
+  if (!foto.celular) return img;
+
+  // Em tela estreita o enquadramento muda de verdade, não só de tamanho: o
+  // recorte de desktop foi pensado para um quadro deitado e largo, e no celular
+  // ele deixa o assunto pequeno e fora do centro. `<picture>` troca o ARQUIVO,
+  // que é a única forma de reenquadrar sem esticar nem dar zoom digital.
+  //
+  // O `<picture>` some do layout por `display: contents` no CSS, senão ele
+  // viraria uma caixa a mais entre o bloco e a foto, e as regras que contam com
+  // a imagem como filha direta parariam de valer.
+  return (
+    <picture>
+      <source media={`(max-width: ${foto.celular.ate ?? 600}px)`} srcSet={foto.celular.src} />
+      {img}
+    </picture>
   );
 }

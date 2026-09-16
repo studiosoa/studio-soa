@@ -2654,3 +2654,165 @@ a:focus-visible > .photo-overlay {
     font-size: 36px;
   }
 }
+
+/* ========== Acertos de celular — 16/09/2026 ========== */
+/* Tudo aqui nasceu de olhar o site num aparelho de verdade. O padrão do que
+   estava errado é sempre o mesmo: medida de desktop aplicada sem desconto em
+   tela estreita. Fica no fim do arquivo, depois de todas as regras que corrige,
+   para não depender de especificidade. */
+
+/* O <picture> não pode virar uma caixa entre o bloco e a foto: várias regras
+   contam com a imagem como filha direta. `display: contents` faz o elemento
+   sumir do layout e deixar a <img> no lugar dele. */
+picture {
+  display: contents;
+}
+
+@media (max-width: 600px) {
+  /* TOPO DA HOME — a Luiza ficava minúscula e longe.
+     A foto tem proporção 1,264 e o quadro estava em 3/2 (1,5): mais largo que
+     o arquivo, então o `cover` cabia pela LARGURA e mostrava a cena inteira.
+     Em pé o quadro passa a caber pela altura e recorta as laterais, que é o
+     que aproxima. O arquivo servido aqui também muda, em `paginas.ts`: entra o
+     original, sem os 400px de parede que existem só para afastar a cabeça dela
+     do menu sobreposto, que em tela estreita nem sobrepõe mais. */
+  .home-hero {
+    aspect-ratio: 4 / 5;
+    max-height: 72vh;
+  }
+
+  .home-hero__img {
+    object-position: 50% 42%;
+  }
+}
+
+@media (max-width: 700px) {
+  /* TOPO DAS PEÇAS — 88vh dava 743px numa tela de 844: a foto sozinha ocupava
+     quase a tela inteira e o nome da peça só aparecia depois de rolar. */
+  .hero {
+    height: 58vh;
+    min-height: 340px;
+    max-height: 520px;
+  }
+
+  /* AS DUAS BARRAS BRANCAS. Respiro de desktop levado inteiro para o celular:
+     160px antes da faixa de relacionadas e 165px antes do rodapé, numa tela de
+     844. Juntos eram 325px de creme vazio, quase 40% de uma tela. */
+  .related {
+    margin-top: 40px;
+  }
+
+  .site-footer {
+    margin-top: 48px;
+  }
+}
+
+@media (max-width: 620px) {
+  /* A BARRA MARROM DAS EXPOSIÇÕES. `.expo__descricao` tem `flex: 1 1 427px`,
+     que no desktop é base de LARGURA porque a ficha é uma linha. Aqui o bloco
+     vira coluna, e a mesma declaração passa a reservar 427px de ALTURA. O
+     texto da primeira mostra tem cinco linhas e sobravam trezentos e poucos
+     pixels de marrom vazio antes da faixa do catálogo. */
+  .expo__descricao {
+    flex: 0 1 auto;
+  }
+}
+
+/* ========== Exposições no celular: tira que corre de lado ========== */
+/* Empilhados, os quatro nomes comiam meia tela antes de a pessoa ver qualquer
+   foto. Viram uma tira horizontal, um nome por tela: arrastar para o lado
+   troca a mostra, com o mesmo esmaecer da foto e a mesma saída do texto pela
+   esquerda que o mouse dispara no desktop.
+   Quem lê a rolagem e chama a troca é `efeitos/exposicoes.ts`. */
+@media (max-width: 1000px) {
+  .expo__nomes {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    /* a tira sangra até as bordas da tela, senão o nome seguinte não dá as
+       caras e ninguém descobre que dá para arrastar */
+    margin-inline: calc(var(--side-narrow) * -1);
+    padding-inline: var(--side-narrow);
+    overscroll-behavior-x: contain;
+    /* Sem isto o encaixe encosta o nome na borda da tela e ignora o padding
+       acima: o navegador rola esses 20px sozinho no primeiro quadro, e o nome
+       fica desalinhado do título logo em cima dele. `scroll-padding` é o que
+       ensina o encaixe a respeitar a margem da página. */
+    scroll-padding-left: var(--side-narrow);
+  }
+
+  .expo__nomes::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Cada nome ocupa a tela cheia menos um naco, e esse naco é o que deixa a
+     borda do próximo aparecer como convite. */
+  .expo__nomes > li {
+    flex: 0 0 calc(100% - 44px);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    padding-right: 20px;
+  }
+
+  /* Some o empilhamento: aqui a distância é horizontal, não vertical. */
+  .expo__nomes li + li {
+    margin-top: 0;
+  }
+
+  .expo__nome {
+    font-size: 26px;
+    min-height: 92px;
+  }
+
+  /* Apagado até virar o escolhido: numa tira que corre, o contraste é o que
+     diz qual está valendo. */
+  .expo__nome {
+    color: color-mix(in srgb, var(--cream) 45%, transparent);
+  }
+
+  .expo__nome.is-ativo {
+    color: var(--gold);
+  }
+
+  .expo__nome::after {
+    width: 100%;
+    margin-top: 16px;
+    background: color-mix(in srgb, var(--gold) 35%, transparent);
+    transition: background 0.25s ease;
+  }
+
+  .expo__nome.is-ativo::after {
+    background: var(--gold);
+  }
+
+  .expo__pontos {
+    display: flex;
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  .expo__ponto {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--cream) 30%, transparent);
+    transition: background 0.25s ease, transform 0.25s ease;
+  }
+
+  .expo__ponto.is-ativo {
+    background: var(--gold);
+    transform: scale(1.25);
+  }
+}
+
+/* No desktop a lista continua empilhada e os pontos não existem. Tem que ser
+   media query, não regra solta: este trecho vem DEPOIS do bloco de celular, e
+   uma regra de mesma especificidade aqui venceria a de lá e sumiria com os
+   pontos justamente onde eles servem. */
+@media (min-width: 1001px) {
+  .expo__pontos {
+    display: none;
+  }
+}

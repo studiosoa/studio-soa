@@ -25,6 +25,16 @@ export interface Foto {
    * justamente o momento de ver a foto como ela foi tirada.
    */
   zoom?: string;
+  /**
+   * Arquivo alternativo para tela estreita, quando o enquadramento de desktop
+   * não sobrevive ao celular. Não é a mesma foto menor: é outro recorte, porque
+   * num quadro estreito o assunto fica pequeno ou sai do centro.
+   */
+  celular?: {
+    src: string;
+    /** Largura máxima em que esse arquivo vale. Padrão: 600px. */
+    ate?: number;
+  };
 }
 
 /** Um quadro de galeria: ou é foto, ou é vídeo. Nunca os dois. */

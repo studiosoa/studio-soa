@@ -107,6 +107,84 @@ export function ligarExposicoes(): () => void {
     });
   });
 
+  // ----- celular: a lista vira uma tira que corre de lado -----
+  //
+  // Empilhados, os quatro nomes comiam meia tela antes da primeira foto. No
+  // celular o CSS transforma a lista numa tira com encaixe horizontal, e é o
+  // arrasto que escolhe a mostra. Quem está escolhido é quem parou mais perto
+  // da borda esquerda da tira.
+  const tira = secao.querySelector<HTMLElement>("[data-expo-tira]");
+  const pontos = Array.from(
+    secao.querySelectorAll<HTMLElement>("[data-ponto]"),
+  );
+
+  function acenderPontos(chave: string | null) {
+    pontos.forEach((p) => {
+      p.classList.toggle("is-ativo", p.getAttribute("data-ponto") === chave);
+    });
+  }
+
+  if (tira) {
+    // Rolagem que EU provoquei não deve ser lida como escolha da pessoa, senão
+    // centralizar um nome dispara a troca do vizinho e a tira briga sozinha.
+    let euRolei = false;
+    let descanso = 0;
+
+    const lerTira = () => {
+      if (euRolei) return;
+      const inicio = tira.scrollLeft;
+      let melhor: HTMLElement | null = null;
+      let menorDistancia = Infinity;
+
+      Array.from(tira.children).forEach((li) => {
+        const botao = (li as HTMLElement).querySelector<HTMLElement>("[data-expo]");
+        if (!botao) return;
+        const d = Math.abs((li as HTMLElement).offsetLeft - inicio);
+        if (d < menorDistancia) {
+          menorDistancia = d;
+          melhor = botao;
+        }
+      });
+
+      if (melhor) {
+        const chave = (melhor as HTMLElement).getAttribute("data-expo");
+        trocar(chave);
+        acenderPontos(chave);
+      }
+    };
+
+    const aoRolarTira = () => {
+      window.clearTimeout(descanso);
+      // só decide quando o dedo solta e a tira assenta no encaixe
+      descanso = window.setTimeout(lerTira, 110);
+    };
+
+    tira.addEventListener("scroll", aoRolarTira, { passive: true });
+    soltar.push(() => {
+      tira.removeEventListener("scroll", aoRolarTira);
+      window.clearTimeout(descanso);
+    });
+
+    // Tocar num nome parcialmente visível também centraliza ele, senão o toque
+    // troca a mostra mas a tira fica mostrando o nome errado.
+    nomes.forEach((n) => {
+      const centralizar = () => {
+        const li = n.parentElement;
+        if (!li || !tira.scrollWidth || tira.scrollWidth <= tira.clientWidth) return;
+        euRolei = true;
+        tira.scrollTo({ left: li.offsetLeft, behavior: "smooth" });
+        acenderPontos(n.getAttribute("data-expo"));
+        window.setTimeout(() => {
+          euRolei = false;
+        }, 500);
+      };
+      n.addEventListener("click", centralizar);
+      soltar.push(() => n.removeEventListener("click", centralizar));
+    });
+
+    acenderPontos(atual);
+  }
+
   return () => {
     soltar.forEach((f) => f());
     relogios.forEach((r) => window.clearTimeout(r));

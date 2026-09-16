@@ -14,9 +14,17 @@ export const site: ConteudoDoSite = {
   rodape: {
     lugar: "Studio Sôa · Vitória ES",
     links: [
-      // DUVIDAS #6: os endereços de Instagram e Pinterest ainda não vieram.
-      { rotulo: "Instagram", href: "#", icone: "ic-instagram" },
-      { rotulo: "Pinterest", href: "#", icone: "ic-pinterest" },
+      // Endereços confirmados pelo Pedro em 16/09/2026. Eram `#` desde 30/08.
+      {
+        rotulo: "Instagram",
+        href: "https://www.instagram.com/o.studiosoa/",
+        icone: "ic-instagram",
+      },
+      {
+        rotulo: "Pinterest",
+        href: "https://br.pinterest.com/ostudiosoa/",
+        icone: "ic-pinterest",
+      },
       {
         rotulo: "E-mail",
         href: "mailto:luiza.studiosoa@gmail.com",
@@ -27,9 +35,16 @@ export const site: ConteudoDoSite = {
 
   contato: {
     email: "luiza.studiosoa@gmail.com",
-    // DUVIDAS #2: número de trabalho a confirmar com a Luiza.
+    // DUVIDAS #2: número de trabalho a confirmar com a Luiza. A Mesa Onda é a
+    // exceção e tem número próprio, ver `pecas.ts`.
     whatsapp: "5527988338333",
   },
+
+  // Pasta com os blocos 3D das peças, para arquiteto baixar e usar em projeto.
+  // DUVIDAS #15: hoje a pasta tem um arquivo só, o da Mesa Onda, mas o botão
+  // aparece nas cinco peças a pedido do Pedro.
+  blocos3d:
+    "https://drive.google.com/drive/folders/11tLCxl2R6pOosXoJR4-p2frLt9l1OVTh?usp=sharing",
 
   loja: {
     nome: "Ozlo Home Brand",
@@ -47,9 +62,16 @@ export const site: ConteudoDoSite = {
   },
 };
 
-/** Monta o link de WhatsApp já com a mensagem escrita. */
-export function linkDeWhatsapp(mensagem: string): string {
-  return `https://wa.me/${site.contato.whatsapp}?text=${encodeURIComponent(mensagem)}`;
+/**
+ * Monta o link de WhatsApp já com a mensagem escrita.
+ *
+ * `numero` existe porque nem toda peça leva ao estúdio: a Mesa Onda foi
+ * assinada para a Dopo Studio depois do prêmio, e quem vende é lá. Sem número,
+ * cai no do estúdio.
+ */
+export function linkDeWhatsapp(mensagem: string, numero?: string): string {
+  const destino = numero ?? site.contato.whatsapp;
+  return `https://api.whatsapp.com/send?phone=${destino}&text=${encodeURIComponent(mensagem)}`;
 }
 
 /** Monta o link de e-mail já com o assunto preenchido. */

@@ -95,6 +95,18 @@ export interface Peca {
   ficha: LinhaDeFicha[];
   /** Opcional: só a Mesa Onda tem acabamentos escolhíveis. */
   acabamentos?: BlocoDeAcabamentos[];
+  /**
+   * Número de WhatsApp só desta peça, em formato internacional. Existe porque
+   * nem toda peça leva ao estúdio: a Mesa Onda foi assinada para a Dopo Studio
+   * depois do prêmio. Sem isto, cai no número do estúdio.
+   */
+  whatsapp?: string;
+  /**
+   * Bloco 3D só desta peça. Hoje ninguém usa: as cinco apontam para a pasta
+   * compartilhada em `site.blocos3d`, porque só existe um arquivo lá. Quando
+   * cada peça tiver o seu, é preencher aqui e nada mais muda.
+   */
+  bloco3d?: string;
   /** Slug da peça que aparece no rodapé desta. */
   proxima: string;
   /** Foto da peça seguinte no rodapé, com recorte próprio. */
@@ -132,4 +144,10 @@ export interface ConteudoDoSite {
     coordenada: [number, number];
     linkDoMapa: string;
   };
+  /**
+   * Pasta com os blocos 3D das peças. É o que faz a peça ser especificada:
+   * arquiteto não vai modelar a mesa do zero para ver se ela cabe no projeto.
+   * Cada peça pode ter o seu em `Peca.bloco3d`; sem isso, todas caem aqui.
+   */
+  blocos3d: string;
 }

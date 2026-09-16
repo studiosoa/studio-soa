@@ -7,7 +7,7 @@ import Imagem, { recorteDe } from "@/componentes/Imagem";
 import Galeria from "@/componentes/Galeria";
 import CartaoChamada from "@/componentes/CartaoChamada";
 import { pecas, acharPeca } from "@/conteudo/pecas";
-import { linkDeWhatsapp, linkDeEmail } from "@/conteudo/site";
+import { site, linkDeWhatsapp, linkDeEmail } from "@/conteudo/site";
 
 // Aqui está o ganho mais concreto da mudança de framework: as cinco páginas de
 // peça, que eram cinco arquivos HTML quase idênticos, viraram um molde só. Uma
@@ -98,6 +98,7 @@ export default async function PaginaDaPeca({ params }: Props) {
               className="btn btn--solid"
               href={linkDeWhatsapp(
                 `Olá! Gostaria de saber mais sobre ${peca.artigo} ${peca.nome}.`,
+                peca.whatsapp,
               )}
               target="_blank"
               rel="noopener"
@@ -110,6 +111,18 @@ export default async function PaginaDaPeca({ params }: Props) {
               href={linkDeEmail(`Dúvida sobre ${peca.artigo} ${peca.nome}`)}
             >
               <span>Tire dúvidas com o estúdio</span>
+              <span className="btn__arrow">→</span>
+            </a>
+            {/* Bloco 3D para arquiteto baixar e jogar no projeto dele. É o que
+                faz a peça ser especificada: quem desenha não vai modelar a
+                mesa do zero para ver se ela cabe no ambiente. */}
+            <a
+              className="btn btn--outline"
+              href={peca.bloco3d ?? site.blocos3d}
+              target="_blank"
+              rel="noopener"
+            >
+              <span>Acessar o bloco 3D</span>
               <span className="btn__arrow">→</span>
             </a>
           </div>

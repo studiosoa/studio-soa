@@ -104,6 +104,10 @@ export const pecas: Peca[] = [
         valores: ["Estrutura de serralheria", "Tampo em madeira maciça"],
       },
     ],
+    // A Mesa Onda foi assinada para a Dopo Studio depois do prêmio Club&Casa,
+    // e quem vende é lá: 46 é DDD de Pato Branco, no Paraná, onde foi o prêmio.
+    // Link entregue pelo Pedro em 16/09/2026.
+    whatsapp: "554699090117",
     acabamentos: ACABAMENTOS_MESA_ONDA,
     proxima: "banquinho-elis",
     fotoDaProxima: {

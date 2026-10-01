@@ -9,13 +9,18 @@ import { faixaDoCatalogo } from "@/conteudo/paginas";
 // sair da seção anterior, em vez de surgir.
 export default function FaixaCatalogo({
   semAnimacao = false,
+  href,
 }: {
   semAnimacao?: boolean;
+  /** Destino alternativo. Sem ele, vai para onde sempre foi. Existe porque a V2
+   *  precisa apontar para `/v2/pecas`, e este é o mesmo componente que as
+   *  páginas antigas usam. */
+  href?: string;
 }) {
   return (
     <Link
       className={semAnimacao ? "faixa-catalogo" : "home-faixa"}
-      href={faixaDoCatalogo.href}
+      href={href ?? faixaDoCatalogo.href}
       {...(semAnimacao ? {} : { "data-reveal": true })}
     >
       <Imagem foto={faixaDoCatalogo.foto} />

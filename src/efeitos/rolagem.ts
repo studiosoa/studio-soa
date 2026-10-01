@@ -71,7 +71,24 @@ export function ligarRolagem(): () => void {
         },
         { threshold: 0.2, rootMargin: "-25% 0px -25% 0px" },
       );
-      reveladores.forEach((el) => observador.observe(el));
+
+      // Elemento que já está na tela ao carregar a página não tem rolagem
+      // nenhuma pra "revelar". A faixa de -25%/-25% existe pra dar uma folga
+      // antes do gatilho em conteúdo mais abaixo, mas um título colado perto
+      // do topo pode nascer acima dela, e rolar pra baixo só afasta o
+      // elemento da faixa, nunca aproxima: ele fica preso em opacidade zero
+      // pra sempre. Bug real de 23/09, achado num título de celular que
+      // sumiu depois do cabeçalho móvel ter ficado mais baixo (121px para
+      // 78px) e empurrado o conteúdo pra cima o bastante pra cair fora da
+      // faixa já no primeiro quadro.
+      reveladores.forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight && r.bottom > 0) {
+          el.classList.add("is-visible");
+        } else {
+          observador.observe(el);
+        }
+      });
       desfazer.push(() => observador.disconnect());
     }
   }

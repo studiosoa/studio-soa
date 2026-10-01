@@ -10,7 +10,11 @@ import type { Peca } from "@/tipos/conteudo";
 
 const ACABAMENTOS_MESA_ONDA = [
   {
-    rotulo: "Acabamentos de serralheria",
+    // Mesma correção de ficha técnica de 20/09 ("Estrutura de serralheria em
+    // aço carbono"), agora no título do bloco de acabamentos. Pedido do Pedro
+    // em 23/09. Fica em pecas.ts, não em v2.ts, porque é dado técnico da peça,
+    // não variante de desenho: vale para as duas versões.
+    rotulo: "Acabamentos de serralheria/aço carbono",
     itens: [
       { nome: "Areia", cor: "#d9c9b3" },
       { nome: "Argila", cor: "#e07e67" },
@@ -101,7 +105,13 @@ export const pecas: Peca[] = [
       },
       {
         rotulo: "Material",
-        valores: ["Estrutura de serralheria", "Tampo em madeira maciça"],
+        // "em aço carbono" entrou na review de 20/09. É correção de ficha
+        // técnica, não variante de desenho, então vale para as duas versões: a
+        // descrição da peça já dizia aço carbono e a ficha não.
+        valores: [
+          "Estrutura de serralheria em aço carbono",
+          "Tampo em madeira maciça",
+        ],
       },
     ],
     // A Mesa Onda foi assinada para a Dopo Studio depois do prêmio Club&Casa,

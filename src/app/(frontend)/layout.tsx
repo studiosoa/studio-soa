@@ -3,6 +3,10 @@ import type { ReactNode } from "react";
 
 import Efeitos from "@/componentes/Efeitos";
 import "@/estilos/style-v2.css";
+// Camada da V2 (review de 20/09). Vem depois de propósito: ela só acrescenta, e
+// o que sobrescreve está pendurado em `.page--v2`, então as páginas antigas
+// passam por aqui sem mudar de forma. Apagar esta linha desliga a V2 inteira.
+import "@/estilos/v2.css";
 
 // Este é o layout raiz do site público. Ele mora dentro do grupo `(frontend)`
 // porque o Payload traz o layout raiz dele em `(payload)`, e o Next só aceita

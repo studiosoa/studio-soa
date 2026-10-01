@@ -1,0 +1,1012 @@
+/* Studio Sôa — camada da V2, review de 20/09/2026.
+ *
+ * Tudo aqui é estrutura: seção que entra, seção que sai, cabeçalho novo,
+ * página refeita. A aparência que vale para as duas versões (paleta, fonte,
+ * caixa dos títulos, borda das fotos) mudou no `style-v2.css`, porque foi essa
+ * a escolha do Pedro: a V1 mostra a estrutura antiga com a pele nova.
+ *
+ * Nada neste arquivo alcança as páginas antigas: ou é classe que só existe aqui,
+ * ou está pendurado em `.page--v2`. Apagar este arquivo e a pasta `app/(frontend)/v2/`
+ * devolve o site ao que era antes da review. */
+
+.page--v2 {
+  /* Altura da fileira da logo: 38 de respiro + 42 da logo + 28 de intervalo.
+     É quanto o cabeçalho sobe antes de travar, e é o que define o `top`
+     negativo logo abaixo. */
+  --altura-da-marca: 108px;
+
+  /* Altura do cabeçalho inteiro, medida no navegador e arredondada para cima.
+     O de sempre dá 168px; o da V2 dá 183, porque o botão "Arquivos 3D" tem
+     contorno e respiro próprios e engorda a barra do menu. */
+  --altura-do-cabecalho: 184px;
+
+  /* ----- os dois tamanhos de coisa clicável do site -----
+   *
+   * Levantei o site inteiro em 22/09 e achei cinco desenhos diferentes para
+   * coisas que fazem a mesma coisa, três deles criados por mim nesta semana.
+   * O pedido do Pedro foi direto: componente que se repete tem que ser igual.
+   *
+   * Existem duas famílias, e só duas:
+   *
+   * 1. AÇÃO, a classe `.btn`. Retângulo de canto vivo, texto miúdo em caixa
+   *    alta, seta à direita. É o que leva a pessoa a fazer algo: comprar, tirar
+   *    dúvida, baixar arquivo, pedir no WhatsApp, abrir o mapa, enviar o
+   *    formulário, ir ao catálogo. Tem duas peles, `--solid` e `--outline`, e
+   *    nada além disso.
+   *
+   * 2. CARTÃO, a classe `.cta-card` e os blocos da home. Quadro grande com
+   *    foto, rótulo em corpo de título e minúsculo. É navegação entre seções,
+   *    e o rótulo dele tem que ler na mesma escala do nome de peça que aparece
+   *    no quadro ao lado, senão as duas coisas brigam na mesma fileira.
+   *
+   * Os números abaixo são a fonte única dessas duas famílias. Mudar o tamanho
+   * de todo botão do site é mudar uma linha aqui. */
+
+  /* Teste pedido pelo Pedro em 23/09: botões em caixa baixa. A review de 20/09
+     tinha decidido o contrário, manter caixa alta nos botões, então isto
+     substitui aquilo e volta atrás trocando uma palavra.
+
+     Dois números mudaram junto com a caixa, e não por capricho tipográfico. O
+     corpo subiu de 10,5 para 12 porque em caixa alta toda letra tem altura
+     cheia, e em caixa baixa a maioria tem só a altura do x: o mesmo 10,5 lê
+     visivelmente menor sem as maiúsculas. E o espaçamento caiu de 2,1 para 0,6
+     porque espaço largo entre letras é recurso de caixa alta, onde elas não se
+     encaixam umas nas outras; aplicado a caixa baixa, ele desmancha a palavra.
+
+     Para julgar só a troca de caixa, com o corpo e o espaçamento de antes, é
+     devolver 10.5px e 2.1px nestas duas linhas. */
+  --btn-caixa: lowercase;
+  --btn-corpo: 12px;
+  --btn-espaco: 0.6px;
+
+  --rotulo-de-cartao: 32px;
+}
+
+/* ---------- cabeçalho: a logo rola, só a barra gruda ---------- */
+
+/* Pedido do Pedro em 22/09: "seja só a barra sem a logo em cima, a logo não
+   desce junto, desce só a barra".
+ *
+ * O truque é `sticky` com `top` negativo. O cabeçalho inteiro é um só elemento
+ * e sobe junto com a página; quando ele já subiu a altura da fileira da logo,
+ * o `top: -108px` trava ele ali. O que sobra à vista é exatamente a barra do
+ * menu, e a logo ficou para trás.
+ *
+ * Isto substitui o `position: fixed` que eu tinha usado antes, e que grudava as
+ * duas fileiras. Fixed não serve aqui porque tira o cabeçalho do fluxo, e então
+ * não existe "subir junto com a página" para começo de conversa.
+ *
+ * Tirar a classe `site-header--fixo` no `CabecalhoV2.tsx` devolve o cabeçalho
+ * que rola inteiro e não gruda em nada. */
+.page--v2 .site-header--fixo {
+  position: sticky;
+  top: calc(var(--altura-da-marca) * -1);
+  z-index: 20;
+
+  /* O vidro. A cor é o creme do site com transparência, e o desfoque é o que
+     dá a sensação de conteúdo passando por baixo: dá para ver que tem foto ali,
+     não dá para ler. `saturate` compensa a lavada que o blur dá na cor.
+   *
+   * Sem `-webkit-backdrop-filter` escrito à mão, de propósito. Eu tinha posto os
+   * dois, e o minificador do build juntou as duas declarações e ficou só com a
+   * versão com prefixo, que é justamente a que o `getComputedStyle` não lê: o
+   * desfoque sumia sem nenhum erro aparecer em lugar nenhum. Escrevendo só a
+   * forma padrão, quem gera o prefixo é o build, conforme os navegadores alvo. */
+  background: color-mix(in srgb, var(--cream) 65%, transparent);
+  backdrop-filter: blur(18px) saturate(1.25);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+}
+
+/* Onde o navegador não tem `backdrop-filter`, o vidro vira creme opaco. Sem
+   isto o menu ficaria ilegível por cima da foto. */
+@supports not (backdrop-filter: blur(4px)) {
+  .page--v2 .site-header--fixo {
+    background: var(--cream);
+  }
+}
+
+/* A linha fina entre a logo e o menu também entra no vidro: opaca, ela cortaria
+   a foto embaixo com um traço cheio. */
+.page--v2 .site-header--fixo .site-nav {
+  border-top: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+}
+
+/* O botão "Arquivos 3D" fecha o que o contrato chamava de "Blocos 3D" e ninguém
+   sabia o que era desde 03/08: não é página, é um atalho para fora. O contorno
+   avisa que ele faz outra coisa que os itens ao lado.
+ *
+ * Canto vivo, e não a cápsula arredondada que eu tinha posto: o site inteiro não
+ * tem um canto redondo em lugar nenhum, fora as setas, que são círculos de
+ * propósito. Era o único elemento com raio, e chamava atenção pelo motivo
+ * errado. O contorno é o mesmo do `.btn--outline`, para o olho reconhecer a
+ * mesma família. */
+.page--v2 .site-nav__botao {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 15px;
+  border: 1px solid var(--outline-border);
+  white-space: nowrap;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.page--v2 .site-nav__botao:hover {
+  background: color-mix(in srgb, var(--brown) 8%, transparent);
+  border-color: var(--brown);
+}
+
+/* O menu da V2 tem mais itens que o antigo, então o intervalo de 80px entre
+   eles faria a barra estourar a largura antes da hora. */
+.page--v2 .site-nav__list {
+  gap: 18px 44px;
+  align-items: center;
+}
+
+/* O cabeçalho agora ocupa lugar no fluxo, então o miolo já nasce embaixo dele e
+   não precisa de respiro reservado. A home é a exceção: lá a foto do topo sobe
+   por baixo do cabeçalho, de propósito, e é o vidro que mantém o menu legível
+   por cima dela. */
+.page--v2.page--sobreposto main {
+  margin-top: calc(var(--altura-do-cabecalho) * -1);
+}
+
+/* O sanduíche e a gaveta só existem em tela estreita. Acima de 1000px o botão
+   some e a gaveta nunca abre, mesmo que o estado em React continue existindo. */
+.page--v2 .site-header__sanduiche {
+  display: none;
+}
+
+@media (max-width: 1000px) {
+  .page--v2 {
+    /* Medido a 390px depois da mudança de 23/09: o sanduíche saiu de uma
+       fileira própria embaixo da logo (onde o Pedro achou "feio, centralizado")
+       e foi para dentro da fileira da logo, à esquerda dela. Sem fileira
+       própria, não sobra mais nada para "encolher" no scroll: o cabeçalho
+       vira uma coisa só, e é ela inteira que gruda no topo. Ver `top: 0` mais
+       abaixo, que substitui o `--altura-da-marca` negativo do desktop. */
+    --altura-do-cabecalho: 78px;
+  }
+
+  /* Em tela estreita o cabeçalho de sempre chega a 177px porque o menu quebra em
+     duas linhas, e o da V2 tem mais itens ainda. A saída de 22/09 (barra que
+     corre de lado com um `mask` desbotando a borda) foi trocada em 23/09: o
+     Pedro viu "Onde encontrar" cortado na tela e achou confuso adivinhar que
+     dava para arrastar. A barra de itens some inteira e vira um sanduíche,
+     que abre a gaveta com o mesmo menu na vertical. */
+  .page--v2 .site-header--fixo {
+    padding-top: 17px;
+    padding-bottom: 16px;
+
+    /* Sem a barra por baixo, não existe mais "logo que sobe e desaparece,
+       barra que fica": o cabeçalho inteiro é uma fileira só, compacta, e é
+       ela que deve ficar visível o tempo todo, senão o sanduíche some da
+       tela ao rolar e não sobra jeito de abrir o menu sem voltar ao topo. */
+    top: 0;
+  }
+
+  .page--v2 .site-header--fixo .site-header__brand {
+    /* Três colunas: sanduíche, logo, e uma célula vazia do mesmo tamanho da
+       primeira. A terceira existe só para a logo ficar óptica no centro,
+       compensando o peso do botão à esquerda; em telas largas esta regra
+       nem entra e a fileira volta a ser só a logo sozinha, centralizada
+       pelo `justify-content` do CSS de sempre. */
+    display: grid;
+    grid-template-columns: 44px 1fr 44px;
+    align-items: center;
+  }
+
+  .page--v2 .site-header--fixo .site-header__brand a {
+    justify-self: center;
+  }
+
+  .page--v2 .site-header--fixo .site-header__logo {
+    height: 30px;
+  }
+
+  .page--v2 .site-header--fixo .site-nav {
+    display: none;
+  }
+
+  .page--v2 .site-header__sanduiche {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    justify-self: start;
+  }
+
+  .page--v2 .site-header__sanduiche span {
+    width: 22px;
+    height: 1.5px;
+    background: var(--brown-dark);
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  /* As três barras viram um X quando a gaveta está aberta: a do meio some, as
+     de fora giram até se cruzar no lugar dela. */
+  .page--v2 .site-header__sanduiche[aria-expanded="true"] span:nth-child(1) {
+    transform: translateY(6.5px) rotate(45deg);
+  }
+
+  .page--v2 .site-header__sanduiche[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .page--v2 .site-header__sanduiche[aria-expanded="true"] span:nth-child(3) {
+    transform: translateY(-6.5px) rotate(-45deg);
+  }
+
+  /* Em tela estreita o `site-header--over` do CSS antigo vira estático e opaco,
+     o que desligaria o grude justo onde ele foi pedido. */
+  .page--v2 .site-header--fixo.site-header--over {
+    position: sticky;
+    top: 0;
+  }
+}
+
+/* ---------- gaveta do menu (celular) ---------- */
+
+/* `position: fixed` mora fora do `@media`, sempre presente: assim a gaveta
+   nunca participa do fluxo do cabeçalho, nem em tela larga onde `display` vira
+   `none`. Cobre a tela inteira: metade é o véu que fecha ao tocar fora, a outra
+   é o painel com o menu, que desliza por cima dele. */
+.page--v2 .menu-gaveta {
+  display: none;
+}
+
+@media (max-width: 1000px) {
+  .page--v2 .menu-gaveta {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    background: color-mix(in srgb, var(--brown-dark) 55%, transparent);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+  }
+
+  .page--v2 .menu-gaveta--aberta {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease;
+  }
+
+  /* O painel é sempre o estado fechado por padrão (fora da tela à esquerda). É
+     o React que liga `menu-gaveta--aberta`; sem JS o botão nem existe função,
+     então não há cenário em que o painel devesse estar visível sem a classe. */
+  .page--v2 .menu-gaveta__painel {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: min(78vw, 320px);
+    height: 100%;
+    background: var(--cream);
+    border-right: 1px solid var(--border);
+    padding: 96px 32px 40px;
+    box-sizing: border-box;
+    transform: translateX(-100%);
+    transition: transform 0.35s cubic-bezier(0.65, 0, 0.35, 1);
+    overflow-y: auto;
+  }
+
+  .page--v2 .menu-gaveta--aberta .menu-gaveta__painel {
+    transform: translateX(0);
+  }
+
+  .page--v2 .menu-gaveta__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .page--v2 .menu-gaveta__list a {
+    display: inline-block;
+    font-size: 17px;
+    font-weight: 300;
+    letter-spacing: 1.2px;
+    color: var(--brown-dark);
+  }
+
+  .page--v2 .menu-gaveta__list a.is-ativo {
+    font-weight: 700;
+  }
+
+  .page--v2 .menu-gaveta__list .site-nav__botao {
+    padding: 9px 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page--v2 .menu-gaveta,
+  .page--v2 .menu-gaveta__painel {
+    transition: none !important;
+  }
+}
+
+/* ---------- rodapé ---------- */
+
+/* Ícones sem o nome ao lado. O `gap` do rodapé antigo foi pensado para blocos
+   com texto; só com símbolo, ele deixa os quatro longe demais uns dos outros. */
+.page--v2 .site-footer__links--icones {
+  gap: 22px;
+}
+
+.page--v2 .site-footer__links--icones a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+}
+
+/* ---------- home ---------- */
+
+/* As três peças lado a lado e encostadas. Sem intervalo entre elas: a review
+   pediu assim, e é o que faz as três lerem como uma faixa só em vez de três
+   cartões soltos. A proporção é a mesma dos quadros do catálogo, para a home e
+   a página de peças falarem a mesma língua. */
+.page--v2 .home-pecas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  padding: 0 var(--side-narrow);
+  /* Respiro entre a foto do topo e a fileira de peças, pedido em 22/09. Sem ele
+     a fileira encostava na foto e as duas liam como um bloco só. */
+  margin-top: 90px;
+}
+
+/* A porta para o catálogo, embaixo das três peças. */
+.page--v2 .home-mais {
+  display: flex;
+  justify-content: center;
+  padding: 0 var(--side-narrow);
+  margin-top: 40px;
+}
+
+.page--v2 .home-pecas__item {
+  position: relative;
+  display: block;
+  aspect-ratio: 430 / 560;
+  overflow: hidden;
+  background: var(--tile-empty);
+}
+
+.page--v2 .home-pecas__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.page--v2 .home-pecas__item:hover img {
+  transform: scale(1.04);
+}
+
+.page--v2 .home-pecas__item:hover .photo-overlay,
+.page--v2 .home-pecas__item:focus-visible .photo-overlay {
+  opacity: 1;
+}
+
+/* Os três blocos que fecham a página, no lugar da faixa única do catálogo.
+   Colados, sem borda e sem espaço, a pedido dela. O rótulo fica sempre visível,
+   e não só no hover: são navegação, não decoração, e num celular não existe
+   hover para revelar nada. */
+.page--v2 .blocos-nav {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin: 90px 0 0;
+
+  /* Mesma largura e mesma proporção da fileira de peças lá em cima, pedido do
+     Pedro em 22/09: eles estavam menores e mais achatados que os quadros das
+     peças, e as duas fileiras da mesma página liam como coisas de projetos
+     diferentes. Agora só o conteúdo muda de uma para a outra.
+
+     Isto continua não sendo de ponta a ponta: o `--side-narrow` recua da borda,
+     igual às peças. O que mudou foi o `max-width` de 1280, que era um recuo a
+     mais e só nesta fileira. */
+  padding: 0 var(--side-narrow);
+}
+
+.page--v2 .blocos-nav__item {
+  position: relative;
+  display: block;
+  aspect-ratio: 430 / 560;
+  overflow: hidden;
+  background: var(--tile-empty);
+}
+
+.page--v2 .blocos-nav__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.page--v2 .blocos-nav__item:hover img {
+  transform: scale(1.04);
+}
+
+.page--v2 .blocos-nav__rotulo {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(70, 44, 18, 0.28);
+  color: var(--cream);
+  font-family: var(--font-display);
+  /* O corpo vem do token, na seção "família CARTÃO" lá embaixo. */
+  letter-spacing: 0.5px;
+  text-transform: lowercase;
+  transition: background 0.3s ease;
+}
+
+.page--v2 .blocos-nav__item:hover .blocos-nav__rotulo,
+.page--v2 .blocos-nav__item:focus-visible .blocos-nav__rotulo {
+  background: rgba(70, 44, 18, 0.45);
+}
+
+@media (max-width: 1000px) {
+  /* No celular as peças continuam aparecendo, empilhadas, e não escondidas:
+     escolha do Pedro em 22/09, contra a leitura do TLDV de deixar só a foto e o
+     manifesto. Quem entra pelo telefone vê o catálogo inteiro rolando. */
+  .page--v2 .home-pecas {
+    grid-template-columns: 1fr;
+  }
+
+  .page--v2 .home-pecas__item {
+    aspect-ratio: 3 / 2;
+  }
+
+  .page--v2 .blocos-nav {
+    grid-template-columns: 1fr;
+    margin-top: 56px;
+  }
+
+  /* No celular os três empilham, e aí a proporção retrato das peças daria uma
+     coluna longa demais para três blocos que são só navegação. Aqui eles
+     acompanham a proporção que as peças também assumem em tela estreita. */
+  .page--v2 .blocos-nav__item {
+    aspect-ratio: 3 / 2;
+  }
+}
+
+/* ---------- Sobre ---------- */
+
+/* O teste de branco cru que ela pediu, num bloco só. Sem token novo: é o branco
+   puro mesmo, escrito aqui, e o resto do site continua no creme. Tirar a classe
+   `sobre-studio--branco` do `sobre/page.tsx` devolve o creme. */
+.page--v2 .sobre-studio--branco {
+  background: #fff;
+}
+
+/* ---------- Onde encontrar ---------- */
+
+/* O mapa saiu e a foto da loja entra no lugar dele, à esquerda: a seção volta a
+   ser duas colunas, como era, e o texto para de ocupar a página inteira. */
+.page--v2 .onde--v2 {
+  display: flex;
+  align-items: flex-start;
+  gap: 6.5%;
+  padding-top: 70px;
+}
+
+.page--v2 .onde--v2 .onde__conteudo {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 560px;
+}
+
+/* O quadro reservado para a foto da loja, que ainda depende da Luiza. Fica
+   assumidamente vazio, com o rótulo dentro: um quadro cinza e mudo pareceria
+   defeito de carregamento, e uma foto emprestada pareceria a loja de verdade. */
+.page--v2 .onde__foto {
+  flex: 0 0 38%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--tile-empty);
+}
+
+.page--v2 .onde__foto--vazia {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--outline-border);
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: 1.4px;
+}
+
+/* Atendimento do estúdio: vem antes da loja e é o bloco com mais peso, porque
+   é onde a compra acontece. O café de fundo separa ele do endereço da Ozlo sem
+   precisar de linha divisória. */
+.page--v2 .onde-atendimento {
+  margin: 34px 0 0;
+  padding: 34px;
+  background: var(--brown);
+  color: var(--cream);
+}
+
+/* O rótulo que nomeia o caminho principal. Ele é o que faz a hierarquia
+   aparecer sem depender de a pessoa ler os dois blocos inteiros para descobrir
+   qual é qual. */
+.page--v2 .onde-atendimento__rotulo {
+  margin: 0 0 14px;
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 1.25;
+  text-transform: lowercase;
+}
+
+.page--v2 .onde-atendimento__texto {
+  margin: 0 0 24px;
+  font-size: 17px;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* O botão sólido do site é café sobre creme. Aqui o fundo já é café, então ele
+   se inverte para não sumir dentro do próprio bloco. */
+.page--v2 .onde-atendimento .btn--solid {
+  background: var(--cream);
+  color: var(--brown);
+}
+
+.page--v2 .onde-atendimento__reforco {
+  margin: 22px 0 0;
+  font-size: 15px;
+  line-height: 1.6;
+  opacity: 0.85;
+}
+
+.page--v2 .onde-loja {
+  margin-top: 40px;
+}
+
+/* A loja entra como alternativa, não como igual: rótulo menor, sem fundo, sem
+   botão sólido. A diferença de peso entre os dois blocos é o que diz, sem
+   escrever, qual dos dois caminhos o estúdio prefere. */
+.page--v2 .onde-loja__rotulo {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: 1.6px;
+}
+
+.page--v2 .onde-loja__aviso {
+  margin: 0 0 22px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+@media (max-width: 700px) {
+  /* No celular a Onde encontrar é só texto, como o direcionamento pediu: sem
+     mapa e sem a foto da loja. Numa tela estreita a foto empurraria o endereço
+     e o botão de pedido para baixo da dobra, e quem abre esta página no
+     telefone quase sempre está a caminho ou querendo falar com o estúdio. */
+  .page--v2 .onde--v2 {
+    display: block;
+    padding-top: 40px;
+  }
+
+  .page--v2 .onde__foto {
+    display: none;
+  }
+
+  .page--v2 .onde-atendimento {
+    padding: 26px 22px;
+  }
+}
+
+/* ---------- Exposições ---------- */
+
+/* A página refeita: fundo claro, grade de quadrados, no estilo do catálogo.
+   Nada aqui usa `.page--exposicoes`, que é o modificador que pinta a página
+   antiga de marrom e inverte a logo. Aquelas regras continuam no
+   `style-v2.css` porque a página antiga ainda está no ar. */
+.page--v2 .expo-grade {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 70px var(--side-narrow) 90px;
+}
+
+.page--v2 .expo-grade__titulo {
+  margin: 0 0 40px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(30px, 3vw, 42px);
+  line-height: 1.15;
+  text-transform: lowercase;
+}
+
+.page--v2 .expo-grade__lista {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+}
+
+.page--v2 .expo-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+/* O quadro de cada mostra, na mesma proporção em pé dos quadros de peça da
+   home: as duas grades do site passam a ter o mesmo formato.
+ *
+ * As setas ficavam escondidas, e trocar de foto exigia abrir a tela cheia. O
+ * Pedro pediu para dar para trocar sem precisar do zoom, então elas voltaram a
+ * aparecer aqui dentro. O deslize de uma foto para a outra é o mesmo do
+ * carrossel das peças, já escrito no `efeitos/galeria.ts`: aqui só mudou o
+ * tamanho das setas e o fato de existirem.
+ *
+ * Clicar na foto continua abrindo a tela cheia. As setas não abrem, porque são
+ * irmãs do trilho e não filhas dele: o clique nelas nunca chega ao trilho. */
+.page--v2 .expo-card__foto {
+  position: relative;
+
+  /* Mesma proporção dos quadros de peça da home, pedido do Pedro em 22/09.
+   *
+   * Uma consequência que vale saber antes de mexer neste número: as dez fotos de
+   * exposição são 1300x1191, deitadas. Num quadro em pé o `cover` encaixa pela
+   * altura e corta os LADOS, e some a folga vertical. Ou seja, daqui em diante
+   * `object-position` no eixo Y não tem efeito nenhum nestes quadros, e subir ou
+   * descer o enquadramento de uma mostra passa a ser escolher outra foto. */
+  aspect-ratio: 430 / 560;
+
+  overflow: hidden;
+  background: var(--tile-empty);
+  cursor: zoom-in;
+}
+
+.page--v2 .expo-card__foto .slider__track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.page--v2 .expo-card__foto .slider__slide {
+  flex: 0 0 100%;
+  height: 100%;
+}
+
+.page--v2 .expo-card__foto .slider__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* O zoom no hover saiu daqui. Ele fazia sentido quando o quadro era só um
+   atalho para a tela cheia; agora que as setas moram dentro dele, a foto
+   crescendo por baixo das setas embaralha os dois gestos. */
+
+/* Setas menores que as da página de peça, porque o quadro é menor. Ficam
+   discretas paradas e acendem quando o mouse entra no quadro, como as de lá. */
+.page--v2 .expo-card__foto .gallery__arrow {
+  width: 32px;
+  height: 32px;
+  font-size: 17px;
+  opacity: 0;
+}
+
+.page--v2 .expo-card__foto:hover .gallery__arrow,
+.page--v2 .expo-card__foto:focus-within .gallery__arrow {
+  opacity: 0.85;
+}
+
+.page--v2 .expo-card__foto .gallery__arrow--prev {
+  left: 10px;
+}
+
+.page--v2 .expo-card__foto .gallery__arrow--next {
+  right: 10px;
+}
+
+/* Onde não existe passar o mouse, seta que só aparece no hover é seta que não
+   existe. As duas regras abaixo cobrem isso por caminhos diferentes de
+   propósito: a primeira pega qualquer aparelho de toque, inclusive notebook com
+   tela sensível em tela larga; a segunda pega tela estreita, e é a única que eu
+   consigo conferir aqui, porque o navegador sem tela responde `hover: hover`
+   mesmo emulando celular. Sem a segunda, eu estaria entregando no escuro. */
+@media (hover: none) {
+  .page--v2 .expo-card__foto .gallery__arrow {
+    opacity: 0.85;
+  }
+}
+
+@media (max-width: 700px) {
+  .page--v2 .expo-card__foto .gallery__arrow {
+    opacity: 0.85;
+  }
+}
+
+.page--v2 .expo-card__nome {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 1.3;
+  text-transform: lowercase;
+}
+
+.page--v2 .expo-card__dados {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  letter-spacing: 0.4px;
+}
+
+@media (max-width: 1100px) {
+  .page--v2 .expo-grade__lista {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  /* No celular a grade vira a tira que corre de lado, o mesmo gesto da página
+     antiga, que o Pedro já conferiu no aparelho em 16/09. `scroll-padding-left`
+     está aqui porque `scroll-snap-align: start` ignora o padding do contêiner e
+     encostaria o primeiro quadro na borda, desalinhado do título. */
+  .page--v2 .expo-grade__lista {
+    display: flex;
+    grid-template-columns: none;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: var(--side-narrow);
+    margin: 0 calc(var(--side-narrow) * -1);
+    padding: 0 var(--side-narrow);
+    scrollbar-width: none;
+  }
+
+  .page--v2 .expo-grade__lista::-webkit-scrollbar {
+    display: none;
+  }
+
+  .page--v2 .expo-card {
+    flex: 0 0 calc(100% - 52px);
+    scroll-snap-align: start;
+  }
+}
+
+/* ---------- família CARTÃO: o rótulo dos quadros de navegação ---------- */
+
+/* Um desenho só para todo quadro que leva a outra seção, seja no fim do
+   catálogo, no fim da página de peça ou na fileira que fecha a home.
+ *
+ * Eu tinha quebrado isso. O texto do cartão foi desenhado para "CONHEÇA O NOSSO
+ * CATÁLOGO", uma frase de três linhas em corpo 18. Quando virou "Mais peças",
+ * duas palavras, sobrava um pedacinho de texto miúdo boiando num quadro grande
+ * do lado de um nome de peça em corpo 32. Aumentei, mas escrevi a regra presa a
+ * `.related__item`, então consertei a página de peça e deixei o catálogo com o
+ * desenho velho: mesmo componente, dois tamanhos, exatamente o que o Pedro
+ * apontou em 22/09.
+ *
+ * Agora vale em toda parte, e o tamanho sai do token. O motivo do tamanho não é
+ * gosto: esses quadros dividem fileira com quadros de peça, cujo nome sai em 30
+ * ou 32. Rótulo menor que isso não lê como par, lê como legenda perdida. */
+.page--v2 .cta-card__text {
+  width: auto;
+  max-width: 80%;
+  font-family: var(--font-display);
+  font-size: var(--rotulo-de-cartao);
+  line-height: 1.2;
+  text-transform: lowercase;
+}
+
+/* O rótulo dos blocos da home é a mesma coisa, então usa o mesmo número. Antes
+   era um `clamp` que dava 28.8, perto mas não igual, e "perto" é como a
+   diferença nasce. */
+.page--v2 .blocos-nav__rotulo {
+  font-size: var(--rotulo-de-cartao);
+}
+
+@media (max-width: 700px) {
+  .page--v2 {
+    --rotulo-de-cartao: 24px;
+  }
+}
+
+/* ---------- Contato ---------- */
+
+/* Nada aqui, de propósito.
+ *
+ * Eu tinha centralizado o conjunto foto + texto, porque medi 51px de sobra de um
+ * lado contra 260 do outro e li aquilo como defeito. O Pedro comparou as duas
+ * versões e mandou voltar: a assimetria era escolha, e a folga maior à direita
+ * dá respiro ao texto no fim da linha, no sentido da leitura. Centralizado, o
+ * bloco ficava apertado dos dois lados e o alinhamento com o resto do site se
+ * perdia.
+ *
+ * Fica escrito porque a medida continua verdadeira e não quer dizer nada: estar
+ * fora do centro geométrico não é erro por si. */
+
+/* ---------- família AÇÃO: o botão, e só ele ---------- */
+
+/* O `.btn` já existia e estava consistente onde era usado. O que faltava era
+   ele ser usado em tudo que é ação. Estas regras acertam os três lugares que
+   tinham desenho próprio.
+ *
+ * Os tamanhos vêm dos tokens no topo, então mudar o botão do site inteiro passa
+ * a ser mudar um número lá, e não caçar seis regras espalhadas. */
+.page--v2 .btn,
+.page--v2 .contato__redes a {
+  font-size: var(--btn-corpo);
+  letter-spacing: var(--btn-espaco);
+  text-transform: var(--btn-caixa);
+}
+
+/* Na home o botão é solto no meio da página, não empilhado numa coluna estreita
+   como na ficha da peça. Sem uma largura mínima, o `space-between` do `.btn`
+   cola o texto na seta. */
+.page--v2 .home-mais .btn {
+  min-width: 300px;
+}
+
+/* Os botões de rede no Contato tinham a tipografia certa e a caixa errada: 15px
+   de respiro contra 20 do `.btn--outline`, o que dava dois botões de contorno
+   com alturas diferentes na mesma página. Mesma família, mesma caixa. */
+.page--v2 .contato__redes a {
+  padding: 20px 24px;
+}
+
+/* O botão cheio sobre o bloco café da Onde encontrar se inverte para não sumir
+   dentro do próprio fundo. É variação de contexto, não um botão novo: mesma
+   tipografia, mesma caixa, mesma seta, só as cores trocadas. */
+.page--v2 .onde-atendimento .btn--solid {
+  background: var(--cream);
+  color: var(--brown);
+}
+
+/* O botão cheio e o de contorno ficavam com alturas diferentes: 51 contra 55,
+   medidos. A causa é boba e antiga: o de contorno tem 20px de respiro mais 1px
+   de traço de cada lado, o cheio tem 19 e nenhum traço. Nunca incomodou porque
+   eles raramente se encontravam; na ficha da peça agora são três empilhados, um
+   cheio e dois de contorno, e a diferença aparece na hora.
+
+   21 de respiro no cheio dá exatamente os mesmos 42px de caixa que o outro. */
+.page--v2 .btn--solid {
+  padding: 21px 25px;
+}
+
+/* ---------- menu: engorda no hover sem empurrar os vizinhos ---------- */
+
+/* Pedido do Pedro em 23/09: passar o mouse (e clicar) engrossa a fonte do item.
+ *
+ * Apliquei a todos os itens, não só ao botão "Arquivos 3D" que ele citou. O
+ * menu não tinha estado de hover nenhum até agora, então um item que reage e
+ * cinco que não reagem seria a mesma inconsistência que ele acabou de mandar
+ * parar de criar. Se a intenção era só o botão, é trocar o seletor.
+ *
+ * A DM Sans é fonte variável de 100 a 1000, então o peso anda de verdade em vez
+ * de saltar. O `font-variation-settings` é o que aceita transição; `font-weight`
+ * sozinho salta em vários navegadores.
+ *
+ * O problema real não é engrossar, é que texto em negrito ocupa mais largura e
+ * empurraria "Contato" para o lado a cada passada de mouse. A solução é a cópia
+ * invisível: o item vira uma grade de uma célula só, e dentro dela ficam o texto
+ * visível e um clone em negrito, um por cima do outro. A célula nasce com a
+ * largura do mais gordo, então nada se move quando o visível engorda. É de onde
+ * vem o `data-texto` no `CabecalhoV2.tsx`. */
+.page--v2 .site-nav__list a {
+  display: inline-grid;
+  font-variation-settings: "wght" 300;
+  transition: font-variation-settings 0.25s ease;
+}
+
+.page--v2 .site-nav__list a > span,
+.page--v2 .site-nav__list a::after {
+  grid-area: 1 / 1;
+}
+
+.page--v2 .site-nav__list a::after {
+  content: attr(data-texto);
+  font-variation-settings: "wght" 700;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.page--v2 .site-nav__list a:hover,
+.page--v2 .site-nav__list a:focus-visible,
+.page--v2 .site-nav__list a:active,
+.page--v2 .site-nav__list a.is-ativo {
+  font-variation-settings: "wght" 700;
+}
+
+/* O botão tem contorno e respiro próprios, então a grade precisa ficar
+   centralizada dentro dele. */
+.page--v2 .site-nav__botao {
+  justify-items: center;
+  align-items: center;
+}
+
+/* Quem pediu menos movimento no sistema recebe o negrito, mas sem a caminhada
+   entre os pesos. */
+@media (prefers-reduced-motion: reduce) {
+  .page--v2 .site-nav__list a {
+    transition: none;
+  }
+}
+
+/* ---------- catálogo: fotos encostadas, sem o respiro creme entre elas ---------- */
+
+/* Pedido do Pedro em 23/09, depois de ver print com as bordas cremes entre os
+   quadros. Medi antes de mexer: a cor da borda já estava transparente desde a
+   review de 20/09 ("sem borda nas fotos do catálogo"), então a moldura visível
+   no print não vinha da COR, vinha do `gap: 25px` da grade mais os 2px de
+   largura do próprio traço transparente, que ainda ocupam espaço mesmo
+   invisíveis. Zerando os dois, os quadros encostam de verdade, do jeito que a
+   fileira de peças da home já está desde ontem.
+ *
+ * Só na V2: a V1 mantém o respiro de 25px como estava, para a comparação
+ * continuar valendo. */
+.page--v2 .catalogo {
+  gap: 0;
+}
+
+.page--v2 .catalogo__item {
+  border: 0;
+}
+
+/* ---------- família H1: um título de página pesa igual em qualquer página ---------- */
+
+/* Pedido do Pedro em 23/09: "criadora e designer" parecia em negrito comparada a "O
+   studio", e ele pediu a mesma padronização que os botões ganharam ontem, agora pra
+   título e texto corrido.
+ *
+ * Medido antes de mexer, e o peso nunca foi o problema: os dois já computavam
+ * font-weight 400 idênticos. O "bold" que ele via era outra coisa, `.perfil__nome`
+ * nunca teve cor própria e herdava a do parágrafo do bio ao lado (`.perfil__texto`),
+ * pensada pra amaciar texto corrido longo contra o fundo escuro: rgba(..., 0.76) em vez
+ * do `--cream-2` sólido que todo outro título claro-sobre-escuro do site usa
+ * (`.hero__title`, `.home-cta`, `.photo-overlay__name`). Texto claro semi-transparente
+ * sobre fundo escuro ganha um halo que o olho lê como traço mais grosso, mesmo sendo o
+ * mesmo peso.
+ *
+ * Aproveitei pra fechar uma rachadura menor que a auditoria dos cinco títulos de página
+ * (Sobre x2, Onde encontrar, Contato, Exposições) trouxe à tona: duas fórmulas de clamp
+ * quase iguais, `2.92vw` numa dupla e `3vw` nas outras três, prováveis de terem nascido
+ * em dias diferentes. A 1440px as duas resolvem no mesmo 42px, por isso nunca apareceu;
+ * numa largura de tablet ficariam 1px diferentes. Viram uma só.
+ *
+ * "Texto corrido" eu conferi e não mexi: os 16px/peso 300 de todo parágrafo do site já
+ * vêm herdados do `body`, uma declaração só, não cinco repetidas. Já estava padronizado. */
+.page--v2 .sobre-studio__titulo,
+.page--v2 .perfil__nome,
+.page--v2 .onde__titulo,
+.page--v2 .contato__titulo,
+.page--v2 .expo-grade__titulo {
+  font-size: clamp(30px, 3vw, 42px);
+}
+
+/* "Criadora e designer" é o único título do site que aparece claro sobre fundo
+   escuro, e por isso é o único que precisa de compensação óptica.
+ *
+ * Errei a primeira tentativa: o Pedro pediu "sem ser em bold" e eu mexi na
+ * OPACIDADE, deixando o título mais forte em vez de mais leve. A queixa seguinte
+ * foi que tinha ficado completamente diferente, e ele estava certo: eu tinha
+ * empurrado para o lado contrário do pedido.
+ *
+ * O peso computado sempre foi 400 nos dois títulos, e a largura pintada bate
+ * (17,5 contra 17,8 por caractere, diferença que vem só das letras serem
+ * outras). Não havia bug de tamanho. O que existe é irradiação: texto claro
+ * sobre fundo escuro engorda aos olhos, e 400 ali lê mais pesado que 400 escuro
+ * sobre claro. A correção é tipográfica, não de bug: baixar o peso real para
+ * que o peso PERCEBIDO empate com o do "o studio". */
+.page--v2 .perfil__nome {
+  color: var(--cream-2);
+  font-weight: 300;
+}

@@ -11,6 +11,35 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
   },
+
+  // Desde 01/10 a V2 é o que /, /sobre, /pecas etc. servem (ver os `page.tsx`
+  // dessas pastas, que viraram reexportação de `v2/*`). Quem ainda tiver um
+  // link ou favorito em /v2/algo cai no endereço limpo correspondente.
+  // `permanent: false` de propósito: ainda dá pra desfazer essa decisão sem
+  // brigar com cache de navegador por redirecionamento permanente.
+  async redirects() {
+    return [
+      { source: "/v2", destination: "/", permanent: false },
+      { source: "/v2/sobre", destination: "/sobre", permanent: false },
+      { source: "/v2/pecas", destination: "/pecas", permanent: false },
+      {
+        source: "/v2/pecas/:slug",
+        destination: "/pecas/:slug",
+        permanent: false,
+      },
+      {
+        source: "/v2/exposicoes",
+        destination: "/exposicoes",
+        permanent: false,
+      },
+      {
+        source: "/v2/onde-encontrar",
+        destination: "/onde-encontrar",
+        permanent: false,
+      },
+      { source: "/v2/contato", destination: "/contato", permanent: false },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -21,22 +21,26 @@ export interface ItemDeMenu {
   externo?: boolean;
 }
 
-/* Menu novo: Peças, Sobre, Exposições, Onde encontrar, Arquivos 3D e Contato.
+/* Menu novo: Peças, Sobre, Exposições, Onde encontrar, Contato e Arquivos 3D.
    A ordem mudou (Exposições subiu para antes de Onde encontrar) e "Arquivos 3D"
    fecha uma pendência aberta desde 03/08: o contrato listava "Blocos 3D" como
-   seção e ninguém sabia o que era. É um botão que leva à pasta do Drive. */
+   seção e ninguém sabia o que era. É um botão que leva à pasta do Drive.
+
+   Na revisão de 14/10 a Luiza pediu para trocar "Arquivos 3D" e "Contato" de
+   lugar: o botão que sai do site vai para o fim da fila, e as páginas do
+   próprio site ficam juntas. */
 export const menuV2: ItemDeMenu[] = [
-  { rotulo: "Peças", href: "/v2/pecas" },
-  { rotulo: "Sobre", href: "/v2/sobre" },
-  { rotulo: "Exposições", href: "/v2/exposicoes" },
-  { rotulo: "Onde encontrar", href: "/v2/onde-encontrar" },
+  { rotulo: "Peças", href: "/pecas" },
+  { rotulo: "Sobre", href: "/sobre" },
+  { rotulo: "Exposições", href: "/exposicoes" },
+  { rotulo: "Onde encontrar", href: "/onde-encontrar" },
+  { rotulo: "Contato", href: "/contato" },
   {
     rotulo: "Arquivos 3D",
     href: "https://drive.google.com/drive/folders/11tLCxl2R6pOosXoJR4-p2frLt9l1OVTh?usp=sharing",
     botao: true,
     externo: true,
   },
-  { rotulo: "Contato", href: "/v2/contato" },
 ];
 
 /* Rodapé: "Brasil" no lugar de "Vitória ES", a pedido dela. O endereço da loja
@@ -148,7 +152,7 @@ export const fotosDoBlocoDePecas: Foto[] = pecas
 export const blocosDaHomeV2: { rotulo: string; href: string; foto: Foto }[] = [
   {
     rotulo: "Peças",
-    href: "/v2/pecas",
+    href: "/pecas",
     // Serve só de imagem de partida pro servidor renderizar antes do sorteio
     // do lado do cliente (ver `BlocosDaHome.tsx`); ela nunca fica na tela
     // depois que a página termina de carregar.
@@ -156,7 +160,7 @@ export const blocosDaHomeV2: { rotulo: string; href: string; foto: Foto }[] = [
   },
   {
     rotulo: "Sobre",
-    href: "/v2/sobre",
+    href: "/sobre",
     // A Luiza sentada com as peças em volta, escolhida pelo Pedro em 22/09
     // (`11052025-_MG_0981.jpg` dos editados). O bloco leva à página do estúdio,
     // que fala da designer e do trabalho juntos, então a foto precisa mostrar os
@@ -169,14 +173,16 @@ export const blocosDaHomeV2: { rotulo: string; href: string; foto: Foto }[] = [
   },
   {
     rotulo: "Exposições",
-    href: "/v2/exposicoes",
-    // Era a `design-week-1`, a do painel com sombra dura, que o Pedro apontou em
-    // 22/09 como foto de luz ruim. Trocada junto com a da página de Exposições,
-    // para as duas não mostrarem coisas diferentes da mesma mostra.
+    href: "/exposicoes",
+    // Revisão de 14/10: a Luiza mandou uma foto nova para este bloco, a Mesa
+    // Onda verde diante do sofá curvo, e disse para manter as outras duas. Antes
+    // era a `design-week-2` (estande com três peças). O recorte vem dela, já
+    // em pé; só o horizontal é ajustado aqui, para a faixa de madeira da borda
+    // esquerda da foto (uns 9% dela) ficar de fora do quadro.
     foto: {
-      src: "/assets/img/exposicoes/design-week-2.jpg",
-      alt: "Estande do Studio Sôa na Design Week São Paulo, com três peças sobre o pódio",
-      recorte: "50% 60%",
+      src: "/assets/img/home/exposicoes-bloco.jpg",
+      alt: "Mesa Onda verde diante de um sofá curvo, no Pavilhão Espírito Santo da Bienal da Arquitetura Brasileira",
+      recorte: "100% 50%",
     },
   },
 ];
@@ -211,90 +217,180 @@ export const sobreV2 = {
   tituloDoPerfil: "Criadora e designer",
 };
 
+/* Onde encontrar, depois da revisão de 14/10: só texto, sem foto, tudo centrado,
+   em duas partes. A primeira (fundo bege) é a compra direta com o estúdio; a
+   segunda (fundo branco) é a loja. O título de página deixou de ser "As peças
+   estão na Ozlo Home Brand": quem abre a página vê primeiro o caminho principal,
+   e o nome da loja entra na segunda parte. */
 export const ondeEncontrarV2 = {
-  /* O rótulo "Onde encontrar" acima do título saiu: repetia o que o menu e o
-     título já diziam. */
-  titulo: "As peças estão na Ozlo Home Brand",
-
-  /* Bloco novo, antes da Ozlo: a compra direta com o estúdio vem primeiro, e a
-     loja física vem depois como segunda opção. Texto exato dela. */
+  /* A compra direta com o estúdio vem primeiro, e a loja física vem depois como
+     segunda opção. Texto exato dela. */
   atendimento: {
+    titulo: "compre direto com o studio",
     texto:
       "atendimento studio sôa, online de segunda à sexta, das 8h às 18h. entre em contato para compra, orçamento e encomendas",
     rotuloDoLink: "faça seu pedido aqui",
+  },
+
+  /* Frase dela que abre a segunda parte, antes do nome da loja. */
+  loja: {
+    rotulo: "nossas peças também estão disponíveis em",
   },
 
   /* Os dois campos abaixo esperam texto da Luiza e não aparecem enquanto
      estiverem vazios. O primeiro reforça a compra direta e a credibilidade de a
      peça estar numa loja; o segundo avisa que a disponibilidade na Ozlo varia.
      Ficam como string vazia, e não como comentário, para entrar no ar assim que
-     o texto chegar, sem mexer em componente. */
+     o texto chegar, sem mexer em componente.
+
+     O rascunho dela mostra "*peças à pronta entrega a confirmar" abaixo da
+     Ozlo: é nota para ela mesma, ainda sem texto final, então segue aqui
+     vazio. Ver DUVIDAS #20. */
   reforcoDaCompra: "",
   avisoDeDisponibilidade: "",
 };
 
 export const contatoV2 = {
+  /* O rótulo acima do título "Ficou com alguma dúvida?" deixou de ser "Fale com
+     o estúdio" e virou só "studio", revisão de 14/10. */
+  rotulo: "studio",
   lead: "Sobre peças, materiais, encomendas sob medida, prazos, produção ou dúvidas sobre o studio. Fique à vontade para escrever uma mensagem.",
 };
 
-/* Ano de cada mostra, para a página nova mostrar nome, ano e cidade. A Luiza
-   ficou de mandar os anos junto com a revisão dos nomes, então o campo existe
-   e fica vazio: a página não imprime ano nenhum enquanto for assim, em vez de
-   inventar data ou deixar buraco na diagramação. */
-export const anosDasExposicoes: Record<string, string> = {
-  "club-casa": "",
-  "design-week": "",
-  bab: "",
-  casacor: "",
+/* O manifesto da home virou um poema em cima de uma foto chapada (revisão de
+   14/10). O texto é o mesmo de antes, palavra por palavra, e continua em
+   `paginas.ts` (`home.manifesto`): só muda que ele é dito de uma vez, em vez de
+   espalhado entre três fotos. Aqui mora a foto de fundo.
+
+   Foram quatro versões em dois dias: um recorte largo da `_MG_1000` (tigela e
+   espelho); a Bandeja Elis; a `_MG_1000` inteira numa caixa à direita; e, a
+   atual, a Bandeja Elis de novo, de ponta a ponta. É a `6.png` da pasta da
+   peça, no tamanho original (1856x2266), exportada com compressão leve: a
+   versão da segunda rodada tinha os mesmos pixels e um terço do peso, e as
+   paredes lisas da foto mostravam a compressão como se fosse baixa resolução.
+   O enquadramento é feito no CSS. */
+export const manifestoV2 = {
+  foto: {
+    src: "/assets/img/home/manifesto-bandeja-hd.jpg",
+    alt: "",
+  } as Foto,
 };
+
+/* Ano de cada mostra, para a página nova mostrar nome, ano e cidade. Chegaram
+   na revisão de 14/10, que lista as quatro da mais nova para a mais antiga. */
+export const anosDasExposicoes: Record<string, string> = {
+  casacor: "2026",
+  bab: "2026",
+  "design-week": "2025",
+  "club-casa": "2024",
+};
+
+/* Ordem da página de Exposições: da mais recente para a mais antiga, como a
+   Luiza listou na revisão de 14/10. Em `exposicoes.ts` a ordem é a da lista de
+   hoje, e ela fica como está: quem decide a ordem desta página é esta lista. */
+export const ordemDasExposicoesV2 = [
+  "casacor",
+  "bab",
+  "design-week",
+  "club-casa",
+];
 
 /* Como cada mostra aparece na página de Exposições da V2.
  *
- * Um objeto por mostra, com tudo que se decide sobre as fotos dela. Já foram
- * três mapas separados aqui, e virou um só depois que o Pedro cobrou
- * padronização nos botões em 23/09: a mesma lição vale para dado, não só para
- * CSS. Decisão que sempre se toma junto se escreve junto, senão a quarta vira
- * um quarto mapa.
+ * Um objeto por mostra, com tudo que se decide sobre ela. Já foram três mapas
+ * separados aqui, e virou um só depois que o Pedro cobrou padronização nos
+ * botões em 23/09: a mesma lição vale para dado, não só para CSS. Decisão que
+ * sempre se toma junto se escreve junto, senão a quarta vira um quarto mapa.
  *
+ * - `nome`: como o título da mostra é escrito no quadro. Revisão de 14/10: com
+ *   maiúsculas e por extenso ("Casacor Espírito Santo", não "Casacor ES"). O
+ *   `exposicoes.ts` não muda, porque outras partes do site leem o nome de lá.
+ * - `antes`: fotos que entram NA FRENTE das da mostra, na ordem escrita aqui.
  * - `esconder`: fotos que não entram no carrossel. Trecho do caminho basta. Não
- *   apaga arquivo nem mexe em `exposicoes.ts`: a página antiga continua
- *   mostrando todas, e a foto volta tirando uma linha daqui.
- * - `abrePor`: qual foto abre o quadro, contando DEPOIS do `esconder`.
- * - `capaSrc`: troca o arquivo só da capa. Existe por geometria: as fotos de
- *   exposição são 1300x1191, deitadas, e o quadro é em pé, então o encaixe é
- *   pela altura e não sobra folga vertical para deslizar. As versões em `zoom/`
- *   são as fotos inteiras, e várias são retrato: nelas a folga volta.
- * - `capaRecorte`: o `object-position` da capa. Qual eixo funciona depende do
- *   arquivo, ver acima.
+ *   apaga arquivo nem mexe em `exposicoes.ts`: a foto volta tirando uma linha
+ *   daqui.
+ * - `ajustes`: troca o arquivo e/ou o recorte de UMA foto, achada por um trecho
+ *   do caminho. Existe por geometria: as fotos de exposição são 1300x1191,
+ *   deitadas, e o quadro é em pé, então o encaixe é pela altura, corta os lados
+ *   e não sobra folga vertical para deslizar. As versões em `zoom/` são as fotos
+ *   inteiras, e várias são retrato: nelas a folga volta.
+ * - `abrePor`: qual foto abre o quadro, contando DEPOIS de `antes` e `esconder`.
  *
  * Mostra que não estiver aqui usa todas as fotos, na ordem do conteúdo, sem
  * recorte. */
+export interface AjusteDeFoto {
+  trecho: string;
+  src?: string;
+  recorte?: string;
+}
+
 export const mostraV2: Record<
   string,
   {
+    nome?: string;
+    antes?: Foto[];
     esconder?: string[];
+    ajustes?: AjusteDeFoto[];
     abrePor?: number;
-    capaSrc?: string;
-    capaRecorte?: string;
   }
 > = {
-  /* O corte de diagramação cortava o troféu fora. O Pedro pediu em 23/09 para
-     mostrar a Luiza com ele: cortar mais em cima, mostrar mais embaixo. No
-     arquivo deitado era impossível, porque não havia folga vertical. A foto
-     inteira é 853x1280, mais estreita que o quadro, então ali o encaixe passa a
-     ser pela largura e sobra altura para descer o enquadramento. */
-  "club-casa": {
-    capaSrc: "/assets/img/exposicoes/zoom/club-casa-1.jpg",
-    capaRecorte: "50% 100%",
+  casacor: { nome: "Casacor Espírito Santo" },
+
+  /* A primeira foto vem reenquadrada pela Luiza (revisão de 14/10): o sofá
+     curvo e a Mesa Onda verde, mais de perto, em vez da vista aberta com a
+     planta. O arquivo é o recorte que ela mandou no documento. A foto tirada do
+     carrossel em 23/09 (`bab-2`) continua de fora, e a ordem das outras segue. */
+  bab: {
+    nome: "Bienal da Arquitetura Brasileira, BAB",
+    esconder: ["bab-2.jpg"],
+    ajustes: [
+      {
+        trecho: "bab-1.jpg",
+        src: "/assets/img/exposicoes/bab-1-reenquadrada.jpg",
+        recorte: "50% 50%",
+      },
+    ],
   },
 
-  /* A primeira foto da Design Week é a do painel com a sombra dura, que o Pedro
-     apontou em 22/09. A segunda mostra o mesmo estande com três peças sobre o
-     pódio e luz limpa. As outras não sumiram: as setas passam por todas. */
-  "design-week": { abrePor: 1 },
+  /* O pôster da Mesa Onda abre o quadro, e a Luiza pediu para aparecerem os
+     escritos do canto (as logos da BoomSP Design e do Club&Casa Autoral, e o
+     nome da peça). A versão de `exposicoes/` é um recorte deitado que corta
+     tudo isso; a de `zoom/` é o pôster inteiro. É a terceira da lista, por isso
+     `abrePor: 2`. Antes abria pela segunda (22/09), por causa da luz da
+     primeira, e as duas continuam no carrossel. */
+  "design-week": {
+    nome: "DW! Design Week São Paulo",
+    abrePor: 2,
+    ajustes: [
+      {
+        trecho: "design-week-3.jpg",
+        src: "/assets/img/exposicoes/zoom/design-week-3.jpg",
+        recorte: "50% 50%",
+      },
+    ],
+  },
 
-  /* Foto tirada do carrossel a pedido do Pedro em 23/09. O arquivo continua em
-     `public/` e na lista de `exposicoes.ts`, então a página antiga segue
-     mostrando as três. */
-  bab: { esconder: ["bab-2.jpg"] },
+  /* A Luiza sentada ao lado da Mesa Onda entra como primeira foto, e as duas de
+     antes ficam depois dela (revisão de 14/10). O reenquadramento do troféu que
+     o Pedro pediu em 23/09 continua valendo, agora na segunda foto: o arquivo
+     deitado não tinha folga vertical, e a foto inteira (853x1280) é mais
+     estreita que o quadro, então ali o encaixe passa a ser pela largura e sobra
+     altura para descer o enquadramento. */
+  "club-casa": {
+    nome: "Prêmio Club&Casa Autoral 6",
+    antes: [
+      {
+        src: "/assets/img/exposicoes/club-casa-luiza.jpg",
+        zoom: "/assets/img/exposicoes/club-casa-luiza.jpg",
+        alt: "Luiza Pessôa sentada num bloco branco, ao lado da Mesa Onda",
+      },
+    ],
+    ajustes: [
+      {
+        trecho: "club-casa-1.jpg",
+        src: "/assets/img/exposicoes/zoom/club-casa-1.jpg",
+        recorte: "50% 100%",
+      },
+    ],
+  },
 };

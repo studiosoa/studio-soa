@@ -144,7 +144,7 @@ export default async function PaginaDaPecaV2({ params }: Props) {
       </section>
 
       <section className="related">
-        <Link className="related__item" href={`/v2/pecas/${slugDaProxima}`}>
+        <Link className="related__item" href={`/pecas/${slugDaProxima}`}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             data-parallax="up"
@@ -167,7 +167,7 @@ export default async function PaginaDaPecaV2({ params }: Props) {
             que a do atalho à esquerda, lado a lado. */}
         <CartaoChamada
           className="related__item"
-          href="/v2/pecas"
+          href="/pecas"
           texto={pecaV2.atalhoDoCatalogo}
           fundo={fundoDoCartaoDePeca(peca.slug)}
         />

@@ -103,11 +103,17 @@ export const sobre = {
     nome: "Luiza Pessôa",
     // O negrito faz parte do texto, então os parágrafos guardam HTML. No Payload
     // este campo vira rich text, e o componente passa a render o que vier dele.
+    //
+    // Revisão de 14/10: a Luiza sublinhou de vermelho no documento o que fica em
+    // negrito, "só" isso, então saíram os negritos de gaúcha, capixaba, "nasceu a
+    // primeira peça de design" e 2025. E a segunda frase ganhou o texto dela:
+    // explorou / criação / experimentação, no lugar de experimentou / criar /
+    // explorar a escrita.
     paragrafos: [
-      "meio <strong>gaúcha</strong>, meio <strong>capixaba</strong>, cresceu apaixonada pelo mundo das artes.",
-      "Quando criança, desenhava pelas paredes de casa, e sempre de forma natural, <strong>experimentou diferentes formas de expressão</strong>, criar objetos, fantasias, explorar a escrita, música, costura, fotografia… <strong>A arte sempre esteve presente independente de sua forma</strong>.",
+      "meio gaúcha, meio capixaba, cresceu apaixonada pelo mundo das artes.",
+      "Quando criança, desenhava pelas paredes de casa, e sempre de forma natural, <strong>explorou diferentes formas de expressão</strong>, criação de objetos, fantasias, experimentação da escrita, música, costura, fotografia… <strong>A arte sempre esteve presente independente de sua forma</strong>.",
       "“Durante a faculdade de arquitetura e urbanismo, me encantei com as <strong>reflexões sobre sociedade e espaço</strong> que o urbanismo apresenta, e também, de forma especial, pelo mundo de possibilidades que a arquitetura e o design proporcionam.”",
-      "Com a oportunidade de participar de um concurso de design de mobiliário em 2024, <strong>nasceu a primeira peça de design, a MESA ONDA</strong> — logo surgiu o studio sôa em <strong>2025</strong>, e desde então, as ideias e desenhos não param de acontecer.",
+      "Com a oportunidade de participar de um concurso de design de mobiliário em 2024, nasceu a primeira peça de design, <strong>a MESA ONDA</strong> — logo surgiu o studio sôa em 2025, e desde então, as ideias e desenhos <strong>não param</strong> de acontecer.",
     ],
   },
 
@@ -122,11 +128,15 @@ export const sobre = {
 
   estudio: {
     titulo: "Sobre Studio",
+    // Os parágrafos guardam HTML pelo mesmo motivo do perfil: o negrito é parte do
+    // texto. Os cinco trechos são os que a Luiza sublinhou de vermelho na revisão
+    // de 14/10 (nome dela, escultura/materialidade/cotidiano, observação,
+    // mobiliário e objetos, artesanal).
     paragrafos: [
-      "O Studio SÔA é um estúdio brasileiro de design autoral fundado em 2025, por Luiza Pessôa, arquiteta, designer e criadora.",
-      "Movido pelo desejo de criar peças que vão além da função, o estúdio desenvolve mobiliário e objetos que unem escultura, materialidade e cotidiano. Cada projeto nasce da observação da vida, das memórias, da cultura brasileira e da relação afetiva que construímos com os espaços que habitamos.",
-      "Com uma linguagem marcada por traços simples, mas significativa presença, o Studio SÔA desenvolve mobiliário e objetos que exploram contrastes entre leveza e solidez, movimento e permanência, buscando uma estética atemporal e profundamente conectada à brasilidade contemporânea.",
-      "A produção é artesanal, visando sempre o melhor aproveitamento de matéria prima e o reaproveitamento de descartes da indústria.",
+      "O Studio SÔA é um estúdio brasileiro de design autoral fundado em 2025, por <strong>Luiza Pessôa</strong>, arquiteta, designer e criadora.",
+      "Movido pelo desejo de criar peças que vão além da função, o estúdio desenvolve mobiliário e objetos que unem <strong>escultura, materialidade e cotidiano</strong>. Cada projeto nasce da <strong>observação</strong> da vida, das memórias, da cultura brasileira e da relação afetiva que construímos com os espaços que habitamos.",
+      "Com uma linguagem marcada por traços simples, mas significativa presença, o Studio SÔA desenvolve <strong>mobiliário e objetos</strong> que exploram contrastes entre leveza e solidez, movimento e permanência, buscando uma estética atemporal e profundamente conectada à brasilidade contemporânea.",
+      "A produção é <strong>artesanal</strong>, visando sempre o melhor aproveitamento de matéria prima e o reaproveitamento de descartes da indústria.",
     ],
     // Os três quadros do GIF Looping_Peças da Luiza, trocando no mesmo tempo do
     // arquivo dela. O primeiro fica embaixo; os outros acendem por cima na vez

@@ -4,7 +4,11 @@ import PaginaV2 from "@/componentes/v2/PaginaV2";
 import Galeria from "@/componentes/Galeria";
 import FaixaCatalogo from "@/componentes/FaixaCatalogo";
 import { exposicoes } from "@/conteudo/exposicoes";
-import { anosDasExposicoes, mostraV2 } from "@/conteudo/v2";
+import {
+  anosDasExposicoes,
+  mostraV2,
+  ordemDasExposicoesV2,
+} from "@/conteudo/v2";
 
 export const metadata: Metadata = {
   title: "Exposições",
@@ -36,39 +40,49 @@ export default function ExposicoesV2() {
         <h1 className="expo-grade__titulo">Exposições</h1>
 
         <div className="expo-grade__lista">
-          {exposicoes.map((expo) => {
-            // A quebra de linha no nome servia à lista vertical da página
-            // antiga, onde "BAB" caía sozinha na segunda linha. No quadrado ela
-            // não tem função.
-            const nome = expo.nome.replace(/\n/g, " ");
-            const ano = anosDasExposicoes[expo.chave];
+          {ordemDasExposicoesV2.map((chave) => {
+            const expo = exposicoes.find((e) => e.chave === chave);
+            if (!expo) return null;
 
-            // Monta as fotos desta mostra em três passos, nesta ordem: tira as
-            // escondidas, roda a lista até a escolhida abrir, e troca o arquivo
-            // ou o recorte da capa. Nada disso mexe em `exposicoes.ts`, que é o
-            // conteúdo que a página antiga também usa.
             const conf = mostraV2[expo.chave] ?? {};
 
+            // O nome escrito por extenso em `mostraV2` ganha do de
+            // `exposicoes.ts`. Sem ele, cai no de lá, sem a quebra de linha que
+            // servia à lista vertical da página antiga (onde "BAB" caía sozinha
+            // na segunda linha) e que no quadrado não tem função.
+            const nome = conf.nome ?? expo.nome.replace(/\n/g, " ");
+            const ano = anosDasExposicoes[expo.chave];
+
+            // Monta as fotos desta mostra em quatro passos, nesta ordem: põe as
+            // que entram na frente, tira as escondidas, troca o arquivo ou o
+            // recorte das que foram reenquadradas, e roda a lista até a
+            // escolhida abrir. Nada disso mexe em `exposicoes.ts`, que é o
+            // conteúdo que a página antiga também usa.
+            const todas = [...(conf.antes ?? []), ...expo.fotos];
+
             const visiveis = conf.esconder
-              ? expo.fotos.filter(
+              ? todas.filter(
                   (foto) =>
                     !conf.esconder!.some((trecho) => foto.src.includes(trecho)),
                 )
-              : expo.fotos;
+              : todas;
+
+            const ajustadas = visiveis.map((foto) => {
+              const ajuste = conf.ajustes?.find((a) => foto.src.includes(a.trecho));
+              return ajuste
+                ? {
+                    ...foto,
+                    ...(ajuste.src ? { src: ajuste.src } : {}),
+                    ...(ajuste.recorte ? { recorte: ajuste.recorte } : {}),
+                  }
+                : foto;
+            });
 
             const abre = conf.abrePor ?? 0;
             const fotos = [
-              ...visiveis.slice(abre),
-              ...visiveis.slice(0, abre),
-            ].map((foto, i) =>
-              i === 0
-                ? {
-                    ...foto,
-                    ...(conf.capaSrc ? { src: conf.capaSrc } : {}),
-                    ...(conf.capaRecorte ? { recorte: conf.capaRecorte } : {}),
-                  }
-                : foto,
-            );
+              ...ajustadas.slice(abre),
+              ...ajustadas.slice(0, abre),
+            ];
 
             return (
               <article className="expo-card" key={expo.chave}>
@@ -82,9 +96,9 @@ export default function ExposicoesV2() {
 
                 <div className="expo-card__meta">
                   <h2 className="expo-card__nome">{nome}</h2>
-                  {/* O ano só aparece quando existir. A Luiza ficou de mandar
-                      os quatro junto com a revisão dos nomes, e inventar data
-                      de exposição é o tipo de erro que ninguém corrige depois. */}
+                  {/* O ano só aparece quando existir: inventar data de
+                      exposição é o tipo de erro que ninguém corrige depois.
+                      Os quatro chegaram na revisão de 14/10. */}
                   <p className="expo-card__dados">
                     {ano ? `${ano} · ` : ""}
                     {expo.local}
@@ -98,7 +112,7 @@ export default function ExposicoesV2() {
 
       {/* A única página que mantém a faixa do catálogo, decisão da review. A
           imagem segue a de hoje até o Pedro indicar outra. */}
-      <FaixaCatalogo semAnimacao href="/v2/pecas" />
+      <FaixaCatalogo semAnimacao href="/pecas" />
     </PaginaV2>
   );
 }

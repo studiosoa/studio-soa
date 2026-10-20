@@ -52,7 +52,7 @@ export default function FormContato() {
           id="email"
           name="email"
           type="email"
-          placeholder="para o estúdio te responder"
+          placeholder="Onde podemos te encontrar"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}

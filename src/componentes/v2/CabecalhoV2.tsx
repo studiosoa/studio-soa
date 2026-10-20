@@ -76,7 +76,7 @@ export default function CabecalhoV2({
     // Item externo (Arquivos 3D) nunca fica "ativo": ele leva pra fora
     // do site, não existe página dele pra comparar com o caminho atual.
     // Os outros comparam com prefixo, não igualdade exata, porque
-    // "Peças" precisa continuar marcado dentro de /v2/pecas/mesa-onda.
+    // "Peças" precisa continuar marcado dentro de /pecas/mesa-onda.
     const ativo =
       !item.externo &&
       (caminho === item.href || caminho?.startsWith(`${item.href}/`));
@@ -116,7 +116,7 @@ export default function CabecalhoV2({
           <span aria-hidden="true" />
         </button>
 
-        <Link href="/v2">
+        <Link href="/">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className="site-header__logo"

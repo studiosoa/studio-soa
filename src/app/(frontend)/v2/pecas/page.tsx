@@ -29,7 +29,7 @@ export default function CatalogoV2() {
         {pecas.map((peca) => (
           <Link
             className="catalogo__item"
-            href={`/v2/pecas/${peca.slug}`}
+            href={`/pecas/${peca.slug}`}
             key={peca.slug}
             data-reveal
           >
@@ -42,7 +42,7 @@ export default function CatalogoV2() {
 
         <CartaoChamada
           className="catalogo__item"
-          href="/v2/sobre"
+          href="/sobre"
           texto={catalogoV2.cartaoFinal}
           reveal
         />

@@ -349,70 +349,282 @@
 
 /* ---------- home ---------- */
 
-/* As três peças lado a lado e encostadas. Sem intervalo entre elas: a review
-   pediu assim, e é o que faz as três lerem como uma faixa só em vez de três
-   cartões soltos. A proporção é a mesma dos quadros do catálogo, para a home e
-   a página de peças falarem a mesma língua. */
-.page--v2 .home-pecas {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  padding: 0 var(--side-narrow);
-  /* Respiro entre a foto do topo e a fileira de peças, pedido em 22/09. Sem ele
-     a fileira encostava na foto e as duas liam como um bloco só. */
-  margin-top: 90px;
-}
+/* ---------- manifesto em poema ---------- */
 
-/* A porta para o catálogo, embaixo das três peças. */
-.page--v2 .home-mais {
-  display: flex;
-  justify-content: center;
-  padding: 0 var(--side-narrow);
-  margin-top: 40px;
-}
-
-.page--v2 .home-pecas__item {
+/* Revisão de 14/10: "quero ênfase mais no texto do que nas imagens, algo mais
+ * delicado, com uma imagem de fundo chapada e o texto em forma de poema escrito
+ * no cantinho". Eram duas colunas com três fotos e um bloco escuro; virou uma
+ * foto só, sem movimento, e o texto num canto.
+ *
+ * Terceira versão, 15/10: a `_MG_1000` (tigela, espelho, bandeja e banquinho)
+ * numa caixa à direita, com um degradê de marrom que engolia a borda esquerda
+ * dela. O Pedro não gostou do resultado ("não ficou legal essa resolução da
+ * forma que você fez") e mandou voltar à foto da Bandeja Elis.
+ *
+ * Quarta versão, 15/10, a atual: a foto da Bandeja Elis (a `6.png` da pasta da
+ * peça) de ponta a ponta, mais centralizada na altura da tela, com o texto no
+ * canto superior esquerdo e um degradê leve de marrom só atrás dele.
+ *
+ * Duas coisas mudaram em relação à segunda versão, que usava a mesma foto. O
+ * arquivo: o antigo tinha os mesmos 1856x2266 pixels, mas pesava 221 KB, e as
+ * paredes lisas da foto mostram cada degrau de compressão. O novo pesa 701 KB,
+ * do mesmo original; foi troca minha, não pedido: a frase do Pedro, ditada,
+ * saiu como "resolução", e leio como "solução", a forma do layout. E o
+ * enquadramento: a bandeja deixou de ficar encostada no pé da tela e passou a
+ * ficar no meio. */
+.page--v2 .manifesto-poema {
   position: relative;
-  display: block;
-  aspect-ratio: 430 / 560;
+
+  /* Sem folga em cima: a foto do topo termina e o marrom começa, sem a faixa de
+     café de 90px que ficava entre as duas ("tire essa barra entre seções"). */
+  margin-top: 0;
+
+  /* Uma tela, nem mais nem menos: o cabeçalho de vidro fica por cima, e a foto
+     passa por baixo dele, como na foto do topo. O piso de 640 evita que uma
+     janela baixa deixe o poema maior que a seção.
+
+     Houve uma versão em que a seção crescia (`max(100svh, 56vw)`) para a foto
+     caber inteira em janela larga e baixa, e o Pedro não quis: "quero que tenha
+     o espaço de uma tela dessa seção, ela tá extrapolando". A foto é que se
+     corta, ver `.manifesto-poema__img`. */
+  height: 100vh;
+  height: 100svh;
+  min-height: 640px;
   overflow: hidden;
-  background: var(--tile-empty);
+  background: var(--brown);
+  color: var(--cream-2);
 }
 
-.page--v2 .home-pecas__item img {
+.page--v2 .manifesto-poema__img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Centraliza a bandeja na altura da tela. A foto é em pé (1856x2266), e
+     escalada pela largura ela tem 122vw de altura, bem mais que a seção, então
+     o enquadramento vertical é o que decide o que aparece. A bandeja (do aro de
+     trás aos pés) ocupa de 59,5% a 78% da foto, e o meio dela está a 69%, ou
+     84vw. A regra é pôr esse meio a 66% da altura da seção, abaixo do
+     centro para deixar o texto, que fica no alto, respirar acima dela.
+
+     É um comprimento e não uma porcentagem porque 69% de uma foto de 122vw cai
+     em lugares diferentes conforme a janela, e a bandeja precisa ficar no mesmo
+     lugar. O `clamp` impede o vão nas bordas da foto: a posição não passa de 0
+     (topo da foto) nem de `altura da seção - 120vw` (pé da foto), com folga de
+     1vw para a barra de rolagem. O `min(0px, ...)` cobre a janela mais alta
+     que a foto. A linha de cima é para navegador sem `clamp`. */
+  object-position: 50% 62%;
+  object-position: 50% clamp(
+    min(0px, calc(max(100svh, 640px) - 120vw)),
+    calc(max(100svh, 640px) * 0.66 - 84vw),
+    0px
+  );
 }
 
-.page--v2 .home-pecas__item:hover img {
-  transform: scale(1.04);
+/* O véu de marrom atrás do texto: "leve degradê atrás dessa cor marrom". Fica na
+   esquerda, onde o poema está, e some antes do meio da foto. O texto é claro e
+   a parede é quase branca, então sem ele as últimas linhas somem.
+
+   Duas rampas somadas: uma da esquerda para a direita, e uma máscara que a
+   apaga de cima para baixo, para o véu não descer até o pé da tela e a base da
+   bandeja ficar limpa. Uma primeira versão, radial a partir do canto, deixava
+   as últimas linhas do poema com 50% de marrom por cima da madeira da bandeja,
+   e a madeira clara e o texto claro quase se igualavam. A conta é a do texto
+   mais largo: ele acaba a uns 30% da largura em 1440 e a uns 37% em 1241, e o
+   véu ainda tem 55% ou mais de marrom nesses pontos. */
+.page--v2 .manifesto-poema::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--brown) 78%, transparent) 0%,
+    color-mix(in srgb, var(--brown) 68%, transparent) 30%,
+    color-mix(in srgb, var(--brown) 36%, transparent) 46%,
+    transparent 64%
+  );
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 84%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 84%);
 }
 
-.page--v2 .home-pecas__item:hover .photo-overlay,
-.page--v2 .home-pecas__item:focus-visible .photo-overlay {
+.page--v2 .manifesto-poema__texto {
+  position: absolute;
+  z-index: 1;
+  /* Começa abaixo da barra de vidro do cabeçalho (75px quando ela gruda no
+     topo): a primeira versão deixava o rótulo "manifesto" escondido atrás
+     dela justo na hora em que a seção chega e a animação começa. */
+  top: clamp(88px, 10.2vh, 116px);
+  left: var(--side-narrow);
+  width: min(400px, calc(100% - var(--side-narrow) * 2));
+}
+
+.page--v2 .manifesto-poema__rotulo {
+  margin: 0 0 28px;
+  font-size: 13px;
+  letter-spacing: 2.2px;
+  text-transform: lowercase;
+  opacity: 0.85;
+}
+
+.page--v2 .manifesto-poema__estrofe + .manifesto-poema__estrofe {
+  margin-top: 22px;
+}
+
+/* O corpo voltou aos 16px. Eu tinha subido para 17-21px a pedido da Luiza
+   ("aumentar um pouco"), e o Pedro achou grande demais: "pode manter o tamanho
+   anterior". */
+.page--v2 .manifesto-poema__estrofe p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.75;
+  font-weight: 300;
+  text-wrap: balance;
+  transform-origin: 0 0;
+}
+
+.page--v2 .manifesto-poema__estrofe p + p {
+  margin-top: 6px;
+}
+
+/* A seção inteira é o gatilho, e o efeito comum de [data-reveal] sai de cena
+   nela: quem se move são os blocos, um depois do outro. Mesmo padrão da
+   `.frase` da Sobre.
+
+   O estado apagado mora num `:not(.is-visible)` pelo mesmo motivo de lá: o
+   preenchimento da animação só vale depois de ela ser aplicada, e até lá o
+   bloco estaria visível, sumiria quando o gatilho chegasse e voltaria animado. */
+.page--v2 .manifesto-poema[data-reveal] {
   opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+.page--v2 .manifesto-poema:not(.is-visible) .manifesto-poema__texto p {
+  opacity: 0;
+}
+
+/* A entrada: cada bloco "estoura" de opacidade zero a cem, uma explosão leve.
+   Ela é feita de três coisas curtas que acontecem juntas: a opacidade sobe, o
+   texto começa um pouco maior e desfocado e assenta, e um clarão de brilho no
+   começo faz parecer que acendeu. Nada se desloca, para o texto não sair do
+   canto.
+
+   O Pedro gostou da animação e achou rápida demais. Antes: 1,15s por bloco e
+   0,55s entre um e outro. Agora: 2,4s por bloco e 1,1s entre eles, mais do
+   dobro nas duas medidas. A opacidade chega a cem em 55% do tempo (1,3s), e
+   não em 35% como antes, para o "estouro" também subir mais devagar, e não só
+   o assentamento depois dele. */
+@keyframes manifesto-estoura {
+  0% {
+    opacity: 0;
+    transform: scale(1.07);
+    filter: blur(8px) brightness(1.7);
+  }
+  55% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0) brightness(1);
+  }
+}
+
+.page--v2 .manifesto-poema.is-visible .manifesto-poema__texto p {
+  animation: manifesto-estoura 2.4s cubic-bezier(0.22, 0.8, 0.3, 1) both;
+  animation-delay: calc(0.35s + var(--i, 0) * 1.1s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page--v2 .manifesto-poema.is-visible .manifesto-poema__texto p {
+    animation: none;
+  }
+}
+
+@media (max-width: 1240px) {
+  /* Abaixo de 1240px o poema não cabe ao lado da foto sem passar por cima dela.
+     Aqui o poema fica num bloco de café, com o texto claro como ela pediu, e a
+     foto inteira vem logo abaixo, sem texto por cima.
+
+     O degradê continua, só que na vertical: o topo da foto sobe por baixo do
+     bloco de café e some nele, pelo mesmo motivo de lá, para não haver uma
+     linha reta onde o texto acaba e a foto começa. */
+  .page--v2 .manifesto-poema {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 0;
+    margin-top: 0;
+  }
+
+  .page--v2 .manifesto-poema__texto {
+    position: static;
+    width: auto;
+    max-width: 480px;
+    padding: 56px var(--side-narrow) 40px;
+  }
+
+  .page--v2 .manifesto-poema::after {
+    display: none;
+  }
+
+  /* A bandeja no meio da faixa: em 16/10 o meio dela (69% da foto) cai a 89% de
+     deslocamento. O topo da foto sobe por baixo do bloco de café e some nele,
+     para não haver uma linha reta onde o texto acaba e a foto começa. */
+  .page--v2 .manifesto-poema__img {
+    position: static;
+    order: 2;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-position: 50% 89%;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgb(0 0 0 / 0.12) 10%,
+      rgb(0 0 0 / 0.4) 22%,
+      rgb(0 0 0 / 0.75) 36%,
+      #000 50%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgb(0 0 0 / 0.12) 10%,
+      rgb(0 0 0 / 0.4) 22%,
+      rgb(0 0 0 / 0.75) 36%,
+      #000 50%
+    );
+  }
+}
+
+@media (max-width: 700px) {
+  .page--v2 .manifesto-poema__img {
+    aspect-ratio: 4 / 3;
+    object-position: 50% 99%;
+  }
 }
 
 /* Os três blocos que fecham a página, no lugar da faixa única do catálogo.
-   Colados, sem borda e sem espaço, a pedido dela. O rótulo fica sempre visível,
-   e não só no hover: são navegação, não decoração, e num celular não existe
-   hover para revelar nada. */
+   Colados, sem borda e sem espaço, a pedido dela. O nome só aparece quando o
+   mouse chega perto (revisão de 14/10), igual aos quadros do catálogo: é a mesma
+   peça, `.photo-overlay`, e em aparelho de toque ela já fica visível por regra
+   própria, porque lá não existe hover para revelar nada. */
 .page--v2 .blocos-nav {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0;
   margin: 90px 0 0;
 
-  /* Mesma largura e mesma proporção da fileira de peças lá em cima, pedido do
+  /* Mesma largura e mesma proporção da fileira de peças do catálogo, pedido do
      Pedro em 22/09: eles estavam menores e mais achatados que os quadros das
-     peças, e as duas fileiras da mesma página liam como coisas de projetos
-     diferentes. Agora só o conteúdo muda de uma para a outra.
+     peças, e as duas fileiras lidas lado a lado liam como coisas de projetos
+     diferentes.
 
      Isto continua não sendo de ponta a ponta: o `--side-narrow` recua da borda,
-     igual às peças. O que mudou foi o `max-width` de 1280, que era um recuo a
-     mais e só nesta fileira. */
+     igual ao catálogo. */
   padding: 0 var(--side-narrow);
 }
 
@@ -435,46 +647,14 @@
   transform: scale(1.04);
 }
 
-.page--v2 .blocos-nav__rotulo {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(70, 44, 18, 0.28);
-  color: var(--cream);
-  font-family: var(--font-display);
-  /* O corpo vem do token, na seção "família CARTÃO" lá embaixo. */
-  letter-spacing: 0.5px;
-  text-transform: lowercase;
-  transition: background 0.3s ease;
-}
-
-.page--v2 .blocos-nav__item:hover .blocos-nav__rotulo,
-.page--v2 .blocos-nav__item:focus-visible .blocos-nav__rotulo {
-  background: rgba(70, 44, 18, 0.45);
-}
-
 @media (max-width: 1000px) {
-  /* No celular as peças continuam aparecendo, empilhadas, e não escondidas:
-     escolha do Pedro em 22/09, contra a leitura do TLDV de deixar só a foto e o
-     manifesto. Quem entra pelo telefone vê o catálogo inteiro rolando. */
-  .page--v2 .home-pecas {
-    grid-template-columns: 1fr;
-  }
-
-  .page--v2 .home-pecas__item {
-    aspect-ratio: 3 / 2;
-  }
-
   .page--v2 .blocos-nav {
     grid-template-columns: 1fr;
     margin-top: 56px;
   }
 
-  /* No celular os três empilham, e aí a proporção retrato das peças daria uma
-     coluna longa demais para três blocos que são só navegação. Aqui eles
-     acompanham a proporção que as peças também assumem em tela estreita. */
+  /* No celular os três empilham, e aí a proporção retrato daria uma coluna longa
+     demais para três blocos que são só navegação. */
   .page--v2 .blocos-nav__item {
     aspect-ratio: 3 / 2;
   }
@@ -489,122 +669,135 @@
   background: #fff;
 }
 
-/* ---------- Onde encontrar ---------- */
-
-/* O mapa saiu e a foto da loja entra no lugar dele, à esquerda: a seção volta a
-   ser duas colunas, como era, e o texto para de ocupar a página inteira. */
-.page--v2 .onde--v2 {
-  display: flex;
-  align-items: flex-start;
-  gap: 6.5%;
-  padding-top: 70px;
+/* O negrito do "o studio". O `<strong>` herdava `bolder` do peso 300 do texto, que
+   dá 400: a diferença para o parágrafo era quase invisível, e a Luiza apontou que
+   os negritos que pediu "ainda estão faltantes". Medido: parágrafo 300, trecho
+   400. O perfil logo abaixo sempre teve a própria regra de 700, e este bloco
+   nunca teve; aqui passa a ter a mesma. */
+.page--v2 .sobre-studio__bloco strong {
+  font-weight: 700;
 }
 
-.page--v2 .onde--v2 .onde__conteudo {
-  flex: 1 1 auto;
-  min-width: 0;
+/* ---------- Onde encontrar ---------- */
+
+/* Só texto e tudo centrado, em duas faixas de cima a baixo da largura da tela:
+   a de cima é bege, a de baixo é branca (revisão de 14/10). A diferença de
+   fundo é o que separa a compra direta, o caminho principal, da loja, que é a
+   alternativa. Não há linha divisória nem caixa colorida: o fundo já diz.
+
+   O branco é o mesmo branco cru que a página Sobre já usa. */
+.page--v2 .onde-secao {
+  display: flex;
+  justify-content: center;
+  padding: 90px var(--side-narrow);
+  text-align: center;
+}
+
+.page--v2 .onde-secao--bege {
+  background: var(--cream);
+  padding-top: 110px;
+}
+
+.page--v2 .onde-secao--branca {
+  background: #fff;
+  padding-bottom: 110px;
+}
+
+.page--v2 .onde-secao__conteudo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
   max-width: 560px;
 }
 
-/* O quadro reservado para a foto da loja, que ainda depende da Luiza. Fica
-   assumidamente vazio, com o rótulo dentro: um quadro cinza e mudo pareceria
-   defeito de carregamento, e uma foto emprestada pareceria a loja de verdade. */
-.page--v2 .onde__foto {
-  flex: 0 0 38%;
-  aspect-ratio: 3 / 4;
-  overflow: hidden;
-  background: var(--tile-empty);
-}
-
-.page--v2 .onde__foto--vazia {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px dashed var(--outline-border);
-  color: var(--muted);
-  font-size: 13px;
-  letter-spacing: 1.4px;
-}
-
-/* Atendimento do estúdio: vem antes da loja e é o bloco com mais peso, porque
-   é onde a compra acontece. O café de fundo separa ele do endereço da Ozlo sem
-   precisar de linha divisória. */
-.page--v2 .onde-atendimento {
-  margin: 34px 0 0;
-  padding: 34px;
-  background: var(--brown);
-  color: var(--cream);
-}
-
-/* O rótulo que nomeia o caminho principal. Ele é o que faz a hierarquia
-   aparecer sem depender de a pessoa ler os dois blocos inteiros para descobrir
-   qual é qual. */
-.page--v2 .onde-atendimento__rotulo {
-  margin: 0 0 14px;
-  font-family: var(--font-display);
-  font-size: 24px;
-  line-height: 1.25;
+/* O título da compra direta é pequeno e em caixa baixa, como ela desenhou
+   ("COMPRE DIRETO COM O STUDIO" em corpo de rótulo), e não um título de página
+   em corpo grande. É o <h1>, mas lê como rótulo. */
+.page--v2 .onde-secao__titulo {
+  margin: 0 0 22px;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: 2.2px;
   text-transform: lowercase;
+  color: var(--dark);
 }
 
-.page--v2 .onde-atendimento__texto {
-  margin: 0 0 24px;
+.page--v2 .onde-secao__texto {
+  margin: 0 0 34px;
   font-size: 17px;
-  line-height: 1.7;
+  line-height: 1.75;
   font-weight: 300;
 }
 
-/* O botão sólido do site é café sobre creme. Aqui o fundo já é café, então ele
-   se inverte para não sumir dentro do próprio bloco. */
-.page--v2 .onde-atendimento .btn--solid {
-  background: var(--cream);
-  color: var(--brown);
+/* "nossas peças também estão disponíveis em": a frase que apresenta a loja. */
+.page--v2 .onde-secao__rotulo {
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-size: 14px;
+  letter-spacing: 0.4px;
 }
 
-.page--v2 .onde-atendimento__reforco {
+.page--v2 .onde-secao__aviso {
   margin: 22px 0 0;
-  font-size: 15px;
-  line-height: 1.6;
-  opacity: 0.85;
-}
-
-.page--v2 .onde-loja {
-  margin-top: 40px;
-}
-
-/* A loja entra como alternativa, não como igual: rótulo menor, sem fundo, sem
-   botão sólido. A diferença de peso entre os dois blocos é o que diz, sem
-   escrever, qual dos dois caminhos o estúdio prefere. */
-.page--v2 .onde-loja__rotulo {
-  margin: 0 0 14px;
-  color: var(--muted);
-  font-size: 13px;
-  letter-spacing: 1.6px;
-}
-
-.page--v2 .onde-loja__aviso {
-  margin: 0 0 22px;
   color: var(--muted);
   font-size: 15px;
   line-height: 1.6;
+}
+
+/* Mesma largura mínima do botão da home: sem ela o `space-between` do `.btn`
+   cola a seta no texto quando o botão está solto no meio da página. */
+.page--v2 .onde-secao .btn {
+  min-width: 280px;
+}
+
+.page--v2 .onde-secao .onde__endereco {
+  margin: 0 0 34px;
+}
+
+.page--v2 .onde-secao .onde__endereco p {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* A entrada é a mesma de sempre das páginas de texto: cada bloco sobe e aparece
+   em seguida ao anterior. */
+.page--v2 .onde-secao__conteudo > * {
+  animation: esmaece 0.8s ease both;
+}
+
+.page--v2 .onde-secao--bege .onde-secao__conteudo > :nth-child(1) { animation-delay: 0.2s; }
+.page--v2 .onde-secao--bege .onde-secao__conteudo > :nth-child(2) { animation-delay: 0.34s; }
+.page--v2 .onde-secao--bege .onde-secao__conteudo > :nth-child(3) { animation-delay: 0.48s; }
+.page--v2 .onde-secao--branca .onde-secao__conteudo > :nth-child(1) { animation-delay: 0.6s; }
+.page--v2 .onde-secao--branca .onde-secao__conteudo > :nth-child(2) { animation-delay: 0.72s; }
+.page--v2 .onde-secao--branca .onde-secao__conteudo > :nth-child(3) { animation-delay: 0.84s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .page--v2 .onde-secao__conteudo > * {
+    animation: none;
+  }
+}
+
+/* As duas faixas ocupam a tela até o rodapé. O respiro de 96px que a página
+   antiga reservava antes dele sobraria como uma tira bege entre o branco e a
+   linha do rodapé. */
+.page--v2.page--onde .site-footer {
+  margin-top: 0;
 }
 
 @media (max-width: 700px) {
-  /* No celular a Onde encontrar é só texto, como o direcionamento pediu: sem
-     mapa e sem a foto da loja. Numa tela estreita a foto empurraria o endereço
-     e o botão de pedido para baixo da dobra, e quem abre esta página no
-     telefone quase sempre está a caminho ou querendo falar com o estúdio. */
-  .page--v2 .onde--v2 {
-    display: block;
-    padding-top: 40px;
+  .page--v2 .onde-secao {
+    padding: 56px var(--side-narrow);
   }
 
-  .page--v2 .onde__foto {
-    display: none;
+  .page--v2 .onde-secao--bege {
+    padding-top: 64px;
   }
 
-  .page--v2 .onde-atendimento {
-    padding: 26px 22px;
+  .page--v2 .onde-secao--branca {
+    padding-bottom: 72px;
   }
 }
 
@@ -630,17 +823,27 @@
   text-transform: lowercase;
 }
 
+/* Três por fileira e a quarta embaixo, para seguir o número de fotos do
+   catálogo; quando entrarem mais mostras, entram na fileira de baixo (revisão de
+   14/10). Sem espaço entre os quadros: a dúvida da Luiza era se as fotos em
+   fileira de três ficam com ou sem margem, e o Pedro decidiu SEM, em todo o
+   site, para as fileiras de três fotos (catálogo, home e esta) lerem iguais. */
 .page--v2 .expo-grade__lista {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 28px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
 }
 
 .page--v2 .expo-card {
   display: flex;
   flex-direction: column;
-  gap: 14px;
   min-width: 0;
+}
+
+/* Com os quadros colados, o respiro entre as fileiras sai daqui: é a legenda que
+   afasta uma fileira da outra. */
+.page--v2 .expo-card__meta {
+  padding: 16px 0 36px;
 }
 
 /* O quadro de cada mostra, na mesma proporção em pé dos quadros de peça da
@@ -733,13 +936,15 @@
   }
 }
 
+/* Maiúsculas como a Luiza escreveu os nomes na revisão de 14/10 ("Casacor
+   Espírito Santo", "DW! Design Week São Paulo"). Antes a regra baixava tudo, e
+   "DW!" e "BAB" perdiam a sigla. */
 .page--v2 .expo-card__nome {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 400;
   font-size: 19px;
   line-height: 1.3;
-  text-transform: lowercase;
 }
 
 .page--v2 .expo-card__dados {
@@ -780,6 +985,12 @@
     flex: 0 0 calc(100% - 52px);
     scroll-snap-align: start;
   }
+
+  /* A folga entre fileiras só existe onde há fileiras: na tira do celular ela
+     virava um vazio de 36px a mais embaixo dos quadros. */
+  .page--v2 .expo-card__meta {
+    padding-bottom: 0;
+  }
 }
 
 /* ---------- família CARTÃO: o rótulo dos quadros de navegação ---------- */
@@ -807,13 +1018,6 @@
   text-transform: lowercase;
 }
 
-/* O rótulo dos blocos da home é a mesma coisa, então usa o mesmo número. Antes
-   era um `clamp` que dava 28.8, perto mas não igual, e "perto" é como a
-   diferença nasce. */
-.page--v2 .blocos-nav__rotulo {
-  font-size: var(--rotulo-de-cartao);
-}
-
 @media (max-width: 700px) {
   .page--v2 {
     --rotulo-de-cartao: 24px;
@@ -821,6 +1025,18 @@
 }
 
 /* ---------- Contato ---------- */
+
+/* O rótulo "studio" acima do título, maior (revisão de 14/10, segunda rodada:
+   "aumentar a fonte na página de contato (studio)"). Era um rótulo de 12px com
+   2,4px de espaçamento, desenhado para uma frase longa em caixa alta; sozinho,
+   uma palavra só, em corpo tão pequeno, sumia do lado de um título de 42px.
+   Em caixa baixa e com palavra única o espaçamento largo também não faz mais
+   sentido. */
+.page--v2 .contato__rotulo {
+  margin-bottom: 14px;
+  font-size: 22px;
+  letter-spacing: 1px;
+}
 
 /* Nada aqui, de propósito.
  *
@@ -849,26 +1065,11 @@
   text-transform: var(--btn-caixa);
 }
 
-/* Na home o botão é solto no meio da página, não empilhado numa coluna estreita
-   como na ficha da peça. Sem uma largura mínima, o `space-between` do `.btn`
-   cola o texto na seta. */
-.page--v2 .home-mais .btn {
-  min-width: 300px;
-}
-
 /* Os botões de rede no Contato tinham a tipografia certa e a caixa errada: 15px
    de respiro contra 20 do `.btn--outline`, o que dava dois botões de contorno
    com alturas diferentes na mesma página. Mesma família, mesma caixa. */
 .page--v2 .contato__redes a {
   padding: 20px 24px;
-}
-
-/* O botão cheio sobre o bloco café da Onde encontrar se inverte para não sumir
-   dentro do próprio fundo. É variação de contexto, não um botão novo: mesma
-   tipografia, mesma caixa, mesma seta, só as cores trocadas. */
-.page--v2 .onde-atendimento .btn--solid {
-  background: var(--cream);
-  color: var(--brown);
 }
 
 /* O botão cheio e o de contorno ficavam com alturas diferentes: 51 contra 55,

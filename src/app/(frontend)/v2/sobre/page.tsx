@@ -33,10 +33,11 @@ export default function SobreV2() {
             <h1 className="sobre-studio__titulo" data-reveal>
               {sobreV2.tituloDoEstudio}
             </h1>
+            {/* O negrito é parte do texto (revisão de 14/10, os trechos que a
+                Luiza sublinhou), então o parágrafo entra como HTML, igual ao
+                do perfil logo abaixo. */}
             {sobre.estudio.paragrafos.map((p, i) => (
-              <p key={i} data-reveal>
-                {p}
-              </p>
+              <p key={i} data-reveal dangerouslySetInnerHTML={{ __html: p }} />
             ))}
           </div>
         </div>

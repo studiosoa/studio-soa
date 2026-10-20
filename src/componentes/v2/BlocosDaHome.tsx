@@ -33,7 +33,15 @@ export default function BlocosDaHome() {
       {blocosDaHomeV2.map((bloco) => (
         <Link className="blocos-nav__item" href={bloco.href} key={bloco.href}>
           <Imagem foto={bloco.rotulo === "Peças" ? fotoPecas : bloco.foto} />
-          <span className="blocos-nav__rotulo">{bloco.rotulo}</span>
+          {/* O nome só aparece quando o mouse chega perto, igual às peças do
+              catálogo (revisão de 14/10: "queria que o título escrito
+              aparecesse só quando o mouse chega perto"). É a mesma peça de
+              interface, `.photo-overlay`, e não uma cópia: em aparelho de toque
+              ela já fica visível por regra própria, porque lá não existe
+              hover. */}
+          <span className="photo-overlay">
+            <span className="photo-overlay__name">{bloco.rotulo}</span>
+          </span>
         </Link>
       ))}
     </nav>

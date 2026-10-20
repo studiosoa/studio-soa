@@ -27,7 +27,7 @@ export default function ContatoV2() {
         </div>
 
         <div className="contato__conteudo">
-          <p className="contato__rotulo">{contato.rotulo}</p>
+          <p className="contato__rotulo">{contatoV2.rotulo}</p>
           <h1 className="contato__titulo">{contato.titulo}</h1>
           <p className="contato__lead">{contatoV2.lead}</p>
 

@@ -52,8 +52,21 @@
   --tile-border: transparent;
 
   --tile-empty: #e4ded3;
-  --brown: #462c12;
-  --brown-dark: #201306;
+
+  /* Review de 14/10: a Luiza não gostou do marrom (#462c12), que no computador
+     dela fica mais claro que no celular, e pediu um café mais fechado, escuro e
+     menos quente, referência RGB 38, 26, 21, em todas as páginas que têm marrom.
+
+     O `--brown-dark` (#201306) já era escuro, mas era o mesmo marrom quente em
+     outra luminosidade. Em vez de ficar com dois cafés que se parecem e se
+     desencontram, ele aponta para o mesmo valor: foi a duplicação de cor fora do
+     token que deixou o azul do manifesto sobreviver à troca de 20/09. Os
+     `rgba(70, 44, 18, …)` espalhados pelo arquivo também saíram, viraram
+     `color-mix` sobre `--brown`, então mudar o café de novo é mudar esta linha.
+
+     Voltar ao anterior: --brown #462c12 e --brown-dark #201306. */
+  --brown: #261a15;
+  --brown-dark: var(--brown);
   --photo-border: rgba(8, 8, 7, 0.25);
   --gold: #c19d68;
 
@@ -360,7 +373,7 @@ button {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: rgba(70, 44, 18, 0.45);
+  background: color-mix(in srgb, var(--brown) 45%, transparent);
   color: var(--cream);
   font-size: 20px;
   line-height: 1;
@@ -374,7 +387,7 @@ button {
 }
 
 .gallery__arrow:hover {
-  background: rgba(70, 44, 18, 0.7);
+  background: color-mix(in srgb, var(--brown) 70%, transparent);
 }
 
 .gallery__arrow--prev {
@@ -397,7 +410,7 @@ button {
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: rgba(70, 44, 18, 0.92);
+  background: color-mix(in srgb, var(--brown) 92%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -619,7 +632,7 @@ button {
   inset: 0;
   z-index: 100;
   pointer-events: none;
-  background: rgba(70, 44, 18, 0.55);
+  background: color-mix(in srgb, var(--brown) 55%, transparent);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   opacity: 0;
@@ -659,7 +672,7 @@ button {
 
 .swatch.is-zoomed .swatch__color {
   transform: scale(4);
-  box-shadow: 0 6px 24px rgba(70, 44, 18, 0.35);
+  box-shadow: 0 6px 24px color-mix(in srgb, var(--brown) 35%, transparent);
 }
 
 /* O nome sobe junto, mas em tamanho de leitura em vez de escalado, senão o
@@ -783,7 +796,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(70, 44, 18, 0.38);
+  background: color-mix(in srgb, var(--brown) 38%, transparent);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -819,7 +832,7 @@ button {
 @media (hover: none) {
   .related__overlay {
     opacity: 1;
-    background: linear-gradient(to top, rgba(70, 44, 18, 0.55) 0%, rgba(70, 44, 18, 0) 55%);
+    background: linear-gradient(to top, color-mix(in srgb, var(--brown) 55%, transparent) 0%, color-mix(in srgb, var(--brown) 0%, transparent) 55%);
     align-items: flex-end;
     padding-bottom: 24px;
   }
@@ -871,7 +884,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(70, 44, 18, 0.38);
+  background: color-mix(in srgb, var(--brown) 38%, transparent);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -904,7 +917,7 @@ button {
 }
 
 .cta-card:hover {
-  background: rgba(70, 44, 18, 0.04);
+  background: color-mix(in srgb, var(--brown) 4%, transparent);
 }
 
 
@@ -1041,7 +1054,7 @@ button {
 @media (hover: none) {
   .catalogo__overlay {
     opacity: 1;
-    background: linear-gradient(to top, rgba(70, 44, 18, 0.55) 0%, rgba(70, 44, 18, 0) 55%);
+    background: linear-gradient(to top, color-mix(in srgb, var(--brown) 55%, transparent) 0%, color-mix(in srgb, var(--brown) 0%, transparent) 55%);
     align-items: flex-end;
     padding-bottom: 24px;
   }
@@ -1147,7 +1160,7 @@ a.home-photo:hover img,
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(70, 44, 18, 0.38);
+  background: color-mix(in srgb, var(--brown) 38%, transparent);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -1174,7 +1187,7 @@ a:focus-visible > .photo-overlay {
 @media (hover: none) {
   .photo-overlay {
     opacity: 1;
-    background: linear-gradient(to top, rgba(70, 44, 18, 0.55) 0%, rgba(70, 44, 18, 0) 55%);
+    background: linear-gradient(to top, color-mix(in srgb, var(--brown) 55%, transparent) 0%, color-mix(in srgb, var(--brown) 0%, transparent) 55%);
     align-items: flex-end;
     padding-bottom: 24px;
   }
@@ -1202,7 +1215,7 @@ a:focus-visible > .photo-overlay {
 }
 
 .home-cta:hover {
-  background: #5c3a17;
+  background: color-mix(in srgb, var(--brown) 88%, var(--cream));
 }
 
 .home-cta--light {
@@ -1681,7 +1694,7 @@ a:focus-visible > .photo-overlay {
 }
 
 .contato__redes a:hover {
-  background: rgba(70, 44, 18, 0.05);
+  background: color-mix(in srgb, var(--brown) 5%, transparent);
   border-color: var(--brown);
 }
 
@@ -1830,7 +1843,7 @@ a:focus-visible > .photo-overlay {
   flex: 0 0 34.7%;
   aspect-ratio: 436 / 575;
   overflow: hidden;
-  background: #24311f;
+  background: var(--brown);
 }
 
 /* Preto e branco como no Figma. O filtro mora aqui, e não no arquivo: a foto
@@ -2219,7 +2232,7 @@ a:focus-visible > .photo-overlay {
 
 .onde__alfinete-halo {
   inset: 0;
-  background: rgba(70, 44, 18, 0.20);
+  background: color-mix(in srgb, var(--brown) 20%, transparent);
 }
 
 /* O anel claro é o que separa o alfinete do desenho do mapa, que aqui embaixo

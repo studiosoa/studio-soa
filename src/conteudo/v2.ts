@@ -188,9 +188,10 @@ export const blocosDaHomeV2: { rotulo: string; href: string; foto: Foto }[] = [
 ];
 
 /* Catálogo: o cartão do fim deixa de falar da criadora e passa a falar do
-   estúdio. É a mesma decisão que atravessa a review inteira. */
+   estúdio. É a mesma decisão que atravessa a review inteira. Em 20/10 o Pedro
+   pediu "mude para studio": o cartão escreve o nome como o resto do site. */
 export const catalogoV2 = {
-  cartaoFinal: "conheça mais sobre o estúdio",
+  cartaoFinal: "conheça mais sobre o studio",
 };
 
 export const pecaV2 = {

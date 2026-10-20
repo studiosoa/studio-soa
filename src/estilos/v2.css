@@ -514,9 +514,15 @@
 
    O Pedro gostou da animação e achou rápida demais. Antes: 1,15s por bloco e
    0,55s entre um e outro. Agora: 2,4s por bloco e 1,1s entre eles, mais do
-   dobro nas duas medidas. A opacidade chega a cem em 55% do tempo (1,3s), e
-   não em 35% como antes, para o "estouro" também subir mais devagar, e não só
-   o assentamento depois dele. */
+   dobro nas duas medidas. A opacidade chega a cem em 55% do tempo, e não em
+   35% como antes, para o "estouro" também subir mais devagar, e não só o
+   assentamento depois dele.
+
+   Depois ele pediu "acelere essa animação em 40%": velocidade 1,4 vez maior,
+   ou seja, todas as durações divididas por 1,4. 2,4s por bloco viraram 1,7s
+   (a opacidade chega a cem em 0,94s), 1,1s entre blocos viraram 0,8s e o
+   atraso inicial de 0,35s virou 0,25s. O poema inteiro termina em uns 6s, e
+   não mais em uns 8s. */
 @keyframes manifesto-estoura {
   0% {
     opacity: 0;
@@ -534,8 +540,8 @@
 }
 
 .page--v2 .manifesto-poema.is-visible .manifesto-poema__texto p {
-  animation: manifesto-estoura 2.4s cubic-bezier(0.22, 0.8, 0.3, 1) both;
-  animation-delay: calc(0.35s + var(--i, 0) * 1.1s);
+  animation: manifesto-estoura 1.7s cubic-bezier(0.22, 0.8, 0.3, 1) both;
+  animation-delay: calc(0.25s + var(--i, 0) * 0.8s);
 }
 
 @media (prefers-reduced-motion: reduce) {

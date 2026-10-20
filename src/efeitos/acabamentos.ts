@@ -82,13 +82,38 @@ export function ligarAcabamentos(): () => void {
 
   const soltar: (() => void)[] = [];
 
+  // Com um zoom aberto, QUALQUER clique, em qualquer lugar da página, só fecha
+  // ele, e o clique morre aí: não chega ao que estava embaixo. Pedido do Pedro,
+  // 20/10: "toda vez que clicar fora fecha, e se clicar em cima de outro
+  // círculo não abre outro, só fecha esta instância".
+  //
+  // Medido antes de mexer, com o zoom aberto: clicar noutro quadradinho trocava
+  // o zoom para ele, clicar no espaço vazio do bloco não fechava nada, e o botão
+  // "comprar" recebia o clique. O bloco `.finish-block` é levantado acima da
+  // cortina (z-index 101 contra 100) para o disco ficar à vista, e com ele sobem
+  // os vizinhos e o espaço vazio entre eles, que ouviam o clique no lugar da
+  // cortina. Só a faixa fora do bloco fechava, e daí o "preciso clicar muito
+  // longe". O botão "comprar" também estava acima da cortina, e não investiguei
+  // por quê: a regra nova torna isso indiferente.
+  //
+  // A solução não mexe no empilhamento: escuta na fase de captura do documento,
+  // que vem antes de qualquer elemento, de modo que a camada em que o clique
+  // cair deixa de importar.
+  const aoClicarComZoomAberto = (e: MouseEvent) => {
+    if (!aberto) return;
+    e.stopPropagation();
+    e.preventDefault();
+    fechar();
+  };
+  document.addEventListener("click", aoClicarComZoomAberto, true);
+
   quadradinhos.forEach((quadradinho) => {
     quadradinho.setAttribute("aria-expanded", "false");
     const aoClicar = (e: Event) => {
       e.stopPropagation();
-      const estavaAberto = aberto === quadradinho;
-      fechar();
-      if (!estavaAberto) abrir(quadradinho);
+      // Só chega aqui com tudo fechado: se houvesse um aberto, o clique já teria
+      // sido tratado e engolido acima.
+      abrir(quadradinho);
     };
     quadradinho.addEventListener("click", aoClicar);
     soltar.push(() => quadradinho.removeEventListener("click", aoClicar));
@@ -111,6 +136,7 @@ export function ligarAcabamentos(): () => void {
 
   return () => {
     soltar.forEach((f) => f());
+    document.removeEventListener("click", aoClicarComZoomAberto, true);
     document.removeEventListener("keydown", aoTeclar);
     window.removeEventListener("scroll", aoRolar);
     window.removeEventListener("resize", fechar);

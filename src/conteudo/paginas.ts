@@ -109,8 +109,13 @@ export const sobre = {
     // primeira peça de design" e 2025. E a segunda frase ganhou o texto dela:
     // explorou / criação / experimentação, no lugar de experimentou / criar /
     // explorar a escrita.
+    //
+    // 27/10: o primeiro parágrafo volta a abrir com o nome dela, "Luiza Pessôa,
+    // meio gaúcha...", como já estava no resumo da home (pedido do Pedro). Sem
+    // negrito, porque a revisão listou os trechos que ficam em negrito e o nome
+    // não é um deles.
     paragrafos: [
-      "meio gaúcha, meio capixaba, cresceu apaixonada pelo mundo das artes.",
+      "Luiza Pessôa, meio gaúcha, meio capixaba, cresceu apaixonada pelo mundo das artes.",
       "Quando criança, desenhava pelas paredes de casa, e sempre de forma natural, <strong>explorou diferentes formas de expressão</strong>, criação de objetos, fantasias, experimentação da escrita, música, costura, fotografia… <strong>A arte sempre esteve presente independente de sua forma</strong>.",
       "“Durante a faculdade de arquitetura e urbanismo, me encantei com as <strong>reflexões sobre sociedade e espaço</strong> que o urbanismo apresenta, e também, de forma especial, pelo mundo de possibilidades que a arquitetura e o design proporcionam.”",
       "Com a oportunidade de participar de um concurso de design de mobiliário em 2024, nasceu a primeira peça de design, <strong>a MESA ONDA</strong> — logo surgiu o studio sôa em 2025, e desde então, as ideias e desenhos <strong>não param</strong> de acontecer.",

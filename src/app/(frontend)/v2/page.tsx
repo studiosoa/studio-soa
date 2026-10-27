@@ -40,6 +40,12 @@ export default function HomeV2() {
   return (
     <PaginaV2 modificador="page--home" classeDoMiolo="home" cabecalhoSobreposto>
       <section className="home-hero">
+        {/* O único h1 da home, para leitor de tela e busca: as outras rotas têm
+            um e esta tinha zero. Fica fora da vista (`so-leitor`) porque a
+            home abre direto na foto e o nome já está na marca do cabeçalho. */}
+        <h1 className="so-leitor">
+          Studio Sôa, design autoral de mobiliário e objetos
+        </h1>
         <Imagem className="home-hero__img" foto={home.capa} />
       </section>
 

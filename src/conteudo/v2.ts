@@ -253,8 +253,10 @@ export const ondeEncontrarV2 = {
 
 export const contatoV2 = {
   /* O rótulo acima do título "Ficou com alguma dúvida?" deixou de ser "Fale com
-     o estúdio" e virou só "studio", revisão de 14/10. */
-  rotulo: "studio",
+     o estúdio" e virou só "studio", revisão de 14/10. Sozinha a palavra não
+     dizia nada (relatório de 20/10, B2), e em 27/10 o Pedro pediu "fale com
+     studio": escrito "fale com o studio", como o resto do site escreve o nome. */
+  rotulo: "fale com o studio",
   lead: "Sobre peças, materiais, encomendas sob medida, prazos, produção ou dúvidas sobre o studio. Fique à vontade para escrever uma mensagem.",
 };
 

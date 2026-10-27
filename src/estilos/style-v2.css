@@ -39,7 +39,10 @@
   --green: var(--brown); /* era #2b3d2d, o verde do perfil */
   --frase-fundo: var(--brown-dark); /* era #202a36, o azul do manifesto */
 
-  --muted: #8a8078;
+  /* Era #8a8078: 3,36:1 sobre o creme e 3,86:1 sobre o branco, abaixo dos 4,5:1
+     que texto pequeno pede. #736960 dá 4,67:1 no creme e 5,36:1 no branco, e
+     continua mais claro que o `--swatch-label`. Relatório de 20/10, item A3. */
+  --muted: #736960;
   --spec: #4a423b;
   --swatch-label: #6d635a;
   --border: #ddd6cc;
@@ -965,6 +968,10 @@ button {
 /* No Figma a caixa da seta mede 34px e o traço do círculo transborda 1px para
    cada lado — o desenho em si é de 36px. Mantidos os dois separados. */
 .cta-card__arrow {
+  /* O traço do SVG é `currentColor`: era `#462C12` escrito dentro do componente,
+     o marrom antigo, e a varredura de cor não media `stroke`. Agora segue o
+     token, e trocar o marrom do site troca a seta junto. */
+  color: var(--brown);
   width: 34px;
   height: 34px;
   flex: 0 0 auto;
@@ -2061,9 +2068,11 @@ a:focus-visible > .photo-overlay {
    nenhuma regra aqui, o navegador não tinha motivo pra esconder nada.
    `.frase`, logo abaixo, já usava esse mesmo `:not(.is-visible)` e nunca teve
    este bug. */
-.perfil:not(.is-visible) .perfil__foto,
-.perfil:not(.is-visible) .perfil__texto > * {
-  opacity: 0;
+@media (scripting: enabled) {
+  .perfil:not(.is-visible) .perfil__foto,
+  .perfil:not(.is-visible) .perfil__texto > * {
+    opacity: 0;
+  }
 }
 
 .perfil.is-visible .perfil__foto {
@@ -2094,9 +2103,11 @@ a:focus-visible > .photo-overlay {
   to { opacity: 1; clip-path: inset(0%); }
 }
 
-.frase:not(.is-visible) .frase__img,
-.frase:not(.is-visible) .frase__texto {
-  opacity: 0;
+@media (scripting: enabled) {
+  .frase:not(.is-visible) .frase__img,
+  .frase:not(.is-visible) .frase__texto {
+    opacity: 0;
+  }
 }
 
 .frase.is-visible .frase__img {
@@ -2167,6 +2178,39 @@ a:focus-visible > .photo-overlay {
   }
 }
 
+/* Tela em pé, de 1001 a 1240px (o monitor vertical do Pedro, 20/10). A foto tem
+   uns 700px e o texto fica com o que sobra da largura: em 1008px sobravam 250px,
+   e os quatro parágrafos viravam uma coluna de trinta linhas ao lado de uma foto
+   com o dobro da largura. Aqui o bloco empilha, como já fazia até 1000px, e a
+   foto não passa de 720px, encostada à direita como no Figma.
+
+   O corte é pela proporção da janela, e não só pela largura: numa janela deitada
+   (um notebook de 1100px por 700) o texto ainda tem 530px e as duas colunas
+   funcionam. `max-aspect-ratio: 4/3` pega a tela em pé e a quase quadrada. */
+@media (min-width: 1001px) and (max-width: 1240px) and (max-aspect-ratio: 4 / 3) {
+  .sobre-studio {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 40px;
+    padding-top: 72px;
+  }
+
+  .sobre-studio__texto {
+    justify-content: flex-start;
+    padding: 0 var(--side-narrow);
+  }
+
+  .sobre-studio__bloco {
+    max-width: 542px;
+  }
+
+  .sobre-studio__foto {
+    flex: 0 0 auto;
+    height: auto;
+    width: min(100%, 720px);
+    align-self: flex-end;
+  }
+}
 
 /* ========== Onde encontrar ========== */
 /* Mesma armação da página de contato: imagem à esquerda, texto à direita. O que
@@ -2634,9 +2678,21 @@ a:focus-visible > .photo-overlay {
 
 /* Animações de rolagem */
 
+/* O apagado de base só vale quando há script para acender o elemento. Medido com
+   scripts desligados (relatório de 20/10, A5): título e parágrafos da Sobre e o
+   poema da home ficavam em opacidade 0 para sempre, o oposto da regra 8 do
+   CLAUDE.md: se o script falha, a falha deveria custar a animação, não o texto.
+   `scripting: enabled` é falso com JavaScript desligado, e aí o elemento aparece
+   parado, no lugar certo. O `transition` fica fora do bloco porque não esconde
+   nada. */
+@media (scripting: enabled) {
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
 [data-reveal] {
-  opacity: 0;
-  transform: translateY(24px);
   transition: opacity 1.4s ease, transform 1.4s ease;
 }
 
@@ -2890,4 +2946,20 @@ picture {
   .expo__pontos {
     display: none;
   }
+}
+
+/* Texto só para leitor de tela e busca: sai da vista e do fluxo, sem `display:
+   none` (que o leitor de tela também ignora). É o que sustenta o h1 da home, que
+   não tem título visível porque abre direto na foto. */
+.so-leitor {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
 }

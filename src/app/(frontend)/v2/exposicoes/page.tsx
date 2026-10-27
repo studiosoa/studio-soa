@@ -37,7 +37,10 @@ export default function ExposicoesV2() {
   return (
     <PaginaV2 modificador="page--expo-v2" comLightbox>
       <section className="expo-grade">
-        <h1 className="expo-grade__titulo">Exposições</h1>
+        {/* O título "Exposições" saiu da vista (pedido do Pedro, 27/10), mas a
+            página continua com o seu h1, para leitor de tela e busca: as quatro
+            mostras já dizem onde a pessoa está. */}
+        <h1 className="so-leitor">Exposições</h1>
 
         <div className="expo-grade__lista">
           {ordemDasExposicoesV2.map((chave) => {
@@ -96,13 +99,13 @@ export default function ExposicoesV2() {
 
                 <div className="expo-card__meta">
                   <h2 className="expo-card__nome">{nome}</h2>
-                  {/* O ano só aparece quando existir: inventar data de
-                      exposição é o tipo de erro que ninguém corrige depois.
-                      Os quatro chegaram na revisão de 14/10. */}
-                  <p className="expo-card__dados">
-                    {ano ? `${ano} · ` : ""}
-                    {expo.local}
-                  </p>
+                  {/* Só o ano (pedido do Pedro, 27/10): a cidade saiu da
+                      linha de baixo. Ela continua em `exposicoes.ts`, que
+                      outras partes do site leem. O ano só aparece quando
+                      existir: inventar data de exposição é o tipo de erro que
+                      ninguém corrige depois. Os quatro chegaram na revisão de
+                      14/10. */}
+                  {ano ? <p className="expo-card__dados">{ano}</p> : null}
                 </div>
               </article>
             );

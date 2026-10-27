@@ -111,6 +111,44 @@
   border-top: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
 }
 
+/* A entrada do cabeçalho, de cima para baixo e de opacidade zero a cem (pedido
+   do Pedro, 27/10): primeiro a logo desce e aparece, e a barra do menu vem logo
+   atrás, 0,14s depois. O deslocamento é curto, 18px, para ler como um
+   assentamento e não como um mergulho.
+
+   Sem `forwards` nem `both` de propósito. O cabeçalho tem `backdrop-filter`, que
+   já faz dele o "containing block" de filhos fixos, e um `transform` que sobrasse
+   no estado final faria o mesmo com a barra e com o que mora dentro dela. Assim,
+   terminada a animação o elemento volta ao estilo de sempre, sem transform
+   nenhum. Na barra, que tem atraso, o `backwards` segura o primeiro quadro
+   enquanto espera, e só ele. É `@keyframes`, e não posição inicial no CSS, pela
+   regra 8: se a animação não rodar, o menu fica onde deve. */
+@keyframes cabecalho-desce {
+  from {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page--v2 .site-header__brand {
+  animation: cabecalho-desce 0.9s cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+
+.page--v2 .site-nav {
+  animation: cabecalho-desce 0.9s cubic-bezier(0.22, 0.8, 0.3, 1) 0.14s backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page--v2 .site-header__brand,
+  .page--v2 .site-nav {
+    animation: none;
+  }
+}
+
 /* O botão "Arquivos 3D" fecha o que o contrato chamava de "Blocos 3D" e ninguém
    sabia o que era desde 03/08: não é página, é um atalho para fora. O contorno
    avisa que ele faz outra coisa que os itens ao lado.
@@ -137,7 +175,12 @@
 /* O menu da V2 tem mais itens que o antigo, então o intervalo de 80px entre
    eles faria a barra estourar a largura antes da hora. */
 .page--v2 .site-nav__list {
-  gap: 18px 44px;
+  /* O intervalo encolhe junto com a janela, até 1100px, e daí em diante fica nos
+     44px de sempre. Em 1008px de janela com barra de rolagem (993px de conteúdo)
+     a soma dava 784px contra 783px de espaço, e o botão "Arquivos 3D" caía numa
+     segunda fileira, engordando o cabeçalho de 114 para 152px (achado em 20/10
+     ao medir a janela vertical do Pedro). Com 4vw sobram 20px de folga. */
+  gap: 18px clamp(28px, 4vw, 44px);
   align-items: center;
 }
 
@@ -431,9 +474,15 @@
    apaga de cima para baixo, para o véu não descer até o pé da tela e a base da
    bandeja ficar limpa. Uma primeira versão, radial a partir do canto, deixava
    as últimas linhas do poema com 50% de marrom por cima da madeira da bandeja,
-   e a madeira clara e o texto claro quase se igualavam. A conta é a do texto
-   mais largo: ele acaba a uns 30% da largura em 1440 e a uns 37% em 1241, e o
-   véu ainda tem 55% ou mais de marrom nesses pontos. */
+   e a madeira clara e o texto claro quase se igualavam.
+
+   As paradas têm um piso em pixels (`max(55%, 600px)`) porque o texto não
+   cresce com a janela: ele tem uns 450px de altura e termina entre 530 e 560px
+   do topo da seção, e tem 400px de largura a partir dos 20px da borda. Em
+   porcentagem, uma janela baixa (1366x657, o notebook comum) apagava o véu em
+   361 a 552px e o fim do poema caía sobre a madeira sem proteção: a pior linha
+   dava 1,47:1 de contraste, contra os 4,5:1 mínimos (relatório de 20/10, A1).
+   Na janela larga o percentual ainda manda, e o resultado é o de antes. */
 .page--v2 .manifesto-poema::after {
   content: "";
   position: absolute;
@@ -442,12 +491,22 @@
   background: linear-gradient(
     to right,
     color-mix(in srgb, var(--brown) 78%, transparent) 0%,
-    color-mix(in srgb, var(--brown) 68%, transparent) 30%,
-    color-mix(in srgb, var(--brown) 36%, transparent) 46%,
-    transparent 64%
+    color-mix(in srgb, var(--brown) 68%, transparent) max(30%, 480px),
+    color-mix(in srgb, var(--brown) 36%, transparent) max(46%, 680px),
+    transparent max(64%, 920px)
   );
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 84%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 84%);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 max(55%, 600px),
+    transparent max(84%, 760px)
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 max(55%, 600px),
+    transparent max(84%, 760px)
+  );
 }
 
 .page--v2 .manifesto-poema__texto {
@@ -502,8 +561,12 @@
   transition: none;
 }
 
-.page--v2 .manifesto-poema:not(.is-visible) .manifesto-poema__texto p {
-  opacity: 0;
+/* Só com script: sem JavaScript o poema fica à vista, parado (relatório de 20/10,
+   A5). `scripting: enabled` é a mesma condição das outras entradas do site. */
+@media (scripting: enabled) {
+  .page--v2 .manifesto-poema:not(.is-visible) .manifesto-poema__texto p {
+    opacity: 0;
+  }
 }
 
 /* A entrada: cada bloco "estoura" de opacidade zero a cem, uma explosão leve.
@@ -550,66 +613,58 @@
   }
 }
 
-@media (max-width: 1240px) {
-  /* Abaixo de 1240px o poema não cabe ao lado da foto sem passar por cima dela.
-     Aqui o poema fica num bloco de café, com o texto claro como ela pediu, e a
-     foto inteira vem logo abaixo, sem texto por cima.
+/* O poema por cima da foto, de ponta a ponta, vale de 701px para cima, em tela
+   deitada e em tela em pé. Até 20/10 o layout empilhava abaixo de 1240px (texto
+   em um bloco de café e a foto embaixo), e numa tela vertical de ~1000px o texto
+   ocupava 40% da largura e os 60% da direita ficavam vazios: o Pedro disse que
+   "a responsividade não tá tão boa" e que na tela dele, que é vertical, fica
+   "horrorosa". O empilhado era um resto da versão em que a foto ficava numa
+   caixa à direita; com a foto de ponta a ponta e o véu em pixels, o poema cabe
+   em qualquer largura a partir dos 701px.
 
-     O degradê continua, só que na vertical: o topo da foto sobe por baixo do
-     bloco de café e some nele, pelo mesmo motivo de lá, para não haver uma
-     linha reta onde o texto acaba e a foto começa. */
+   Numa tela em pé a seção tem a altura da janela e a foto inteira cabe nela
+   (a foto tem 1856x2266, proporção 0,82, e uma janela de 1008x1220 tem 0,83). */
+
+@media (max-width: 700px) {
+  /* No celular a foto vira textura de fundo (pedido do Pedro, 20/10): "encurtar
+     tanto de informação que precisa rolar para chegar ao fim da página,
+     deixando a imagem como mais uma textura no fundo do que foco".
+
+     A foto cobre a seção inteira, o véu de marrom cobre a foto, e o texto fica
+     por cima dos dois. O véu tem 78% de marrom e um desfoque pequeno atrás dele,
+     então a bandeja aparece clara e esmaecida, sem competir com o poema. A
+     seção tem a altura só do texto, e a foto já não soma altura. */
   .page--v2 .manifesto-poema {
-    display: flex;
-    flex-direction: column;
     height: auto;
     min-height: 0;
-    margin-top: 0;
   }
 
   .page--v2 .manifesto-poema__texto {
-    position: static;
+    position: relative;
+    /* `top` e `left` da regra de tela larga continuam valendo em `relative` e
+       empurravam o texto 88px para baixo e 20px para a direita, cortando a
+       última linha. Zerar é o que o `static` fazia. */
+    top: 0;
+    left: 0;
+    z-index: 1;
     width: auto;
     max-width: 480px;
-    padding: 56px var(--side-narrow) 40px;
+    padding: 56px var(--side-narrow);
+  }
+
+  /* Coberta pela altura do poema, a foto ganha folga dos lados, não de cima
+     para baixo. A bandeja vai de 0 a 87% da largura da foto, então 30% deixa
+     ver a maior parte dela. */
+  .page--v2 .manifesto-poema__img {
+    object-position: 30% 50%;
   }
 
   .page--v2 .manifesto-poema::after {
-    display: none;
-  }
-
-  /* A bandeja no meio da faixa: em 16/10 o meio dela (69% da foto) cai a 89% de
-     deslocamento. O topo da foto sobe por baixo do bloco de café e some nele,
-     para não haver uma linha reta onde o texto acaba e a foto começa. */
-  .page--v2 .manifesto-poema__img {
-    position: static;
-    order: 2;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 10;
-    object-position: 50% 89%;
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      transparent 0%,
-      rgb(0 0 0 / 0.12) 10%,
-      rgb(0 0 0 / 0.4) 22%,
-      rgb(0 0 0 / 0.75) 36%,
-      #000 50%
-    );
-    mask-image: linear-gradient(
-      to bottom,
-      transparent 0%,
-      rgb(0 0 0 / 0.12) 10%,
-      rgb(0 0 0 / 0.4) 22%,
-      rgb(0 0 0 / 0.75) 36%,
-      #000 50%
-    );
-  }
-}
-
-@media (max-width: 700px) {
-  .page--v2 .manifesto-poema__img {
-    aspect-ratio: 4 / 3;
-    object-position: 50% 99%;
+    background: color-mix(in srgb, var(--brown) 78%, transparent);
+    -webkit-mask-image: none;
+    mask-image: none;
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
   }
 }
 
@@ -646,6 +701,13 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+
+  /* Preto e branco nas três, sempre (pedido do Pedro, 27/10: a Luiza reclamou do
+     tom diferente entre as fotos). É filtro de CSS, e não três arquivos
+     convertidos, de propósito: o bloco "Peças" sorteia a foto a cada visita, e
+     com o filtro qualquer foto que entrar na lista, hoje ou depois, já sai em
+     preto e branco, sem ninguém precisar lembrar de gerar a versão cinza. */
+  filter: grayscale(1);
   transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
@@ -719,13 +781,19 @@
 
 /* O título da compra direta é pequeno e em caixa baixa, como ela desenhou
    ("COMPRE DIRETO COM O STUDIO" em corpo de rótulo), e não um título de página
-   em corpo grande. É o <h1>, mas lê como rótulo. */
+   em corpo grande. É o <h1>, mas lê como rótulo.
+
+   27/10, pedido do Pedro: "aumenta um pouco o compre direto com o studio e
+   coloca ele em negrito". De 15px e peso 400 para 19px e peso 700. Era o ponto B1
+   do relatório de 20/10: o título lia mais fraco que o parágrafo logo abaixo
+   (17px, peso 300). O espaçamento entre letras caiu de 2,2px para 1,8px: em
+   negrito e em corpo maior, o mesmo espaço largo pesaria. */
 .page--v2 .onde-secao__titulo {
   margin: 0 0 22px;
   font-family: var(--font-body);
-  font-weight: 400;
-  font-size: 15px;
-  letter-spacing: 2.2px;
+  font-weight: 700;
+  font-size: 19px;
+  letter-spacing: 1.8px;
   text-transform: lowercase;
   color: var(--dark);
 }
@@ -765,6 +833,14 @@
 .page--v2 .onde-secao .onde__endereco p {
   margin-left: auto;
   margin-right: auto;
+}
+
+/* O nome da loja em negrito (pedido do Pedro, 27/10, junto com o título). A regra
+   `.onde__loja` do `style-v2.css` não chegava aqui: `.onde__endereco p`, mais
+   específica, ganhava e deixava o nome em 16px e peso 300, igual às linhas do
+   endereço. Esta ganha das duas. */
+.page--v2 .onde-secao .onde__endereco .onde__loja {
+  font-weight: 700;
 }
 
 /* A entrada é a mesma de sempre das páginas de texto: cada bloco sobe e aparece
@@ -1042,6 +1118,15 @@
   margin-bottom: 14px;
   font-size: 22px;
   letter-spacing: 1px;
+}
+
+/* A foto do Contato não entra mais da esquerda (`entra-esquerda`, no
+   `style-v2.css`). Ela usa o `data-reveal`, o mesmo efeito da Sobre e das
+   Exposições: sobe 24px e aparece de zero a cem, devagar (pedido do Pedro,
+   27/10). O `animation: none` fica só aqui, na V2, porque a regra de lá ainda
+   serve à página antiga. */
+.page--v2 .contato__foto {
+  animation: none;
 }
 
 /* Nada aqui, de propósito.

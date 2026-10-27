@@ -41,12 +41,12 @@ export default function CartaoChamada({
             width="34"
             height="34"
             rx="17"
-            stroke="#462C12"
+            stroke="currentColor"
             strokeWidth="2"
           />
           <path
             d="M14.849 12.4206L20.8576 17.5709L14.849 23.5795"
-            stroke="#462C12"
+            stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"

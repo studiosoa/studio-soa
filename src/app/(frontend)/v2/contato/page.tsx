@@ -22,7 +22,11 @@ export default function ContatoV2() {
   return (
     <PaginaV2 modificador="page--contato">
       <section className="contato">
-        <div className="contato__foto">
+        {/* A foto sobe e aparece com o mesmo efeito do resto do site
+            (`data-reveal`: opacidade de zero a cem e 24px de subida), em vez de
+            entrar da esquerda (pedido do Pedro, 27/10: "parecido com a página
+            de exposições e de sobre, de baixo para cima, bem leve"). */}
+        <div className="contato__foto" data-reveal>
           <Imagem foto={contato.foto} />
         </div>
 

@@ -82,10 +82,23 @@ export default function ExposicoesV2() {
             });
 
             const abre = conf.abrePor ?? 0;
-            const fotos = [
+            const girada = [
               ...ajustadas.slice(abre),
               ...ajustadas.slice(0, abre),
             ];
+
+            // Se a mostra tem `ordem`, ela manda: cada foto vai para a posição do
+            // primeiro trecho que casar com o caminho dela, e as que não casam
+            // com nenhum ficam no fim, na ordem em que estavam.
+            const posicao = (foto: (typeof girada)[number]) => {
+              const i = conf.ordem?.findIndex((trecho) =>
+                foto.src.includes(trecho),
+              );
+              return i === undefined || i < 0 ? Number.MAX_SAFE_INTEGER : i;
+            };
+            const fotos = conf.ordem
+              ? [...girada].sort((a, b) => posicao(a) - posicao(b))
+              : girada;
 
             return (
               <article className="expo-card" key={expo.chave}>

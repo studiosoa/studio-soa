@@ -132,23 +132,26 @@ export function fundoDoCartaoDePeca(slug: string): string {
   return foto ? foto.src : "";
 }
 
-/* O bloco "Peças" sempre foi a Mesa Onda, e o Pedro já pediu pra trocar mais
-   de uma vez sem eu ter feito. Pedido de 23/09: em vez de outra foto fixa,
-   sorteada uma vez a cada visita, entre as outras peças (a Mesa Onda fica de
-   fora de propósito, é justamente dela que ele quer distância aqui). Cada uma
-   já tem uma foto de cartão pensada pra esse enquadramento em pé, a mesma que
-   aparece no catálogo, então não precisou de foto nova nenhuma.
- *
- * Mora aqui, não em `BlocosDaHome.tsx`, pelo mesmo motivo do resto deste
- * arquivo: conteúdo fica no conteúdo, componente só lê. */
-export const fotosDoBlocoDePecas: Foto[] = pecas
-  .filter((peca) => peca.slug !== "mesa-onda")
-  .map((peca) => peca.cartao);
+/* O bloco "Peças" já foi a Mesa Onda fixa, depois uma peça sorteada a cada
+   visita (pedido de 23/09), e agora é a foto em preto e branco da pasta de ordem
+   da Luiza (`1 INICIAL/BW1.jpg`, a tigela sobre o pedestal): ela mandou as três
+   dos blocos já convertidas, na ordem Peças, Sobre, Exposições, para acabar com a
+   diferença de tom entre as fotos. A lista continua sendo uma lista, e o
+   componente continua sorteando: com uma foto só, sorteia sempre a mesma, e
+   voltar a variar é pôr mais fotos em preto e branco aqui. */
+export const fotosDoBlocoDePecas: Foto[] = [
+  {
+    src: "/assets/img/home/bw-pecas.jpg",
+    alt: "Tigela de madeira sobre um pedestal branco, em preto e branco",
+    recorte: "50% 45%",
+  },
+];
 
 /* Os três blocos colados que fecham a home, no lugar da faixa do catálogo.
    Sem borda e sem espaço entre eles, a pedido dela: menos cliques para chegar
-   às três páginas que importam. As fotos são reaproveitadas do que já existe no
-   projeto, nenhuma foto nova entrou. */
+   às três páginas que importam. Em 27/10 as três passaram a ser as fotos em
+   preto e branco que a Luiza mandou na pasta de ordem (`1 INICIAL`: BW1, BW2 e
+   BW3, nessa ordem). As versões coloridas continuam no projeto. */
 export const blocosDaHomeV2: { rotulo: string; href: string; foto: Foto }[] = [
   {
     rotulo: "Peças",
@@ -166,8 +169,8 @@ export const blocosDaHomeV2: { rotulo: string; href: string; foto: Foto }[] = [
     // que fala da designer e do trabalho juntos, então a foto precisa mostrar os
     // dois. A anterior tinha só ela, e antes dela só as peças.
     foto: {
-      src: "/assets/img/home/luiza-pecas.jpg",
-      alt: "Luiza Pessôa sentada com as peças do Studio Sôa em volta",
+      src: "/assets/img/home/bw-sobre.jpg",
+      alt: "Luiza Pessôa sentada com as peças do Studio Sôa em volta, em preto e branco",
       recorte: "50% 42%",
     },
   },
@@ -180,8 +183,8 @@ export const blocosDaHomeV2: { rotulo: string; href: string; foto: Foto }[] = [
     // em pé; só o horizontal é ajustado aqui, para a faixa de madeira da borda
     // esquerda da foto (uns 9% dela) ficar de fora do quadro.
     foto: {
-      src: "/assets/img/home/exposicoes-bloco.jpg",
-      alt: "Mesa Onda verde diante de um sofá curvo, no Pavilhão Espírito Santo da Bienal da Arquitetura Brasileira",
+      src: "/assets/img/home/bw-exposicoes.jpg",
+      alt: "Mesa Onda diante de um sofá curvo, no Pavilhão Espírito Santo da Bienal da Arquitetura Brasileira, em preto e branco",
       recorte: "100% 50%",
     },
   },
@@ -318,6 +321,9 @@ export const ordemDasExposicoesV2 = [
  *   e não sobra folga vertical para deslizar. As versões em `zoom/` são as fotos
  *   inteiras, e várias são retrato: nelas a folga volta.
  * - `abrePor`: qual foto abre o quadro, contando DEPOIS de `antes` e `esconder`.
+ * - `ordem`: ordem completa da mostra, por trecho do caminho de cada foto. Existe
+ *   porque `abrePor` só gira a lista, e girar não troca duas vizinhas de lugar
+ *   (Club&Casa, 27/10). Foto que não casar com nenhum trecho vai para o fim.
  *
  * Mostra que não estiver aqui usa todas as fotos, na ordem do conteúdo, sem
  * recorte. */
@@ -335,6 +341,7 @@ export const mostraV2: Record<
     esconder?: string[];
     ajustes?: AjusteDeFoto[];
     abrePor?: number;
+    ordem?: string[];
   }
 > = {
   casacor: { nome: "Casacor Espírito Santo" },
@@ -381,6 +388,11 @@ export const mostraV2: Record<
      altura para descer o enquadramento. */
   "club-casa": {
     nome: "Prêmio Club&Casa Autoral 6",
+    // Ordem da Luiza (pasta `4 EXPOSIÇÕES/PREMIO CLUB&CASA`, 27/10): ela sentada,
+    // depois a Luiza com o troféu diante do telão (`club-casa-2`) e por último a
+    // foto da festa de premiação (`club-casa-1`). Antes eram as duas últimas
+    // trocadas.
+    ordem: ["club-casa-luiza", "club-casa-2", "club-casa-1"],
     antes: [
       {
         src: "/assets/img/exposicoes/club-casa-luiza.jpg",

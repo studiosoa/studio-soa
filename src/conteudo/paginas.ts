@@ -96,9 +96,14 @@ export const sobre = {
   // Sem foto de topo desde 16/09: era o mesmo arquivo da home, então a Sobre
   // abria repetindo a primeira tela do site. A página começa no verde.
   perfil: {
+    // 27/10: a pasta de ordem da Luiza (`3 SOBRE`) indica `IMG_5414.jpg`, ela de pé
+    // com a mão sobre o Banquinho, no lugar do retrato fechado de antes
+    // (`luiza-perfil.jpg`, que continua na pasta). A caixa é mais larga que a
+    // foto, então o recorte põe o rosto no alto.
     foto: {
-      src: "/assets/img/sobre/luiza-perfil.jpg",
-      alt: "Retrato de Luiza Pessôa",
+      src: "/assets/img/sobre/luiza-perfil-2.jpg",
+      alt: "Retrato de Luiza Pessôa em pé, com a mão sobre o Banquinho Elis",
+      recorte: "50% 8%",
     } as Foto,
     nome: "Luiza Pessôa",
     // O negrito faz parte do texto, então os parágrafos guardam HTML. No Payload
@@ -162,10 +167,13 @@ export const contato = {
   // composição feita para quadro em pé. No celular o quadro é deitado, o `cover`
   // mostra a largura inteira e sobra parede vazia à esquerda dela. O recorte de
   // celular é a mesma foto centrada nela.
+  // 27/10: a pasta de ordem da Luiza (`5 CONTATO`) traz `1.jpg`, outro quadro da
+  // mesma sessão da foto de antes. O corte do celular, que é só o rosto e os
+  // ombros, saiu desse mesmo quadro para as duas versões não destoarem.
   foto: {
-    src: "/assets/img/home/designer.jpg",
+    src: "/assets/img/contato/luiza.jpg",
     alt: "Luiza Pessôa, do Studio Sôa",
-    celular: { src: "/assets/img/contato/luiza-mobile.jpg", ate: 900 },
+    celular: { src: "/assets/img/contato/luiza-mobile-2.jpg", ate: 900 },
   } as Foto,
   rotulo: "Fale com o estúdio",
   titulo: "Ficou com alguma dúvida?",

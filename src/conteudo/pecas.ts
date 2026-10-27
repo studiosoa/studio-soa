@@ -7,6 +7,12 @@ import type { Peca } from "@/tipos/conteudo";
 // já leem deste formato e não de HTML escrito à mão.
 //
 // DUVIDAS #4: falta a sexta peça, Espelho Linha, que ainda não tem foto.
+//
+// Ordem das fotos de cada peça (27/10): vem da pasta `Fotos_Ordem_Studio` da
+// Luiza, onde o número no nome do arquivo é a posição na galeria e "FOTO
+// PRINCIPAL" marca a foto que representa a peça (a do catálogo e a do topo da
+// página). Cada galeria abaixo é exatamente a lista dela, na ordem dela. O que
+// não está na lista saiu da galeria, mas o arquivo continua na pasta de imagens.
 
 const ACABAMENTOS_MESA_ONDA = [
   {
@@ -74,6 +80,14 @@ export const pecas: Peca[] = [
         recorte: "50% 62%",
       },
       {
+        // A foto principal da peça, terceira na lista da Luiza. Era só o topo da
+        // página, e agora também abre a galeria nesse lugar.
+        tipo: "foto",
+        src: "/assets/img/mesa-onda/hero.jpg",
+        alt: "Mesa Onda com xícara e livro sobre o tampo",
+        recorte: "50% 45%",
+      },
+      {
         tipo: "foto",
         src: "/assets/img/mesa-onda/detalhe-03.jpg",
         alt: "Mesa Onda, detalhe do acabamento",
@@ -121,7 +135,7 @@ export const pecas: Peca[] = [
     acabamentos: ACABAMENTOS_MESA_ONDA,
     proxima: "banquinho-elis",
     fotoDaProxima: {
-      src: "/assets/img/pecas/banquinho-elis.jpg",
+      src: "/assets/img/banquinho-elis/principal.jpg",
       alt: "Banquinho Elis",
       recorte: "50% 65%",
     },
@@ -133,14 +147,19 @@ export const pecas: Peca[] = [
     nome: "Banquinho Elis",
     titulo: "Banquinho Elis",
     artigo: "o",
+    // `principal.jpg` é a segunda da lista da Luiza e a "FOTO PRINCIPAL" do
+    // Banquinho, a versão que ela passou na IA para melhorar a qualidade. Tem
+    // 1024x1536, menos que o original de 1696x2528 (`foto-1.jpg`, que continua
+    // aqui): se o topo da página ficar mole em tela grande, é só voltar o `src`.
     capa: {
-      src: "/assets/img/banquinho-elis/foto-1.jpg",
+      src: "/assets/img/banquinho-elis/principal.jpg",
       alt: "Banquinho Elis sobre pedestal",
       recorte: "50% 65%",
     },
     cartao: {
-      src: "/assets/img/banquinho-elis/hero.jpg",
+      src: "/assets/img/banquinho-elis/principal.jpg",
       alt: "Banquinho Elis",
+      recorte: "50% 50%",
     },
     descricao: [
       "Elis propõe uma linguagem robusta e escultural para o tradicional banquinho. Uma peça versátil e de presença, refletindo o design brasileiro contemporâneo por meio de sua forte presença escultórica. Seu desenho explora equilíbrio, contrastes, proporção e materialidade para criar um objeto funcional e visualmente marcante.",
@@ -149,15 +168,15 @@ export const pecas: Peca[] = [
     galeria: [
       {
         tipo: "foto",
-        src: "/assets/img/banquinho-elis/foto-1.jpg",
-        alt: "Banquinho Elis sobre pedestal",
-        recorte: "50% 65%",
-      },
-      {
-        tipo: "foto",
         src: "/assets/img/banquinho-elis/hero.jpg",
         alt: "Banquinho Elis, vista completa da peça",
         recorte: "50% 62%",
+      },
+      {
+        tipo: "foto",
+        src: "/assets/img/banquinho-elis/principal.jpg",
+        alt: "Banquinho Elis sobre pedestal",
+        recorte: "50% 65%",
       },
       {
         tipo: "foto",
@@ -166,9 +185,14 @@ export const pecas: Peca[] = [
         recorte: "50% 50%",
       },
       {
+        // O vídeo que a Luiza indicou (`4 (ve se a qualidade ta muito ruim ou da
+        // pra usar).mov`). Tem só 464x640, e o Pedro decidiu em 27/10 manter
+        // mesmo assim: o que ela indicou vale, e a qualidade baixa é conhecida.
+        // Foi regravado de HEVC para H.264 na mesma resolução e a 60 quadros, sem
+        // áudio. O clipe de antes (`banquinho-elis.mp4`) continua na pasta.
         tipo: "video",
-        src: "/assets/video/banquinho-elis.mp4",
-        poster: "/assets/img/banquinho-elis/video-poster.jpg",
+        src: "/assets/video/banquinho-elis-luiza.mp4",
+        poster: "/assets/img/banquinho-elis/video-poster-luiza.jpg",
         descricao: "Vídeo curto do Banquinho Elis",
       },
     ],
@@ -222,15 +246,23 @@ export const pecas: Peca[] = [
         recorte: "50% 62%",
       },
       {
+        // Terceira da lista da Luiza: bule e xícaras sobre a bandeja, vista de
+        // cima. Entrou no lugar de `mesa-posta.jpg` (xícara, prato e vaso), que
+        // não está na lista e saiu da galeria.
         tipo: "foto",
-        src: "/assets/img/bandeja-elis/mesa-posta.jpg",
-        alt: "Bandeja Elis posta com xícara, prato e um pequeno vaso, vista de cima",
-        recorte: "50% 45%",
+        src: "/assets/img/bandeja-elis/mesa-cha.jpg",
+        alt: "Bandeja Elis com bule e xícaras de chá, vista de cima",
+        recorte: "50% 50%",
       },
       {
+        // O vídeo que a Luiza indicou (`4 (só se a qualidade ficar boa).MOV`), 4K
+        // e curto, no lugar do clipe de antes (`bandeja-elis.mp4`, que continua
+        // em `public/assets/video`). O original é HEVC, que Firefox e muito
+        // Chrome não tocam, então foi regravado em H.264, 1080x1920, sem áudio
+        // (a galeria toca todos mudos).
         tipo: "video",
-        src: "/assets/video/bandeja-elis.mp4",
-        poster: "/assets/img/bandeja-elis/video-poster.jpg",
+        src: "/assets/video/bandeja-elis-luiza.mp4",
+        poster: "/assets/img/bandeja-elis/video-poster-luiza.jpg",
         descricao: "Vídeo curto da Bandeja Elis",
       },
     ],
@@ -243,7 +275,7 @@ export const pecas: Peca[] = [
     ],
     proxima: "adorno-balanco",
     fotoDaProxima: {
-      src: "/assets/img/pecas/adorno-balanco-catalogo.jpg",
+      src: "/assets/img/adorno-balanco/principal.jpg",
       alt: "Adorno Balanço",
       recorte: "50% 45%",
     },
@@ -288,16 +320,14 @@ export const pecas: Peca[] = [
         recorte: "50% 40%",
       },
       {
+        // Quarta da lista da Luiza. A foto da sombra de folhas (`sombra.jpg`) e o
+        // vídeo do Espelho não estão na lista dela e saíram da galeria; os
+        // arquivos continuam em `public/assets`. Voltar qualquer um é colar o
+        // bloco de volta aqui.
         tipo: "foto",
-        src: "/assets/img/espelho-miudo-graudo/sombra.jpg",
-        alt: "Espelho Miúdo apoiado sobre superfície clara, com sombras de folhas",
-        recorte: "50% 45%",
-      },
-      {
-        tipo: "video",
-        src: "/assets/video/espelho-miudo-graudo.mp4",
-        poster: "/assets/img/espelho-miudo-graudo/video-poster.jpg",
-        descricao: "Vídeo curto do Espelho Miúdo e Graúdo",
+        src: "/assets/img/espelho-miudo-graudo/detalhe-02.jpg",
+        alt: "Espelho Miúdo e Graúdo, detalhe da borda sobre o pedestal",
+        recorte: "50% 50%",
       },
     ],
     ficha: [
@@ -325,29 +355,28 @@ export const pecas: Peca[] = [
     artigo: "o",
     nome: "Adorno Balanço",
     titulo: "Adorno Balanço",
+    // A "FOTO PRINCIPAL" do Adorno é a terceira da lista da Luiza: a tigela no
+    // meio do pedestal. Antes o topo era `hero.jpg` e o catálogo usava um recorte
+    // ampliado (`adorno-balanco-catalogo.jpg`); os dois arquivos continuam aqui.
     capa: {
-      src: "/assets/img/adorno-balanco/hero.jpg",
+      src: "/assets/img/adorno-balanco/principal.jpg",
       alt: "Adorno Balanço sobre pedestal",
-      recorte: "50% 71%",
+      recorte: "50% 47%",
     },
     cartao: {
-      // Recorte próprio do catálogo: no Figma essa foto entra ampliada dentro
-      // do quadro, não no enquadramento cheio das outras.
-      src: "/assets/img/pecas/adorno-balanco-catalogo.jpg",
+      src: "/assets/img/adorno-balanco/principal.jpg",
       alt: "Adorno Balanço",
+      recorte: "50% 45%",
     },
     descricao: [
       "Balanço nasceu da observação dos pequenos movimentos. Uma peça esculpida de forma artesanal, reflete o equilíbrio entre forma e matéria.",
       "Adorno, centro de mesa, fruteira ou porta trecos, Balanço é uma peça versátil que traz informação e curiosidade por explorar seu movimento e equilíbrio. Dependendo da forma como é apoiado, muda sua presença, sua função e a maneira como ocupa o espaço.",
       "Uma escultura para desacelerar o olhar.",
     ],
+    // Ordem da Luiza: vídeo, contexto, principal, inclinada, detalhe. O vídeo
+    // sobe para a frente em `v2/pecas/[slug]/page.tsx` (`videoPrimeiro`), então
+    // aqui ele fica no fim da lista, como sempre.
     galeria: [
-      {
-        tipo: "foto",
-        src: "/assets/img/pecas/adorno-balanco-catalogo.jpg",
-        alt: "Adorno Balanço sobre pedestal",
-        recorte: "50% 42%",
-      },
       {
         tipo: "foto",
         src: "/assets/img/adorno-balanco/contexto.jpg",
@@ -356,15 +385,21 @@ export const pecas: Peca[] = [
       },
       {
         tipo: "foto",
-        src: "/assets/img/adorno-balanco/detalhe.jpg",
-        alt: "Adorno Balanço, detalhe da madeira",
-        recorte: "40% 45%",
+        src: "/assets/img/adorno-balanco/principal.jpg",
+        alt: "Adorno Balanço sobre pedestal, visto de frente",
+        recorte: "50% 28%",
       },
       {
         tipo: "foto",
-        src: "/assets/img/adorno-balanco/pedestal.jpg",
-        alt: "Adorno Balanço sobre pedestal, visto de frente",
-        recorte: "50% 28%",
+        src: "/assets/img/adorno-balanco/inclinada.jpg",
+        alt: "Adorno Balanço inclinado sobre o pedestal",
+        recorte: "50% 55%",
+      },
+      {
+        tipo: "foto",
+        src: "/assets/img/adorno-balanco/detalhe.jpg",
+        alt: "Adorno Balanço, detalhe da madeira",
+        recorte: "40% 45%",
       },
       {
         tipo: "video",

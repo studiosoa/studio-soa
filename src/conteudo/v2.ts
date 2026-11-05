@@ -1,4 +1,5 @@
 import type { Foto } from "@/tipos/conteudo";
+import catalogo from "../../content/catalogo.json";
 import { pecas } from "./pecas";
 
 // Conteúdo que só a V2 usa, saído da review de 20/09 com a Luiza.
@@ -85,12 +86,18 @@ export const MENSAGEM_PADRAO = "Olá! Vim pelo site do Studio Sôa.";
    a ordem da V1 também. A página de peça calcula a "próxima" a partir desta
    lista, então o atalho do rodapé segue a ordem nova sozinho, sem precisar
    reescrever os campos `proxima` de cada peça. */
-export const ordemDasPecasV2 = [
-  "mesa-onda",
-  "espelho-miudo-graudo",
-  "bandeja-elis",
-  "banquinho-elis",
-  "adorno-balanco",
+
+/* Desde 05/11 a lista mora em `content/catalogo.json` e é editada no painel do
+   Tina, arrastando as peças. Cada item guarda o caminho do arquivo da peça, e o
+   slug sai do nome dele. Uma peça que existe e não está na lista vai para o
+   fim, e uma entrada da lista sem arquivo é ignorada: criar uma peça nova ou
+   apagar uma antiga sem mexer na lista não derruba nem esconde nada do site. */
+const slugsDoCatalogo = catalogo.pecas.map((item) =>
+  item.peca.split("/").pop()!.replace(/\.json$/, ""),
+);
+export const ordemDasPecasV2: string[] = [
+  ...slugsDoCatalogo.filter((slug) => pecas.some((p) => p.slug === slug)),
+  ...pecas.map((p) => p.slug).filter((slug) => !slugsDoCatalogo.includes(slug)),
 ];
 
 /** As três peças que aparecem na home, lado a lado. As três primeiras da ordem nova. */
@@ -107,7 +114,7 @@ export const pecasDaHomeV2 = ordemDasPecasV2.slice(0, 3);
  * foram calibrados a olho em tela, e que continuam valendo seja qual for a
  * ordem de amanhã. */
 export const fotoGrandeDaPeca: Record<string, Foto> = Object.fromEntries(
-  pecas.map((peca) => [peca.proxima, peca.fotoDaProxima]),
+  pecas.map((peca) => [peca.slug, peca.fotoDeAtalho ?? peca.cartao]),
 );
 
 /**
@@ -207,10 +214,10 @@ export const pecaV2 = {
   /* "Conheça o nosso catálogo" vira "Mais peças" só aqui. A Exposições mantém o
      rótulo antigo até o Pedro dizer o contrário. */
   atalhoDoCatalogo: "Mais peças",
-  /* Peças em que o vídeo abre a galeria em vez de fechar. Hoje só o Adorno
-     Balanço, por pedido dela na review. Escrito como lista para a próxima peça
-     com vídeo não exigir mexer em componente. */
-  videoPrimeiro: ["adorno-balanco"],
+  /* Peças em que o vídeo abre a galeria em vez de fechar. Vem do campo
+     "O vídeo abre a galeria" de cada peça no painel; hoje só o Adorno Balanço,
+     por pedido dela na review. */
+  videoPrimeiro: pecas.filter((p) => p.videoPrimeiro).map((p) => p.slug),
 };
 
 export const sobreV2 = {

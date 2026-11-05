@@ -111,6 +111,15 @@ export interface Peca {
   proxima: string;
   /** Foto da peça seguinte no rodapé, com recorte próprio. */
   fotoDaProxima: Foto;
+  /**
+   * A foto DESTA peça quando ela aparece como atalho "próxima peça" no fim das
+   * outras páginas. Antes cada peça guardava a foto da peça seguinte
+   * (`fotoDaProxima`), e a V2 virava a relação do avesso para achar esta; no CMS
+   * é um campo da própria peça. Sem ele, cai no `cartao`.
+   */
+  fotoDeAtalho?: Foto;
+  /** Quando verdadeiro, o vídeo abre a galeria em vez de fechá-la. */
+  videoPrimeiro?: boolean;
   /** Fundo do cartão "conheça o nosso catálogo" no rodapé. */
   fundoDoCatalogo: string;
 }

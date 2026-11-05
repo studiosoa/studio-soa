@@ -1,0 +1,165 @@
+{
+  "nome": "Mesa Onda",
+  "titulo": "Mesa onda",
+  "artigo": "a",
+  "capa": {
+    "src": "/assets/img/mesa-onda/hero.jpg",
+    "alt": "Mesa Onda em ambiente com xícara e livro sobre o tampo"
+  },
+  "cartao": {
+    "src": "/assets/img/pecas/mesa-onda.jpg",
+    "alt": "Mesa Onda"
+  },
+  "fotoDeAtalho": {
+    "src": "/assets/img/mesa-onda/detalhe-02.jpg",
+    "alt": "Mesa Onda",
+    "recorte": "50% 35%"
+  },
+  "descricao": [
+    {
+      "texto": "De forma refinada com traços minimalistas e esculturais, sua curvatura em aço carbono faz referência às ondas do mar e tubos procurados pelos surfistas; Suas linhas retas e topo circular em madeira, resgatam o movimento de boiar e flutuar. A mescla entre as formas naturais e contemporâneas confere presença e cria diálogo com os espaços em que a peça é inserida."
+    },
+    {
+      "texto": "Ganhadora do prêmio Club&Casa Autoral 6, Mesa Onda foi a primeira peça criada no Studio Sôa, e participou de mostras como DW! (Design Week São Paulo) e BAB (Bienal da Arquitetura Brasileira)."
+    }
+  ],
+  "galeria": [
+    {
+      "src": "/assets/img/mesa-onda/detalhe-02.jpg",
+      "alt": "Mesa Onda, vista completa da peça",
+      "recorte": "50% 40%",
+      "_template": "foto"
+    },
+    {
+      "src": "/assets/img/mesa-onda/detalhe-01.jpg",
+      "alt": "Mesa Onda, outro ângulo",
+      "recorte": "50% 62%",
+      "_template": "foto"
+    },
+    {
+      "src": "/assets/img/mesa-onda/hero.jpg",
+      "alt": "Mesa Onda com xícara e livro sobre o tampo",
+      "recorte": "50% 45%",
+      "_template": "foto"
+    },
+    {
+      "src": "/assets/img/mesa-onda/detalhe-03.jpg",
+      "alt": "Mesa Onda, detalhe do acabamento",
+      "recorte": "50% 45%",
+      "_template": "foto"
+    },
+    {
+      "src": "/assets/img/mesa-onda/ambiente-01.jpg",
+      "alt": "Mesa Onda em ambiente completo",
+      "recorte": "45% 68%",
+      "_template": "foto"
+    },
+    {
+      "src": "/assets/img/mesa-onda/ambiente-02.jpg",
+      "alt": "Duas Mesas Onda escuras em uma sala com sofá curvo e planta",
+      "recorte": "50% 85%",
+      "_template": "foto"
+    },
+    {
+      "src": "/assets/img/mesa-onda/ambiente-03.jpg",
+      "alt": "Mesa Onda em tom areia ao lado do sofá, com poltrona e luminária ao fundo",
+      "recorte": "50% 85%",
+      "_template": "foto"
+    }
+  ],
+  "videoPrimeiro": false,
+  "ficha": [
+    {
+      "rotulo": "Medidas",
+      "valores": [
+        "Largura: 40cm",
+        "Profundidade: 40cm",
+        "Altura: 62cm"
+      ]
+    },
+    {
+      "rotulo": "Material",
+      "valores": [
+        "Estrutura de serralheria em aço carbono",
+        "Tampo em madeira maciça"
+      ]
+    }
+  ],
+  "acabamentos": [
+    {
+      "rotulo": "Acabamentos de serralheria/aço carbono",
+      "itens": [
+        {
+          "nome": "Areia",
+          "cor": "#d9c9b3"
+        },
+        {
+          "nome": "Argila",
+          "cor": "#e07e67"
+        },
+        {
+          "nome": "Branco",
+          "cor": "#ffffff"
+        },
+        {
+          "nome": "Bronze",
+          "cor": "#767264"
+        },
+        {
+          "nome": "Café",
+          "cor": "#200b07"
+        },
+        {
+          "nome": "Chumbo",
+          "cor": "#3d3831"
+        },
+        {
+          "nome": "Cinza",
+          "cor": "#a6a5a0"
+        },
+        {
+          "nome": "Corda",
+          "cor": "#9b9186"
+        },
+        {
+          "nome": "Ocre",
+          "cor": "#a98450"
+        },
+        {
+          "nome": "Ouro",
+          "textura": "/assets/img/acabamentos/ouro.png"
+        },
+        {
+          "nome": "Preto",
+          "cor": "#000000"
+        },
+        {
+          "nome": "Sálvia",
+          "cor": "#435e54"
+        }
+      ]
+    },
+    {
+      "rotulo": "Acabamentos de madeira maciça",
+      "itens": [
+        {
+          "nome": "Ébano",
+          "textura": "/assets/img/acabamentos/ebano.png"
+        },
+        {
+          "nome": "Mel",
+          "textura": "/assets/img/acabamentos/mel.png"
+        },
+        {
+          "nome": "Nozes",
+          "textura": "/assets/img/acabamentos/nozes.png"
+        },
+        {
+          "nome": "Tauari",
+          "textura": "/assets/img/acabamentos/tauari.png"
+        }
+      ]
+    }
+  ],
+  "whatsapp": "554699090117"
+}

@@ -1,0 +1,71 @@
+{
+  "nome": "Banquinho Elis",
+  "titulo": "Banquinho Elis",
+  "artigo": "o",
+  "capa": {
+    "src": "/assets/img/banquinho-elis/principal.jpg",
+    "alt": "Banquinho Elis sobre pedestal",
+    "recorte": "50% 65%"
+  },
+  "cartao": {
+    "src": "/assets/img/banquinho-elis/principal.jpg",
+    "alt": "Banquinho Elis",
+    "recorte": "50% 50%"
+  },
+  "fotoDeAtalho": {
+    "src": "/assets/img/banquinho-elis/principal.jpg",
+    "alt": "Banquinho Elis",
+    "recorte": "50% 65%"
+  },
+  "descricao": [
+    {
+      "texto": "Elis propõe uma linguagem robusta e escultural para o tradicional banquinho. Uma peça versátil e de presença, refletindo o design brasileiro contemporâneo por meio de sua forte presença escultórica. Seu desenho explora equilíbrio, contrastes, proporção e materialidade para criar um objeto funcional e visualmente marcante."
+    },
+    {
+      "texto": "Além da volumetria, como elemento de destaque, o tampo recebe inserções de pedras naturais provenientes de recortes que seriam descartados, unindo estética, sustentabilidade e identidade brasileira, valorizando o reaproveitamento no topo da peça como \"a cereja do bolo\". Transforma o que seria resíduo em elemento de destaque."
+    }
+  ],
+  "galeria": [
+    {
+      "src": "/assets/img/banquinho-elis/hero.jpg",
+      "alt": "Banquinho Elis, vista completa da peça",
+      "recorte": "50% 62%",
+      "_template": "foto"
+    },
+    {
+      "src": "/assets/img/banquinho-elis/principal.jpg",
+      "alt": "Banquinho Elis sobre pedestal",
+      "recorte": "50% 65%",
+      "_template": "foto"
+    },
+    {
+      "src": "/assets/img/banquinho-elis/foto-2.jpg",
+      "alt": "Banquinho Elis, detalhe da pedra natural no tampo",
+      "recorte": "50% 50%",
+      "_template": "foto"
+    },
+    {
+      "src": "/assets/video/banquinho-elis-luiza.mp4",
+      "poster": "/assets/img/banquinho-elis/video-poster-luiza.jpg",
+      "descricao": "Vídeo curto do Banquinho Elis",
+      "_template": "video"
+    }
+  ],
+  "videoPrimeiro": false,
+  "ficha": [
+    {
+      "rotulo": "Medidas",
+      "valores": [
+        "Diâmetro: 35cm",
+        "Altura: 18cm"
+      ]
+    },
+    {
+      "rotulo": "Material",
+      "valores": [
+        "Madeira maciça freijó",
+        "Pedra natural"
+      ]
+    }
+  ]
+}

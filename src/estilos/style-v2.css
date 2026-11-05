@@ -1720,6 +1720,58 @@ a:focus-visible > .photo-overlay {
   overflow: hidden;
 }
 
+/* Página 404. Mesma tipografia do título e do texto de apoio do contato, e o
+   "404" grande no tom da linha do formulário (`--border`), para ser desenho e
+   não alarme. */
+
+.nao-encontrada {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 58vh;
+  padding-top: 72px;
+  padding-bottom: 96px;
+}
+
+.nao-encontrada__numero {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(96px, 16vw, 200px);
+  line-height: 1;
+  color: var(--border);
+}
+
+.nao-encontrada__titulo {
+  margin: 0 0 18px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(30px, 3vw, 42px);
+  line-height: 1.15;
+  color: var(--dark);
+  text-transform: lowercase;
+}
+
+.nao-encontrada__lead {
+  margin: 0 0 40px;
+  max-width: 470px;
+  color: var(--spec);
+  font-size: 16px;
+  line-height: 28px;
+  font-weight: 300;
+}
+
+.nao-encontrada__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.nao-encontrada__acoes .btn {
+  min-width: 230px;
+}
+
 /* Redes */
 
 .contato__redes {

@@ -1,18 +1,13 @@
-import Link from "next/link";
-import Pagina from "@/componentes/Pagina";
+import type { Metadata } from "next";
 
-export default function NaoEncontrada() {
-  return (
-    <Pagina>
-      <section className="description">
-        <div className="description__inner wrap">
-          <h1>Essa página não existe</h1>
-          <p>
-            O endereço pode ter mudado. O caminho de volta está no menu, ou{" "}
-            <Link href="/pecas">direto no catálogo</Link>.
-          </p>
-        </div>
-      </section>
-    </Pagina>
-  );
+import NaoEncontrada from "@/componentes/v2/NaoEncontrada";
+
+// `notFound()` chamado dentro do site, como uma peça que não existe. O
+// endereço que não existe em lugar nenhum cai em `app/global-not-found.tsx`.
+export const metadata: Metadata = {
+  title: "Página não encontrada",
+};
+
+export default function NaoEncontradaDoSite() {
+  return <NaoEncontrada />;
 }

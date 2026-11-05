@@ -5,6 +5,12 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
 
+  // Liga `app/global-not-found.tsx`, a 404 de endereço que não existe em
+  // lugar nenhum (`/xyz`). O Next ainda marca isto como experimental.
+  experimental: {
+    globalNotFound: true,
+  },
+
   // As fotos vêm de `public/assets/`, servidas como arquivo estático. Quando o
   // Payload assumir a mídia, as URLs passam a sair do banco e é aqui que entra
   // o `remotePatterns` do domínio de upload.

@@ -1,0 +1,79 @@
+{
+  "nome": "Adorno Balanço",
+  "titulo": "Adorno Balanço",
+  "artigo": "o",
+  "capa": {
+    "src": "/assets/img/adorno-balanco/principal.jpg",
+    "alt": "Adorno Balanço sobre pedestal",
+    "recorte": "50% 47%"
+  },
+  "cartao": {
+    "src": "/assets/img/adorno-balanco/principal.jpg",
+    "alt": "Adorno Balanço",
+    "recorte": "50% 45%"
+  },
+  "fotoDeAtalho": {
+    "src": "/assets/img/adorno-balanco/principal.jpg",
+    "alt": "Adorno Balanço",
+    "recorte": "50% 45%"
+  },
+  "descricao": [
+    {
+      "texto": "Balanço nasceu da observação dos pequenos movimentos. Uma peça esculpida de forma artesanal, reflete o equilíbrio entre forma e matéria."
+    },
+    {
+      "texto": "Adorno, centro de mesa, fruteira ou porta trecos, Balanço é uma peça versátil que traz informação e curiosidade por explorar seu movimento e equilíbrio. Dependendo da forma como é apoiado, muda sua presença, sua função e a maneira como ocupa o espaço."
+    },
+    {
+      "texto": "Uma escultura para desacelerar o olhar."
+    }
+  ],
+  "galeria": [
+    {
+      "src": "/assets/img/adorno-balanco/contexto.jpg",
+      "alt": "Adorno Balanço, vista completa da peça",
+      "recorte": "60% 45%",
+      "_template": "foto"
+    },
+    {
+      "src": "/assets/img/adorno-balanco/principal.jpg",
+      "alt": "Adorno Balanço sobre pedestal, visto de frente",
+      "recorte": "50% 28%",
+      "_template": "foto"
+    },
+    {
+      "src": "/assets/img/adorno-balanco/inclinada.jpg",
+      "alt": "Adorno Balanço inclinado sobre o pedestal",
+      "recorte": "50% 55%",
+      "_template": "foto"
+    },
+    {
+      "src": "/assets/img/adorno-balanco/detalhe.jpg",
+      "alt": "Adorno Balanço, detalhe da madeira",
+      "recorte": "40% 45%",
+      "_template": "foto"
+    },
+    {
+      "src": "/assets/video/adorno-balanco.mp4",
+      "poster": "/assets/img/adorno-balanco/video-poster.jpg",
+      "descricao": "Vídeo curto do Adorno Balanço",
+      "_template": "video"
+    }
+  ],
+  "videoPrimeiro": true,
+  "ficha": [
+    {
+      "rotulo": "Medidas",
+      "valores": [
+        "Diâmetro: 25cm",
+        "Altura: 15cm"
+      ]
+    },
+    {
+      "rotulo": "Material",
+      "valores": [
+        "Madeira maciça freijó"
+      ]
+    }
+  ]
+}

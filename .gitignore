@@ -11,3 +11,8 @@ next-env.d.ts
 
 .DS_Store
 Thumbs.db
+
+# TinaCMS: o painel e o cliente gerado saem de `tinacms build`, não vão para o Git.
+# `tina/tina-lock.json` NÃO é ignorado: a TinaCloud usa para saber o schema.
+public/admin/
+tina/__generated__/

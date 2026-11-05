@@ -1,0 +1,15 @@
+# Build do Site Studio Sôa na Netlify.
+#
+# O comando mora aqui, versionado, e não só no painel da Netlify. Ele gera o
+# painel de edição (`tinacms build`, que fala com a TinaCloud) e depois o site.
+# Precisa de `NEXT_PUBLIC_TINA_CLIENT_ID` e `TINA_TOKEN` nas variáveis de
+# ambiente da Netlify. Localmente, `npm run build` segue sendo só `next build`.
+#
+# Node 24: o `tinacms` pede 22 ou 24, e foi no 24 que o site foi testado.
+# Se a Netlify não tiver o 24, trocar por "22".
+
+[build]
+  command = "npm run build:netlify"
+
+[build.environment]
+  NODE_VERSION = "24"

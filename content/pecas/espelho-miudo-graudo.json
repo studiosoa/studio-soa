@@ -1,0 +1,78 @@
+{
+  "nome": "Espelho Miúdo e Graúdo",
+  "titulo": "Espelho miúdo e graúdo",
+  "artigo": "o",
+  "capa": {
+    "src": "/assets/img/espelho-miudo-graudo/hero.jpg",
+    "alt": "Espelho Miúdo e Graúdo sobre pedestal",
+    "recorte": "50% 45%"
+  },
+  "cartao": {
+    "src": "/assets/img/pecas/espelho-miudo-graudo.jpg",
+    "alt": "Espelho Miúdo e Graúdo"
+  },
+  "fotoDeAtalho": {
+    "src": "/assets/img/pecas/espelho-miudo-graudo.jpg",
+    "alt": "Espelho Miúdo e Graúdo",
+    "recorte": "50% 57%"
+  },
+  "descricao": [
+    {
+      "texto": "Em madeira maciça, os espelhos Miúdo e Graúdo brincam com o contraste das formas clássicas e traços limpos. Transformando um objeto do cotidiano em uma escultura de parede."
+    },
+    {
+      "texto": "Uma peça pensada para refletir os espaços, e quem os vive."
+    }
+  ],
+  "galeria": [
+    {
+      "src": "/assets/img/espelho-miudo-graudo/hero.jpg",
+      "alt": "Espelho Miúdo e Graúdo, vista completa da peça",
+      "recorte": "50% 40%",
+      "_template": "foto"
+    },
+    {
+      "src": "/assets/img/espelho-miudo-graudo/detalhe.jpg",
+      "alt": "Espelho Miúdo e Graúdo, detalhe do acabamento em madeira",
+      "recorte": "50% 50%",
+      "_template": "foto"
+    },
+    {
+      "src": "/assets/img/espelho-miudo-graudo/ambiente.jpg",
+      "alt": "Espelho Miúdo e Graúdo em ambiente",
+      "recorte": "50% 40%",
+      "_template": "foto"
+    },
+    {
+      "src": "/assets/img/espelho-miudo-graudo/detalhe-02.jpg",
+      "alt": "Espelho Miúdo e Graúdo, detalhe da borda sobre o pedestal",
+      "recorte": "50% 50%",
+      "_template": "foto"
+    }
+  ],
+  "videoPrimeiro": false,
+  "ficha": [
+    {
+      "rotulo": "Miúdo",
+      "valores": [
+        "Altura: 25cm",
+        "Largura: 25cm",
+        "Profundidade: 5cm"
+      ]
+    },
+    {
+      "rotulo": "Graúdo",
+      "valores": [
+        "Altura: 60cm",
+        "Largura: 60cm",
+        "Profundidade: 5cm"
+      ]
+    },
+    {
+      "rotulo": "Material",
+      "valores": [
+        "Madeira maciça freijó"
+      ]
+    }
+  ]
+}

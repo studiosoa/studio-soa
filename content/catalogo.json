@@ -1,0 +1,19 @@
+{
+  "pecas": [
+    {
+      "peca": "content/pecas/mesa-onda.json"
+    },
+    {
+      "peca": "content/pecas/espelho-miudo-graudo.json"
+    },
+    {
+      "peca": "content/pecas/bandeja-elis.json"
+    },
+    {
+      "peca": "content/pecas/banquinho-elis.json"
+    },
+    {
+      "peca": "content/pecas/adorno-balanco.json"
+    }
+  ]
+}

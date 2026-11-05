@@ -1,0 +1,74 @@
+{
+  "nome": "Bandeja Elis",
+  "titulo": "Bandeja Elis",
+  "artigo": "a",
+  "capa": {
+    "src": "/assets/img/bandeja-elis/hero.jpg",
+    "alt": "Bandeja Elis sendo apresentada nas mãos",
+    "recorte": "50% 62%"
+  },
+  "cartao": {
+    "src": "/assets/img/pecas/bandeja-elis.jpg",
+    "alt": "Bandeja Elis",
+    "recorte": "50% 58%"
+  },
+  "fotoDeAtalho": {
+    "src": "/assets/img/pecas/bandeja-elis.jpg",
+    "alt": "Bandeja Elis",
+    "recorte": "50% 72%"
+  },
+  "descricao": [
+    {
+      "texto": "Com destaque para o contraste entre formas, a Bandeja Elis combina linhas retas e arredondadas preenchendo os espaços de forma funcional e bela."
+    },
+    {
+      "texto": "O rebaixo cria uma borda que protege os elementos apoiados na bandeja, funcionando tanto para compor e decorar como também para servir."
+    },
+    {
+      "texto": "Uma peça simples com presença."
+    }
+  ],
+  "galeria": [
+    {
+      "src": "/assets/img/bandeja-elis/detalhe.jpg",
+      "alt": "Bandeja Elis, vista completa da peça",
+      "recorte": "50% 62%",
+      "_template": "foto"
+    },
+    {
+      "src": "/assets/img/bandeja-elis/hero.jpg",
+      "alt": "Bandeja Elis, detalhe da madeira",
+      "recorte": "50% 62%",
+      "_template": "foto"
+    },
+    {
+      "src": "/assets/img/bandeja-elis/mesa-cha.jpg",
+      "alt": "Bandeja Elis com bule e xícaras de chá, vista de cima",
+      "recorte": "50% 50%",
+      "_template": "foto"
+    },
+    {
+      "src": "/assets/video/bandeja-elis-luiza.mp4",
+      "poster": "/assets/img/bandeja-elis/video-poster-luiza.jpg",
+      "descricao": "Vídeo curto da Bandeja Elis",
+      "_template": "video"
+    }
+  ],
+  "videoPrimeiro": false,
+  "ficha": [
+    {
+      "rotulo": "Medidas",
+      "valores": [
+        "Largura: 40cm",
+        "Profundidade: 30cm",
+        "Altura: 5cm"
+      ]
+    },
+    {
+      "rotulo": "Material",
+      "valores": [
+        "Madeira maciça freijó"
+      ]
+    }
+  ]
+}

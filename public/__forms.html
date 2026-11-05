@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>Formulário de contato</title>
+  </head>
+  <body>
+    <!--
+      Esqueleto do formulário de contato, só para a Netlify enxergar os campos.
+
+      A Netlify descobre formulários lendo o HTML do site na hora do deploy, e
+      o formulário de verdade (components/FormContato.tsx) só existe depois que
+      o navegador carrega o JavaScript, então ela não o encontra sozinha. Este
+      arquivo é o que ela lê. Ninguém abre esta página.
+
+      REGRAS, para não quebrar em silêncio:
+      - O "name" do formulário e os "name" dos campos têm que ser os mesmos do
+        FormContato.tsx: contato, nome, email, mensagem, subject, campo-extra.
+        Campo novo no formulário exige o mesmo campo aqui, senão a Netlify
+        descarta o valor.
+      - O campo "email" tem que se chamar email: é ele que a Netlify usa como
+        endereço de resposta no e-mail que ela manda.
+      - O FormContato.tsx envia para /__forms.html (este arquivo). Se o nome
+        do arquivo mudar, mude lá também.
+    -->
+    <form
+      name="contato"
+      method="POST"
+      data-netlify="true"
+      data-netlify-honeypot="campo-extra"
+      hidden
+    >
+      <input type="hidden" name="form-name" value="contato" />
+      <input type="hidden" name="subject" value="Mensagem pelo site do Studio Sôa" />
+      <input type="text" name="nome" />
+      <input type="email" name="email" />
+      <textarea name="mensagem"></textarea>
+      <input type="text" name="campo-extra" />
+    </form>
+  </body>
+</html>

@@ -1675,6 +1675,51 @@ a:focus-visible > .photo-overlay {
   line-height: 1.6;
 }
 
+/* Enviando, enviado e erro. A confirmação ocupa o lugar do formulário, com a
+   mesma fonte dos títulos, para não parecer um aviso de sistema. */
+.form .btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.form__confirmacao {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  outline: none;
+}
+
+.form__resposta {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.3;
+  color: var(--dark);
+}
+
+.form__erro {
+  margin: 0;
+  color: var(--dark);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.form__erro a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* A armadilha de spam: fora da tela, sem ocupar espaço. Não é `display: none`
+   porque robôs mais espertos ignoram campo que está escondido assim. */
+.form__extra {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 /* Redes */
 
 .contato__redes {

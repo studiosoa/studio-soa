@@ -112,13 +112,13 @@ export default defineConfig({
           // "Fase 4" do plano: a edição visual é um passo posterior e opcional.
         },
         fields: [
-          { type: "string", name: "nome", label: "Nome da peça", required: true },
           {
             type: "string",
-            name: "titulo",
-            label: "Título da página",
+            name: "nome",
+            label: "Nome da peça",
             description:
-              "Quando é diferente do nome. Vazio usa o nome, e é o que quase sempre se quer.",
+              "É o título grande da página da peça, o nome no catálogo, a aba do navegador e o texto das mensagens de WhatsApp e e-mail.",
+            required: true,
           },
           {
             type: "string",

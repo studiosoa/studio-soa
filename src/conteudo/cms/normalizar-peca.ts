@@ -32,7 +32,6 @@ export interface FotoDoCms {
 
 export interface PecaDoCms {
   nome: string;
-  titulo?: string | null;
   artigo: string;
   capa: FotoDoCms;
   cartao: FotoDoCms;
@@ -115,7 +114,10 @@ export function normalizarPeca(slug: string, dados: PecaDoCms): Peca {
   const peca: Peca = {
     slug,
     nome: dados.nome,
-    titulo: vazio(dados.titulo) ? dados.nome : dados.titulo,
+    // O título grande da página é o próprio nome. Antes havia um campo separado
+    // que só diferia em maiúscula ("Mesa onda"), o que o CSS já apaga ao pôr o
+    // título em minúsculas, e dois campos para o mesmo texto confundiam quem edita.
+    titulo: dados.nome,
     artigo: dados.artigo === "o" ? "o" : "a",
     capa: foto(dados.capa),
     cartao: foto(dados.cartao),

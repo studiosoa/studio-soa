@@ -1,4 +1,12 @@
 {
   "nome": "Peça de teste Chrome",
-  "artigo": "a"
+  "artigo": "a",
+  "capa": {
+    "src": "/assets/img/mesa-onda/hero.jpg",
+    "alt": "teste"
+  },
+  "cartao": {
+    "src": "/assets/img/mesa-onda/ambiente-01.jpg",
+    "alt": "teste"
+  }
 }

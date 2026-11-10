@@ -33,8 +33,11 @@ export interface FotoDoCms {
 export interface PecaDoCms {
   nome: string;
   artigo: string;
-  capa: FotoDoCms;
-  cartao: FotoDoCms;
+  // O painel deixa salvar sem estas duas fotos (só `nome` e `artigo` são
+  // obrigatórios lá), então aqui elas podem faltar. Sem as duas a peça é
+  // rascunho: ver `pecaPublicavel`.
+  capa?: FotoDoCms | null;
+  cartao?: FotoDoCms | null;
   descricao?: { texto?: string | null }[] | null;
   galeria?:
     | {
@@ -67,6 +70,20 @@ export interface PecaDoCms {
 }
 
 const vazio = (v: unknown): v is Vazio => v === undefined || v === null || v === "";
+
+/** Uma peça com as duas fotos que as telas exigem: a do topo e a do catálogo. */
+export type PecaPublicavel = PecaDoCms & { capa: FotoDoCms; cartao: FotoDoCms };
+
+/**
+ * Uma peça só entra no site com as duas fotos. Sem elas as telas quebram: em
+ * 10/11/2026 um arquivo só com `nome` derrubou o `next build` inteiro, porque o
+ * painel deixa salvar a peça sem foto (é o caso do Espelho Linha, que ainda não
+ * tem). Em vez de falhar, a peça fica de fora, sem página e sem quadro no
+ * catálogo, e entra sozinha no build seguinte ao salvar as duas fotos.
+ */
+export function pecaPublicavel(d: PecaDoCms): d is PecaPublicavel {
+  return !vazio(d.capa?.src) && !vazio(d.cartao?.src);
+}
 
 function foto(f: FotoDoCms): Foto {
   const saida: Foto = { src: f.src, alt: f.alt ?? "" };
@@ -110,7 +127,7 @@ function bloco(
  * nome do arquivo, não de um campo: é o que faz uma peça nova criada no painel
  * ganhar o endereço certo sem ninguém digitar a mesma coisa duas vezes.
  */
-export function normalizarPeca(slug: string, dados: PecaDoCms): Peca {
+export function normalizarPeca(slug: string, dados: PecaPublicavel): Peca {
   const peca: Peca = {
     slug,
     nome: dados.nome,

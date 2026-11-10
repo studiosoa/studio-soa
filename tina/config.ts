@@ -136,13 +136,16 @@ export default defineConfig({
             type: "object",
             name: "capa",
             label: "Foto do topo da página",
+            description:
+              "Obrigatória: sem ela e sem a foto do catálogo, a peça não aparece no site.",
             fields: camposDeFoto(),
           },
           {
             type: "object",
             name: "cartao",
             label: "Foto no catálogo",
-            description: "A que aparece no quadrado da peça na página Peças.",
+            description:
+              "A que aparece no quadrado da peça na página Peças. Obrigatória: sem ela e sem a foto do topo, a peça não aparece no site.",
             fields: camposDeFoto(),
           },
           {

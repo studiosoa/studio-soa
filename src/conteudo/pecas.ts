@@ -1,6 +1,6 @@
 import type { Peca } from "@/tipos/conteudo";
 import { arquivosDePecas } from "./cms/__gerado__/indice-pecas";
-import { normalizarPeca } from "./cms/normalizar-peca";
+import { normalizarPeca, pecaPublicavel } from "./cms/normalizar-peca";
 
 // Coleção `pecas`. Desde 05/11/2026 o dado não mora mais aqui: cada peça é um
 // arquivo em `content/pecas/<slug>.json`, e quem edita é o painel do Tina (`/admin`).
@@ -21,8 +21,9 @@ import { normalizarPeca } from "./cms/normalizar-peca";
 // DUVIDAS #4: falta a sexta peça, Espelho Linha, que ainda não tem foto. Com o CMS
 // ela deixa de ser tarefa de código: é criar a peça no painel.
 
-export const pecas: Peca[] = arquivosDePecas.map(({ slug, dados }) =>
-  normalizarPeca(slug, dados),
+// Peça sem a foto do topo e a do catálogo é rascunho e não entra: ver `pecaPublicavel`.
+export const pecas: Peca[] = arquivosDePecas.flatMap(({ slug, dados }) =>
+  pecaPublicavel(dados) ? [normalizarPeca(slug, dados)] : [],
 );
 
 export function acharPeca(slug: string): Peca | undefined {

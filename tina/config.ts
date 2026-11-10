@@ -45,21 +45,26 @@ function camposDeFoto(): TinaField[] {
     {
       type: "string",
       name: "recorte",
-      label: "Enquadramento",
+      label: "Parte da foto que aparece",
       description:
-        "Onde a foto é cortada dentro do quadro: horizontal e vertical, em porcentagem. 50% 50% é o centro, 50% 0% mostra o topo, 50% 100% mostra a base.",
+        "A foto é cortada para caber no quadro. Aqui você diz qual parte fica: 50% 50% é o centro, 50% 0% é o topo, 50% 100% é a base. Se trocar a foto, confira no site como ficou.",
     },
     {
       type: "image",
       name: "zoom",
       label: "Foto inteira, para o zoom",
       description: "Versão sem corte, a que abre quando a pessoa amplia. Opcional.",
+      // Escondido em 10/11/2026: nenhuma foto do site usa, e quem edita não precisa
+      // dele. O campo continua no esquema para o dado não se perder se alguém usar.
+      ui: { component: "hidden" },
     },
     {
       type: "object",
       name: "celular",
       label: "Foto alternativa para celular",
       description: "Só se o enquadramento do computador não funcionar no celular.",
+      // Escondido pelo mesmo motivo do `zoom`: nenhuma foto usa.
+      ui: { component: "hidden" },
       fields: [
         { type: "image", name: "src", label: "Foto" },
         {
@@ -106,6 +111,9 @@ export default defineConfig({
           filename: {
             slugify: (valores) => slugify(valores?.nome || ""),
           },
+          // Sem apagar pelo painel: um clique errado tira a peça do site. Criar e
+          // editar ficam livres. Para apagar de verdade, pelo Git.
+          allowedActions: { delete: false },
           // Sem `router` de propósito: ele liga a edição visual, em que o painel
           // abre a página ao lado do formulário, e as telas ainda não usam o gancho
           // `useTina` que isso exige. Com ele o formulário não aparece. Ver
@@ -137,7 +145,7 @@ export default defineConfig({
             name: "capa",
             label: "Foto do topo da página",
             description:
-              "Obrigatória: sem ela e sem a foto do catálogo, a peça não aparece no site.",
+              "Sem esta foto e sem a do catálogo, a peça fica como rascunho e não aparece no site. O painel deixa salvar, mas a peça só entra no ar com as duas.",
             fields: camposDeFoto(),
           },
           {
@@ -145,7 +153,7 @@ export default defineConfig({
             name: "cartao",
             label: "Foto no catálogo",
             description:
-              "A que aparece no quadrado da peça na página Peças. Obrigatória: sem ela e sem a foto do topo, a peça não aparece no site.",
+              "A que aparece no quadrado da peça na página Peças. Sem ela e sem a foto do topo, a peça fica como rascunho e não aparece no site.",
             fields: camposDeFoto(),
           },
           {
@@ -154,6 +162,9 @@ export default defineConfig({
             label: "Foto no atalho 'próxima peça'",
             description:
               "A que aparece quando esta peça é a seguinte no fim da página de outra. Vazio usa a foto do catálogo.",
+            // Escondido em 10/11/2026: é detalhe de direção de arte que a Luiza não
+            // precisa mexer. Os valores que já existem ficam guardados no arquivo.
+            ui: { component: "hidden" },
             fields: camposDeFoto(),
           },
           {
@@ -226,9 +237,9 @@ export default defineConfig({
           {
             type: "boolean",
             name: "videoPrimeiro",
-            label: "O vídeo abre a galeria",
+            label: "Mostrar o vídeo antes das fotos",
             description:
-              "Ligado, o vídeo vai para o primeiro lugar. Desligado, fica no último.",
+              "Ligado, o vídeo abre a galeria. Desligado, ele vem por último.",
           },
           {
             type: "object",
@@ -249,7 +260,7 @@ export default defineConfig({
           {
             type: "object",
             name: "acabamentos",
-            label: "Acabamentos escolhíveis",
+            label: "Acabamentos (só da Mesa Onda)",
             description: "Só a Mesa Onda tem. Deixe vazio nas outras peças.",
             list: true,
             ui: { itemProps: (item) => ({ label: String(item?.rotulo || "Bloco") }) },
@@ -285,12 +296,16 @@ export default defineConfig({
             label: "WhatsApp só desta peça",
             description:
               "Com código do país e DDD, sem símbolos: 5527999999999. Vazio usa o do estúdio.",
+            // Escondidos em 10/11/2026: são ajustes raros, e trocar um número aqui
+            // muda para onde vão as mensagens dos clientes. Valores já gravados ficam.
+            ui: { component: "hidden" },
           },
           {
             type: "string",
             name: "bloco3d",
             label: "Link do bloco 3D só desta peça",
             description: "Vazio usa a pasta compartilhada do estúdio.",
+            ui: { component: "hidden" },
           },
         ],
       },

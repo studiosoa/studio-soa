@@ -1,0 +1,20 @@
+{
+  "nome": "Casacor Espírito Santo",
+  "ano": "2026",
+  "local": "Vitória, ES",
+  "descricao": [
+    "CASACOR é a maior e mais completa mostra de arquitetura, design de interiores e paisagismo das Américas. Nesta edição, no edifício importante para a história da cidade, Hotel Porto/Canto do Sol, Espelho Miúdo compôs o espaço “Sala de TV de Volta”, projeto da arquiteta mineira Débora Bicalho."
+  ],
+  "fotos": [
+    {
+      "src": "/assets/img/exposicoes/casacor-1.jpg",
+      "alt": "Espelho Miúdo compondo a Sala de TV de Volta, na Casacor ES",
+      "zoom": "/assets/img/exposicoes/zoom/casacor-1.jpg"
+    },
+    {
+      "src": "/assets/img/exposicoes/casacor-2.jpg",
+      "alt": "Parede do ambiente da Casacor Espírito Santo com a marcação da mostra",
+      "zoom": "/assets/img/exposicoes/zoom/casacor-2.jpg"
+    }
+  ]
+}

@@ -1,5 +1,7 @@
 import type { Foto } from "@/tipos/conteudo";
 import catalogo from "../../content/catalogo.json";
+import ondeEncontrarJson from "../../content/onde-encontrar.json";
+import { normalizarOndeEncontrar } from "./cms/normalizar-onde-encontrar";
 import { pecas } from "./pecas";
 
 // Conteúdo que só a V2 usa, saído da review de 20/09 com a Luiza.
@@ -230,29 +232,30 @@ export const sobreV2 = {
 
 /* Onde encontrar, depois da revisão de 14/10: só texto, sem foto, tudo centrado,
    em duas partes. A primeira (fundo bege) é a compra direta com o estúdio; a
-   segunda (fundo branco) é a loja. O título de página deixou de ser "As peças
-   estão na Ozlo Home Brand": quem abre a página vê primeiro o caminho principal,
-   e o nome da loja entra na segunda parte. */
-export const ondeEncontrarV2 = {
-  /* A compra direta com o estúdio vem primeiro, e a loja física vem depois como
-     segunda opção. Texto exato dela. */
-  atendimento: {
-    titulo: "compre direto com o studio",
-    texto:
-      "atendimento studio sôa, online de segunda à sexta, das 8h às 18h. entre em contato para compra, orçamento e encomendas",
-    rotuloDoLink: "faça seu pedido aqui",
-  },
+   segunda (fundo branco) são os pontos de venda. O título de página deixou de ser
+   "As peças estão na Ozlo Home Brand": quem abre a página vê primeiro o caminho
+   principal, e o nome da loja entra na segunda parte.
 
-  /* Frase dela que abre a segunda parte, antes do nome da loja. */
-  loja: {
-    rotulo: "nossas peças também estão disponíveis em",
-  },
+   Desde 11/11/2026 os textos e a lista de pontos de venda moram em
+   `content/onde-encontrar.json`, editado no painel do Tina. A lista cresce: cada
+   ponto novo vira um bloco ao lado dos outros, e a Ozlo Home Brand é o primeiro. O
+   endereço da Ozlo saiu de `site.ts` (`site.loja`) e foi para lá. */
+const ondeEncontrar = normalizarOndeEncontrar(ondeEncontrarJson);
+
+export const ondeEncontrarV2 = {
+  /* A compra direta com o estúdio vem primeiro, e os pontos de venda vêm depois
+     como segunda opção. Texto exato dela. */
+  atendimento: ondeEncontrar.atendimento,
+
+  /* Frase dela que abre a segunda parte, antes do nome dos lugares. */
+  rotuloDosPontos: ondeEncontrar.rotuloDosPontos,
+  pontos: ondeEncontrar.pontos,
 
   /* Os dois campos abaixo esperam texto da Luiza e não aparecem enquanto
      estiverem vazios. O primeiro reforça a compra direta e a credibilidade de a
-     peça estar numa loja; o segundo avisa que a disponibilidade na Ozlo varia.
-     Ficam como string vazia, e não como comentário, para entrar no ar assim que
-     o texto chegar, sem mexer em componente.
+     peça estar numa loja; o segundo avisa que a disponibilidade nos pontos de
+     venda varia. Ficam como string vazia, e não como comentário, para entrar no ar
+     assim que o texto chegar, sem mexer em componente.
 
      O rascunho dela mostra "*peças à pronta entrega a confirmar" abaixo da
      Ozlo: é nota para ela mesma, ainda sem texto final, então segue aqui
@@ -289,130 +292,9 @@ export const manifestoV2 = {
   } as Foto,
 };
 
-/* Ano de cada mostra, para a página nova mostrar nome, ano e cidade. Chegaram
-   na revisão de 14/10, que lista as quatro da mais nova para a mais antiga. */
-export const anosDasExposicoes: Record<string, string> = {
-  casacor: "2026",
-  bab: "2026",
-  "design-week": "2025",
-  "club-casa": "2024",
-};
-
-/* Ordem da página de Exposições: da mais recente para a mais antiga, como a
-   Luiza listou na revisão de 14/10. Em `exposicoes.ts` a ordem é a da lista de
-   hoje, e ela fica como está: quem decide a ordem desta página é esta lista. */
-export const ordemDasExposicoesV2 = [
-  "casacor",
-  "bab",
-  "design-week",
-  "club-casa",
-];
-
-/* Como cada mostra aparece na página de Exposições da V2.
- *
- * Um objeto por mostra, com tudo que se decide sobre ela. Já foram três mapas
- * separados aqui, e virou um só depois que o Pedro cobrou padronização nos
- * botões em 23/09: a mesma lição vale para dado, não só para CSS. Decisão que
- * sempre se toma junto se escreve junto, senão a quarta vira um quarto mapa.
- *
- * - `nome`: como o título da mostra é escrito no quadro. Revisão de 14/10: com
- *   maiúsculas e por extenso ("Casacor Espírito Santo", não "Casacor ES"). O
- *   `exposicoes.ts` não muda, porque outras partes do site leem o nome de lá.
- * - `antes`: fotos que entram NA FRENTE das da mostra, na ordem escrita aqui.
- * - `esconder`: fotos que não entram no carrossel. Trecho do caminho basta. Não
- *   apaga arquivo nem mexe em `exposicoes.ts`: a foto volta tirando uma linha
- *   daqui.
- * - `ajustes`: troca o arquivo e/ou o recorte de UMA foto, achada por um trecho
- *   do caminho. Existe por geometria: as fotos de exposição são 1300x1191,
- *   deitadas, e o quadro é em pé, então o encaixe é pela altura, corta os lados
- *   e não sobra folga vertical para deslizar. As versões em `zoom/` são as fotos
- *   inteiras, e várias são retrato: nelas a folga volta.
- * - `abrePor`: qual foto abre o quadro, contando DEPOIS de `antes` e `esconder`.
- * - `ordem`: ordem completa da mostra, por trecho do caminho de cada foto. Existe
- *   porque `abrePor` só gira a lista, e girar não troca duas vizinhas de lugar
- *   (Club&Casa, 27/10). Foto que não casar com nenhum trecho vai para o fim.
- *
- * Mostra que não estiver aqui usa todas as fotos, na ordem do conteúdo, sem
- * recorte. */
-export interface AjusteDeFoto {
-  trecho: string;
-  src?: string;
-  recorte?: string;
-}
-
-export const mostraV2: Record<
-  string,
-  {
-    nome?: string;
-    antes?: Foto[];
-    esconder?: string[];
-    ajustes?: AjusteDeFoto[];
-    abrePor?: number;
-    ordem?: string[];
-  }
-> = {
-  casacor: { nome: "Casacor Espírito Santo" },
-
-  /* A primeira foto vem reenquadrada pela Luiza (revisão de 14/10): o sofá
-     curvo e a Mesa Onda verde, mais de perto, em vez da vista aberta com a
-     planta. O arquivo é o recorte que ela mandou no documento. A foto tirada do
-     carrossel em 23/09 (`bab-2`) continua de fora, e a ordem das outras segue. */
-  bab: {
-    nome: "Bienal da Arquitetura Brasileira, BAB",
-    esconder: ["bab-2.jpg"],
-    ajustes: [
-      {
-        trecho: "bab-1.jpg",
-        src: "/assets/img/exposicoes/bab-1-reenquadrada.jpg",
-        recorte: "50% 50%",
-      },
-    ],
-  },
-
-  /* O pôster da Mesa Onda abre o quadro, e a Luiza pediu para aparecerem os
-     escritos do canto (as logos da BoomSP Design e do Club&Casa Autoral, e o
-     nome da peça). A versão de `exposicoes/` é um recorte deitado que corta
-     tudo isso; a de `zoom/` é o pôster inteiro. É a terceira da lista, por isso
-     `abrePor: 2`. Antes abria pela segunda (22/09), por causa da luz da
-     primeira, e as duas continuam no carrossel. */
-  "design-week": {
-    nome: "DW! Design Week São Paulo",
-    abrePor: 2,
-    ajustes: [
-      {
-        trecho: "design-week-3.jpg",
-        src: "/assets/img/exposicoes/zoom/design-week-3.jpg",
-        recorte: "50% 50%",
-      },
-    ],
-  },
-
-  /* A Luiza sentada ao lado da Mesa Onda entra como primeira foto, e as duas de
-     antes ficam depois dela (revisão de 14/10). O reenquadramento do troféu que
-     o Pedro pediu em 23/09 continua valendo, agora na segunda foto: o arquivo
-     deitado não tinha folga vertical, e a foto inteira (853x1280) é mais
-     estreita que o quadro, então ali o encaixe passa a ser pela largura e sobra
-     altura para descer o enquadramento. */
-  "club-casa": {
-    nome: "Prêmio Club&Casa Autoral 6",
-    // Ordem da Luiza (pasta `4 EXPOSIÇÕES/PREMIO CLUB&CASA`, 27/10): ela sentada,
-    // depois a Luiza com o troféu diante do telão (`club-casa-2`) e por último a
-    // foto da festa de premiação (`club-casa-1`). Antes eram as duas últimas
-    // trocadas.
-    ordem: ["club-casa-luiza", "club-casa-2", "club-casa-1"],
-    antes: [
-      {
-        src: "/assets/img/exposicoes/club-casa-luiza.jpg",
-        zoom: "/assets/img/exposicoes/club-casa-luiza.jpg",
-        alt: "Luiza Pessôa sentada num bloco branco, ao lado da Mesa Onda",
-      },
-    ],
-    ajustes: [
-      {
-        trecho: "club-casa-1.jpg",
-        src: "/assets/img/exposicoes/zoom/club-casa-1.jpg",
-        recorte: "50% 100%",
-      },
-    ],
-  },
-};
+/* Exposições: o ano, a ordem das mostras e o jeito de cada uma abrir (`anosDasExposicoes`,
+   `ordemDasExposicoesV2` e `mostraV2`, com `antes`, `esconder`, `ajustes`, `abrePor` e
+   `ordem`) moravam aqui até 11/11/2026. Agora cada mostra é um arquivo em
+   `content/exposicoes/` com o estado final, e a ordem vem de
+   `content/ordem-exposicoes.json`: ver `exposicoes.ts`. O texto completo dessas decisões,
+   foto por foto, está no histórico do Git, no commit 9c15aef. */

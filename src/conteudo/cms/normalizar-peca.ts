@@ -96,6 +96,9 @@ function foto(f: FotoDoCms): Foto {
   return saida;
 }
 
+// Também usada pelas exposições: a foto tem o mesmo formato em todo lugar.
+export { foto as normalizarFoto };
+
 function quadro(q: NonNullable<PecaDoCms["galeria"]>[number]): QuadroDeGaleria {
   if (q._template === "video") {
     return {

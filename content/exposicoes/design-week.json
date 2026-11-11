@@ -1,0 +1,27 @@
+{
+  "nome": "DW! Design Week São Paulo",
+  "ano": "2025",
+  "local": "São Paulo, SP",
+  "descricao": [
+    "A DW! Semana de Design é um festival urbano que tem o objetivo de promover a cultura do design e suas conexões com arquitetura, arte, urbanismo, sustentabilidade, inovação e outros temas da economia criativa.",
+    "A Mesa Onda, participou expondo na BoomspDesign, um dos principais polos da Semana de Design em São Paulo, que acontece em um dos edifícios ícones da cidade, o Edifício Itália."
+  ],
+  "fotos": [
+    {
+      "src": "/assets/img/exposicoes/zoom/design-week-3.jpg",
+      "alt": "Mesa Onda sobre pedestal branco na exposição",
+      "recorte": "50% 50%",
+      "zoom": "/assets/img/exposicoes/zoom/design-week-3.jpg"
+    },
+    {
+      "src": "/assets/img/exposicoes/design-week-1.jpg",
+      "alt": "Mesa Onda exposta no polo BoomspDesign, com a sinalização da curadoria ao fundo",
+      "zoom": "/assets/img/exposicoes/zoom/design-week-1.jpg"
+    },
+    {
+      "src": "/assets/img/exposicoes/design-week-2.jpg",
+      "alt": "Vista do estande com a sinalização Club&Casa Design, dōpo e BoomspDesign",
+      "zoom": "/assets/img/exposicoes/zoom/design-week-2.jpg"
+    }
+  ]
+}

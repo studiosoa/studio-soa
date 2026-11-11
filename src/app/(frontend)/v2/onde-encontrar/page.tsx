@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import type { Metadata } from "next";
 
 import PaginaV2 from "@/componentes/v2/PaginaV2";
-import { site, linkDeWhatsapp } from "@/conteudo/site";
+import { linkDeWhatsapp } from "@/conteudo/site";
 import { ondeEncontrarV2, MENSAGEM_PADRAO } from "@/conteudo/v2";
 
 export const metadata: Metadata = {
@@ -13,7 +13,12 @@ export const metadata: Metadata = {
 
 // Onde encontrar da V2, refeita na revisão de 14/10: só texto, sem foto, tudo
 // centrado, em duas faixas. A de cima é bege e traz a compra direta com o
-// estúdio; a de baixo é branca e traz a loja.
+// estúdio; a de baixo é branca e traz os pontos de venda.
+//
+// Desde 11/11/2026 os pontos de venda são uma lista, editada no painel do Tina
+// (`content/onde-encontrar.json`): cada lugar novo vira um bloco ao lado dos
+// outros, com nome, endereço e botão do mapa. A Ozlo Home Brand é o primeiro. Com
+// um ponto só a faixa fica como era; com vários, eles quebram de linha sozinhos.
 //
 // Saíram o quadro vazio reservado para a foto da loja e o bloco café do
 // atendimento. A Luiza desenhou a página sem imagem de propósito, e o café
@@ -28,7 +33,7 @@ export const metadata: Metadata = {
 // projeto, sem uso. Estão listados como candidatos a limpeza no relatório, e
 // nada some sem o Pedro dizer sim.
 export default function OndeEncontrarV2() {
-  const { atendimento, loja } = ondeEncontrarV2;
+  const { atendimento, rotuloDosPontos, pontos } = ondeEncontrarV2;
 
   return (
     <PaginaV2 modificador="page--onde">
@@ -59,43 +64,57 @@ export default function OndeEncontrarV2() {
         </div>
       </section>
 
-      {/* 2. A loja, depois: é para quem quer ver a peça pessoalmente antes de
-          decidir. */}
-      <section className="onde-secao onde-secao--branca">
-        <div className="onde-secao__conteudo">
-          <p className="onde-secao__rotulo">{loja.rotulo}</p>
+      {/* 2. Os pontos de venda, depois: é para quem quer ver a peça
+          pessoalmente antes de decidir. Sem nenhum ponto na lista, a faixa
+          inteira some, e a frase não fica falando sozinha. */}
+      {pontos.length > 0 ? (
+        <section className="onde-secao onde-secao--branca">
+          <div className="onde-secao__conteudo onde-secao__conteudo--pontos">
+            <p className="onde-secao__rotulo">{rotuloDosPontos}</p>
 
-          <address className="onde__endereco">
-            <p className="onde__loja">{site.loja.nome}</p>
-            <p>
-              {site.loja.linhasDoEndereco.map((linha, i) => (
-                <Fragment key={linha}>
-                  {i > 0 ? <br /> : null}
-                  {linha}
-                </Fragment>
+            <div className="onde-pontos">
+              {pontos.map((ponto, i) => (
+                <div className="onde-ponto" key={`${i}-${ponto.nome}`}>
+                  <address className="onde__endereco">
+                    <p className="onde__loja">{ponto.nome}</p>
+                    {ponto.linhasDoEndereco.length > 0 ? (
+                      <p>
+                        {ponto.linhasDoEndereco.map((linha, j) => (
+                          <Fragment key={j}>
+                            {j > 0 ? <br /> : null}
+                            {linha}
+                          </Fragment>
+                        ))}
+                      </p>
+                    ) : null}
+                  </address>
+
+                  {/* Sem link do mapa no painel, sem botão. */}
+                  {ponto.linkDoMapa ? (
+                    <a
+                      className="btn btn--outline"
+                      href={ponto.linkDoMapa}
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      <span>Abrir no mapa</span>
+                      <span className="btn__arrow">→</span>
+                    </a>
+                  ) : null}
+                </div>
               ))}
-            </p>
-          </address>
+            </div>
 
-          {/* Igual ao anterior: espera o texto dela sobre a disponibilidade
-              das peças na loja variar. */}
-          {ondeEncontrarV2.avisoDeDisponibilidade ? (
-            <p className="onde-secao__aviso">
-              {ondeEncontrarV2.avisoDeDisponibilidade}
-            </p>
-          ) : null}
-
-          <a
-            className="btn btn--outline"
-            href={site.loja.linkDoMapa}
-            target="_blank"
-            rel="noopener"
-          >
-            <span>Abrir no mapa</span>
-            <span className="btn__arrow">→</span>
-          </a>
-        </div>
-      </section>
+            {/* Igual ao anterior: espera o texto dela sobre a disponibilidade
+                nos pontos de venda variar. */}
+            {ondeEncontrarV2.avisoDeDisponibilidade ? (
+              <p className="onde-secao__aviso">
+                {ondeEncontrarV2.avisoDeDisponibilidade}
+              </p>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
     </PaginaV2>
   );
 }

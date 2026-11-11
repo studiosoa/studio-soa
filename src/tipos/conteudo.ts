@@ -131,6 +131,8 @@ export interface Exposicao {
   /** Nome na lista da esquerda. Aceita `\n` para forçar a quebra de linha. */
   nome: string;
   local: string;
+  /** Só o ano, como texto: "2026". Vazio não mostra nada no quadrado. */
+  ano?: string;
   /** Os parágrafos da descrição. */
   descricao: string[];
   fotos: Foto[];

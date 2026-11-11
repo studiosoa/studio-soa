@@ -1,0 +1,15 @@
+{
+  "atendimento": {
+    "titulo": "compre direto com o studio",
+    "texto": "atendimento studio sôa, online de segunda à sexta, das 8h às 18h. entre em contato para compra, orçamento e encomendas",
+    "rotuloDoLink": "faça seu pedido aqui"
+  },
+  "rotuloDosPontos": "nossas peças também estão disponíveis em",
+  "pontos": [
+    {
+      "nome": "Ozlo Home Brand",
+      "endereco": "Av. Rio Branco, 1305, loja 01\nCentro Comercial Solar da Praia\nPraia do Canto, Vitória ES\n29055-643",
+      "linkDoMapa": "https://www.google.com/maps/search/?api=1&query=Ozlo+Home+Brand%2C+Av.+Rio+Branco%2C+1305%2C+Praia+do+Canto%2C+Vit%C3%B3ria+-+ES%2C+29055-643"
+    }
+  ]
+}

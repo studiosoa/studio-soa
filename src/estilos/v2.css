@@ -843,6 +843,36 @@
   font-weight: 700;
 }
 
+/* Os pontos de venda lado a lado (11/11/2026): cada lugar é um bloco com nome,
+   endereço e botão, e eles quebram de linha sozinhos conforme a largura. A faixa
+   fica mais larga que a de texto para caberem três por linha. Com um ponto só, o
+   bloco fica no centro e a faixa se parece com a de antes. */
+.page--v2 .onde-secao__conteudo--pontos {
+  max-width: 1100px;
+}
+
+.page--v2 .onde-pontos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 56px 72px;
+  width: 100%;
+}
+
+.page--v2 .onde-ponto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 300px;
+}
+
+/* O aviso de disponibilidade, quando existir, fica embaixo de todos os pontos. */
+.page--v2 .onde-pontos + .onde-secao__aviso {
+  margin-top: 44px;
+}
+
 /* A entrada é a mesma de sempre das páginas de texto: cada bloco sobe e aparece
    em seguida ao anterior. */
 .page--v2 .onde-secao__conteudo > * {

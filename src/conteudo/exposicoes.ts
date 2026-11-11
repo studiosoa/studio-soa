@@ -1,105 +1,42 @@
 import type { Exposicao } from "@/tipos/conteudo";
+import ordem from "../../content/ordem-exposicoes.json";
+import { arquivosDeExposicoes } from "./cms/__gerado__/indice-exposicoes";
+import {
+  exposicaoPublicavel,
+  normalizarExposicao,
+} from "./cms/normalizar-exposicao";
 
-// Coleção `exposicoes`. A ordem é a da lista da esquerda, e a primeira é a que
-// abre a página.
+// Coleção `exposicoes`. Desde 11/11/2026 o dado não mora mais aqui: cada mostra é um
+// arquivo em `content/exposicoes/<chave>.json`, e quem edita é o painel do Tina
+// (`/admin`). Este arquivo só lê, na mesma lógica de `pecas.ts`.
+//
+// O arquivo de cada mostra guarda o ESTADO FINAL: nome como aparece no quadrado, ano
+// e as fotos já na ordem em que abrem. A página de Exposições não calcula mais nada.
+// Antes ela montava isso em quatro passos (`mostraV2` em `v2.ts`, com `antes`,
+// `esconder`, `ajustes`, `abrePor` e `ordem`), e o texto das decisões de cada mostra,
+// como o reenquadramento da BAB e a abertura da Design Week pelo pôster, está no
+// histórico do Git, no commit 9c15aef, o último que ainda tinha isso escrito à mão.
+//
+// A ordem das mostras na página vem de `content/ordem-exposicoes.json`, editada no
+// painel arrastando. Mostra que existe e não está na lista vai para o fim; entrada da
+// lista sem arquivo é ignorada.
+//
+// Mostra sem nome ou sem nenhuma foto é rascunho e não entra: ver `exposicaoPublicavel`.
 //
 // DUVIDAS #9: confirmar com a Luiza se falta alguma foto em cada mostra.
+
+const todas: Exposicao[] = arquivosDeExposicoes.flatMap(({ chave, dados }) =>
+  exposicaoPublicavel(dados) ? [normalizarExposicao(chave, dados)] : [],
+);
+
+const chavesDaLista = ordem.exposicoes.map((item) =>
+  item.exposicao.split("/").pop()!.replace(/\.json$/, ""),
+);
+
 export const exposicoes: Exposicao[] = [
-  {
-    chave: "club-casa",
-    nome: "Prêmio Club&Casa Autoral 6",
-    local: "Pato Branco, PR",
-    descricao: [
-      "Prêmio nacional de Design promovido pelo Club&Casa. Mesa Onda foi ganhadora da etapa estadual e nacional. A partir da premiação, assinamos a peça, Mesa Onda, para Dopo Studio.",
-    ],
-    fotos: [
-      {
-        src: "/assets/img/exposicoes/club-casa-1.jpg",
-        zoom: "/assets/img/exposicoes/zoom/club-casa-1.jpg",
-        alt: "Luiza Pessôa com o troféu na festa de premiação do Club&Casa Design Espírito Santo",
-      },
-      {
-        src: "/assets/img/exposicoes/club-casa-2.jpg",
-        zoom: "/assets/img/exposicoes/zoom/club-casa-2.jpg",
-        alt: "Luiza Pessôa no palco da premiação, anunciada como vencedora regional do Autoral 6",
-      },
-    ],
-  },
-
-  {
-    chave: "design-week",
-    nome: "Design Week São Paulo",
-    local: "São Paulo, SP",
-    descricao: [
-      "A DW! Semana de Design é um festival urbano que tem o objetivo de promover a cultura do design e suas conexões com arquitetura, arte, urbanismo, sustentabilidade, inovação e outros temas da economia criativa.",
-      "A Mesa Onda, participou expondo na BoomspDesign, um dos principais polos da Semana de Design em São Paulo, que acontece em um dos edifícios ícones da cidade, o Edifício Itália.",
-    ],
-    fotos: [
-      {
-        src: "/assets/img/exposicoes/design-week-1.jpg",
-        zoom: "/assets/img/exposicoes/zoom/design-week-1.jpg",
-        alt: "Mesa Onda exposta no polo BoomspDesign, com a sinalização da curadoria ao fundo",
-      },
-      {
-        src: "/assets/img/exposicoes/design-week-2.jpg",
-        zoom: "/assets/img/exposicoes/zoom/design-week-2.jpg",
-        alt: "Vista do estande com a sinalização Club&Casa Design, dōpo e BoomspDesign",
-      },
-      {
-        src: "/assets/img/exposicoes/design-week-3.jpg",
-        zoom: "/assets/img/exposicoes/zoom/design-week-3.jpg",
-        alt: "Mesa Onda sobre pedestal branco na exposição",
-      },
-    ],
-  },
-
-  {
-    chave: "bab",
-    // A quebra é fixa: em negrito o nome reflui sozinho e joga só "BAB" para a
-    // segunda linha. Com o `\n` a divisão é sempre a mesma.
-    nome: "Bienal da Arquitetura\nBrasileira BAB",
-    local: "São Paulo, SP",
-    descricao: [
-      "Em São Paulo, Ibirapuera, no Pavilhão das Culturas – projeto do icônico Oscar Niemeyer, a BAB é um evento cultural que celebra a produção arquitetônica nacional, aproximando a arquitetura da vida real.",
-      "Uma experiência imersiva e educativa, reunindo diferentes vozes, territórios e formas de habitar. Mesa Onda compôs o Pavilhão Espírito Santo, projeto da arquiteta capixaba Letícia Finamore.",
-    ],
-    fotos: [
-      {
-        src: "/assets/img/exposicoes/bab-1.jpg",
-        zoom: "/assets/img/exposicoes/zoom/bab-1.jpg",
-        alt: "Mesa Onda no Pavilhão Espírito Santo, ao lado do sofá curvo e da planta",
-      },
-      {
-        src: "/assets/img/exposicoes/bab-2.jpg",
-        zoom: "/assets/img/exposicoes/zoom/bab-2.jpg",
-        alt: "Outro ângulo do Pavilhão Espírito Santo, com poltrona e bancos escuros",
-      },
-      {
-        src: "/assets/img/exposicoes/bab-3.jpg",
-        zoom: "/assets/img/exposicoes/zoom/bab-3.jpg",
-        alt: "Mesa Onda em tom verde no ambiente do pavilhão, vista pela passagem",
-      },
-    ],
-  },
-
-  {
-    chave: "casacor",
-    nome: "Casacor ES",
-    local: "Vitória, ES",
-    descricao: [
-      "CASACOR é a maior e mais completa mostra de arquitetura, design de interiores e paisagismo das Américas. Nesta edição, no edifício importante para a história da cidade, Hotel Porto/Canto do Sol, Espelho Miúdo compôs o espaço “Sala de TV de Volta”, projeto da arquiteta mineira Débora Bicalho.",
-    ],
-    fotos: [
-      {
-        src: "/assets/img/exposicoes/casacor-1.jpg",
-        zoom: "/assets/img/exposicoes/zoom/casacor-1.jpg",
-        alt: "Espelho Miúdo compondo a Sala de TV de Volta, na Casacor ES",
-      },
-      {
-        src: "/assets/img/exposicoes/casacor-2.jpg",
-        zoom: "/assets/img/exposicoes/zoom/casacor-2.jpg",
-        alt: "Parede do ambiente da Casacor Espírito Santo com a marcação da mostra",
-      },
-    ],
-  },
+  ...chavesDaLista.flatMap((chave) => {
+    const achada = todas.find((e) => e.chave === chave);
+    return achada ? [achada] : [];
+  }),
+  ...todas.filter((e) => !chavesDaLista.includes(e.chave)),
 ];

@@ -1,0 +1,22 @@
+{
+  "nome": "Bienal da Arquitetura Brasileira, BAB",
+  "ano": "2026",
+  "local": "São Paulo, SP",
+  "descricao": [
+    "Em São Paulo, Ibirapuera, no Pavilhão das Culturas – projeto do icônico Oscar Niemeyer, a BAB é um evento cultural que celebra a produção arquitetônica nacional, aproximando a arquitetura da vida real.",
+    "Uma experiência imersiva e educativa, reunindo diferentes vozes, territórios e formas de habitar. Mesa Onda compôs o Pavilhão Espírito Santo, projeto da arquiteta capixaba Letícia Finamore."
+  ],
+  "fotos": [
+    {
+      "src": "/assets/img/exposicoes/bab-1-reenquadrada.jpg",
+      "alt": "Mesa Onda no Pavilhão Espírito Santo, ao lado do sofá curvo e da planta",
+      "recorte": "50% 50%",
+      "zoom": "/assets/img/exposicoes/zoom/bab-1.jpg"
+    },
+    {
+      "src": "/assets/img/exposicoes/bab-3.jpg",
+      "alt": "Mesa Onda em tom verde no ambiente do pavilhão, vista pela passagem",
+      "zoom": "/assets/img/exposicoes/zoom/bab-3.jpg"
+    }
+  ]
+}

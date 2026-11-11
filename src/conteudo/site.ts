@@ -46,6 +46,9 @@ export const site: ConteudoDoSite = {
   blocos3d:
     "https://drive.google.com/drive/folders/11tLCxl2R6pOosXoJR4-p2frLt9l1OVTh?usp=sharing",
 
+  // Desde 11/11/2026 a página Onde encontrar não lê mais daqui: os pontos de venda
+  // moram em `content/onde-encontrar.json`, editados no painel. Isto fica só porque
+  // `Mapa.tsx` (sem uso, candidato a limpeza) ainda importa a coordenada.
   loja: {
     nome: "Ozlo Home Brand",
     linhasDoEndereco: [

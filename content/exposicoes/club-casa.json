@@ -1,0 +1,26 @@
+{
+  "nome": "Prêmio Club&Casa Autoral 6",
+  "ano": "2024",
+  "local": "Pato Branco, PR",
+  "descricao": [
+    "Prêmio nacional de Design promovido pelo Club&Casa. Mesa Onda foi ganhadora da etapa estadual e nacional. A partir da premiação, assinamos a peça, Mesa Onda, para Dopo Studio."
+  ],
+  "fotos": [
+    {
+      "src": "/assets/img/exposicoes/club-casa-luiza.jpg",
+      "alt": "Luiza Pessôa sentada num bloco branco, ao lado da Mesa Onda",
+      "zoom": "/assets/img/exposicoes/club-casa-luiza.jpg"
+    },
+    {
+      "src": "/assets/img/exposicoes/club-casa-2.jpg",
+      "alt": "Luiza Pessôa no palco da premiação, anunciada como vencedora regional do Autoral 6",
+      "zoom": "/assets/img/exposicoes/zoom/club-casa-2.jpg"
+    },
+    {
+      "src": "/assets/img/exposicoes/zoom/club-casa-1.jpg",
+      "alt": "Luiza Pessôa com o troféu na festa de premiação do Club&Casa Design Espírito Santo",
+      "recorte": "50% 100%",
+      "zoom": "/assets/img/exposicoes/zoom/club-casa-1.jpg"
+    }
+  ]
+}

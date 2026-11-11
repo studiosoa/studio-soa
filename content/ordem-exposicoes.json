@@ -1,0 +1,16 @@
+{
+  "exposicoes": [
+    {
+      "exposicao": "content/exposicoes/casacor.json"
+    },
+    {
+      "exposicao": "content/exposicoes/bab.json"
+    },
+    {
+      "exposicao": "content/exposicoes/design-week.json"
+    },
+    {
+      "exposicao": "content/exposicoes/club-casa.json"
+    }
+  ]
+}

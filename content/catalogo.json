@@ -1,10 +1,10 @@
 {
   "pecas": [
     {
-      "peca": "content/pecas/mesa-onda.json"
+      "peca": "content/pecas/espelho-miudo-graudo.json"
     },
     {
-      "peca": "content/pecas/espelho-miudo-graudo.json"
+      "peca": "content/pecas/mesa-onda.json"
     },
     {
       "peca": "content/pecas/bandeja-elis.json"

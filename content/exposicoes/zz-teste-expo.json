@@ -1,10 +1,10 @@
 {
   "nome": "ZZ teste exposição",
-  "ano": "2099",
+  "ano": "2098",
+  "fotos": [],
   "local": "Cidade de teste, TS",
   "descricao": [
     "Texto de teste um da mostra.",
     "Texto de teste dois da mostra."
-  ],
-  "fotos": []
+  ]
 }

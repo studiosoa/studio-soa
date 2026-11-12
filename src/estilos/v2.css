@@ -726,6 +726,18 @@
   .page--v2 .blocos-nav__item {
     aspect-ratio: 3 / 2;
   }
+
+  /* A foto da Luiza é em pé (1300x1950) e o bloco do celular é deitado (3 por
+     2), então só 44% da altura dela cabe. Com o recorte de 42% do conteúdo (feito
+     para o bloco em pé do computador) a faixa visível ia de 23% a 68% da altura e
+     o rosto, que fica entre 21% e 28%, saía cortado no nariz (medido em 390 px,
+     11/11/2026). Aqui a faixa sobe para uns 14% a 58%: o rosto inteiro, com
+     respiro acima do cabelo, e a tigela fica cortada embaixo, de propósito, a
+     pedido do Pedro. O `!important` é porque o recorte do conteúdo vem escrito
+     direto na imagem (`style`) e, sem ele, esta regra não ganharia. */
+  .page--v2 .blocos-nav__item[href="/sobre"] img {
+    object-position: 50% 26% !important;
+  }
 }
 
 /* ---------- Sobre ---------- */

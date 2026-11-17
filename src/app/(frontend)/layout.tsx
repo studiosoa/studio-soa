@@ -22,6 +22,17 @@ export const metadata: Metadata = {
   },
   description:
     "Estúdio brasileiro de design autoral fundado em 2025 por Luiza Pessôa, em Vitória.",
+  // O "Ô" do logo, em creme sobre o marrom do site. Os arquivos moram em
+  // `public/` (favicon.ico com 16, 32 e 48 px; icon.png e apple-icon.png) e não
+  // em `src/app/`: assim o `/favicon.ico` que o navegador pede sozinho também
+  // responde fora deste layout, na 404 e no painel.
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "48x48" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: { url: "/apple-icon.png", sizes: "180x180" },
+  },
 };
 
 export default function LayoutDoSite({ children }: { children: ReactNode }) {
